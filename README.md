@@ -229,3 +229,24 @@ InfinityFree 의 `htdocs/` 에 저장소 내용을 그대로 업로드한다.
   - 트랜잭션으로 코인 차감 + 인벤토리 INSERT + 원장 기록
   - 이미 보유: 409 / 코인 부족: 402 / 비유효 아이템: 404 — 한국어 메시지로 응답
   - 코인 차감은 `award_coins()` 의 `SELECT ... FOR UPDATE` 로 동시 구매 방지
+
+### 9. 친구 시스템 (`feat/friends` → PR)
+
+- DB (`migrations/0003_friends.sql`)
+  - `friendships(requester_id, addressee_id, status='pending'|'accepted'|'declined', ...)`
+  - 한 쌍에 한 행만 (UNIQUE)
+- 백엔드 `api/friends/*`
+  - `list.php` — 친구 / 받은 신청 / 보낸 신청 한 번에
+  - `request.php` — 아이디 또는 이메일로 신청
+    - 본인 신청 금지, 이미 친구 / 이미 신청 / 거절된 이력 분기
+    - 반대 방향에 들어와 있는 pending 이 있으면 **자동 수락**
+  - `accept.php` · `decline.php` · `remove.php`
+  - `profile.php?id=N` — 친구 (또는 본인) 의 공개 프로필 + 장착 아이템 + 카탈로그
+- 페이지
+  - `/friends` — 신청 검색 + 3 탭(친구/받은/보낸) + 카드 그리드 (미니 마스코트 아바타)
+  - `/friend?id=N` — 친구 프로필 (큰 마스코트 + XP/스트릭/가입일 + 친구 끊기)
+- 보안
+  - 친구가 아닌 사람의 `profile.php` 호출은 403
+  - 마스코트 합성은 `items` 카탈로그를 그대로 노출 (공개 정보)
+- UX
+  - 친구 카드 아바타가 친구의 장착 그대로 보이려면 별도 호출이 필요해서 본 PR 에서는 단순 베이스 마스코트로. (향후 list.php 응답에 `equipped` 묶어 보내는 최적화 여지)
