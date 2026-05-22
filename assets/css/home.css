@@ -122,6 +122,13 @@
   50%      { transform: translateY(-12px); }
 }
 
+/* CTA hover 시 마스코트가 살짝 점프 — 인터랙션 연결 */
+.hero__cta:hover ~ .hero__stage .hero__mascot,
+.hero__stage:hover .hero__mascot {
+  animation-duration: 1.8s;
+}
+.hero__stage:hover .hero__halo { transform: scale(1.08); }
+
 /* 무대 후광 */
 .hero__halo {
   position: absolute;
