@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#58cc02" />
+  <title>옷장 · FinEdu</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/closet.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-logo" href="/">
+        <span class="site-logo__mark" aria-hidden="true">F</span>
+        <span>FinEdu</span>
+      </a>
+
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a class="site-nav__link" href="/">홈</a>
+        <a class="site-nav__link" href="/learn">학습</a>
+        <a class="site-nav__link is-active" href="/closet">옷장</a>
+        <a class="site-nav__link" href="/market">마켓</a>
+        <div class="site-nav__actions"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="closet-shell">
+
+      <!-- 좌측 — 마스코트 미리보기 -->
+      <aside class="closet-stage">
+        <div class="closet-stage__title">내 도토리</div>
+        <div class="closet-stage__name"><span id="closet-name">도토리</span></div>
+        <div id="closet-mascot" class="closet-stage__mascot" aria-hidden="true"></div>
+        <a class="closet-stage__coins" href="/market" title="더 많은 아이템을 보러 가기">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><circle cx="12" cy="12" r="9" fill="#ffd14d"/><text x="12" y="16" font-size="11" font-weight="800" text-anchor="middle" fill="#7a5300">₩</text></svg>
+          <span id="closet-coins">0</span>
+        </a>
+      </aside>
+
+      <!-- 우측 — 슬롯 탭 + 그리드 -->
+      <section class="closet-main">
+        <div id="closet-tabs" class="closet-tabs"></div>
+        <div id="closet-grid" class="closet-grid"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p class="site-footer__credit">© 2026 FinEdu</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/closet.js"></script>
+</body>
+</html>
