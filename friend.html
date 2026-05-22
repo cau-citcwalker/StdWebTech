@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#58cc02" />
+  <title>친구 프로필 · FinEdu</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/friends.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-logo" href="/">
+        <span class="site-logo__mark" aria-hidden="true">F</span>
+        <span>FinEdu</span>
+      </a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a class="site-nav__link" href="/">홈</a>
+        <a class="site-nav__link" href="/learn">학습</a>
+        <a class="site-nav__link" href="/closet">옷장</a>
+        <a class="site-nav__link" href="/market">마켓</a>
+        <a class="site-nav__link" href="/friends">친구</a>
+        <div class="site-nav__actions"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="profile-shell">
+      <aside class="profile-stage">
+        <div id="profile-mascot" class="profile-stage__mascot" aria-hidden="true"></div>
+        <h1 id="profile-name" class="profile-stage__name">…</h1>
+        <p id="profile-handle" class="profile-stage__handle"></p>
+        <div class="profile-stats">
+          <div class="profile-stat">
+            <div class="profile-stat__num" id="profile-xp">0</div>
+            <div class="profile-stat__label">XP</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat__num" id="profile-streak">D-0</div>
+            <div class="profile-stat__label">스트릭</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat__num" id="profile-joined">—</div>
+            <div class="profile-stat__label">가입일</div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="profile-main">
+        <p style="color: var(--color-text-soft);">친구가 어떤 도토리를 입고 있는지 구경해 보세요. 자기 자신의 프로필은 옷장에서 직접 꾸미면 즉시 반영돼요.</p>
+
+        <div id="profile-self-note" hidden style="margin-top: 24px; padding: 16px; background: var(--color-brand-bg); border-radius: 12px;">
+          이건 본인 프로필이에요. 옷장(<a href="/closet">/closet</a>)에서 변경하면 친구에게도 이렇게 보입니다.
+        </div>
+
+        <div class="profile-actions" style="margin-top: 24px;">
+          <a class="btn btn--secondary" href="/friends">← 친구 목록</a>
+          <button id="profile-remove" class="btn btn--ghost btn--sm" type="button" style="color: var(--color-accent-red-dark);">친구 끊기</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p class="site-footer__credit">© 2026 FinEdu</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/friend.js"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+/* =============================================================
+ * FinEdu — 친구 (`/friends`, `/friend`)
+ * ============================================================= */
+
+body { background: var(--color-bg-soft); }
+
+.friends-shell { padding: var(--space-8) 0 var(--space-16); }
+
+.friends-head {
+  margin-bottom: var(--space-8);
+}
+.friends-head h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); }
+.friends-head p { color: var(--color-text-soft); margin-top: 4px; }
+
+/* 신청 입력 */
+.friend-search {
+  margin-top: var(--space-4);
+  display: flex;
+  gap: var(--space-2);
+  max-width: 520px;
+}
+.friend-search .input { flex: 1; }
+
+/* 탭 */
+.friends-tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  border-bottom: 2px solid var(--color-divider);
+}
+.friends-tab {
+  padding: 10px 16px;
+  font-weight: var(--fw-bold);
+  color: var(--color-text-soft);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+}
+.friends-tab.is-active { color: var(--color-brand-darker); border-bottom-color: var(--color-brand); }
+.friends-tab__count {
+  display: inline-block;
+  margin-left: 6px;
+  min-width: 22px;
+  padding: 2px 8px;
+  background: var(--color-bg-muted);
+  color: var(--color-text-soft);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: var(--fw-black);
+}
+.friends-tab.is-active .friends-tab__count { background: var(--color-brand); color: white; }
+
+/* 친구 카드 */
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+.friend-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  transition: all var(--dur-fast) var(--ease-out-soft);
+}
+.friend-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); border-color: var(--color-border-strong); }
+
+.friend-card__avatar {
+  width: 72px; height: 72px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-brand-bg);
+  display: grid; place-items: center;
+  overflow: hidden;
+}
+.friend-card__avatar svg { width: 110%; height: 110%; }
+
+.friend-card__body { min-width: 0; flex: 1; }
+.friend-card__name { font-weight: var(--fw-extrabold); font-size: var(--fs-15); }
+.friend-card__handle { color: var(--color-text-soft); font-size: var(--fs-13); }
+.friend-card__stats { margin-top: 4px; display: flex; gap: 8px; font-size: var(--fs-12); color: var(--color-text-soft); }
+
+.friend-card__actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+
+/* 빈 상태 */
+.friends-empty {
+  text-align: center;
+  padding: var(--space-12) 0;
+  color: var(--color-text-soft);
+}
+.friends-empty img { width: 120px; height: 120px; margin: 0 auto; opacity: 0.85; }
+
+/* -------------------------------------------------------------
+ * 친구 프로필 (`/friend`)
+ * ------------------------------------------------------------- */
+.profile-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: var(--space-10);
+  padding: var(--space-8) 0 var(--space-16);
+}
+@media (max-width: 880px) { .profile-shell { grid-template-columns: 1fr; } }
+
+.profile-stage {
+  position: sticky; top: 88px;
+  align-self: start;
+  padding: var(--space-6);
+  background: linear-gradient(135deg, var(--color-brand-bg), #fffadc);
+  border: 2px solid var(--color-brand-soft);
+  border-radius: var(--radius-2xl);
+  text-align: center;
+}
+.profile-stage__mascot {
+  margin: var(--space-3) auto;
+  width: min(100%, 320px); aspect-ratio: 1;
+  display: grid; place-items: center;
+}
+.profile-stage__mascot svg { width: 100%; height: 100%; animation: bob-soft 5s ease-in-out infinite; }
+.profile-stage__name { font-size: var(--fs-24); }
+.profile-stage__handle { color: var(--color-text-soft); }
+
+.profile-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+.profile-stat {
+  padding: var(--space-3);
+  background: white;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+.profile-stat__num { font-size: var(--fs-20); font-weight: var(--fw-black); }
+.profile-stat__label { font-size: var(--fs-12); color: var(--color-text-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+
+.profile-main { min-width: 0; }
+.profile-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
