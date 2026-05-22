@@ -43,6 +43,8 @@ async function apiRequest(path, { method = "GET", body, headers } = {}) {
       ok: false,
       status: res.status,
       error: payload?.error || `요청 실패 (HTTP ${res.status})`,
+      // 서버가 함께 돌려준 부가 필드 (fields 별 에러 등) 전달
+      extra: payload ?? null,
     };
   }
   return { ok: true, data: payload?.data ?? payload ?? null };
