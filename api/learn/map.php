@@ -110,6 +110,7 @@ json_ok([
         'id'           => (int)$user['id'],
         'display_name' => $user['display_name'],
         'xp'           => (int)$user['xp'],
+        'coins'        => (int)$user['coins'],
         'streak_days'  => (int)$user['streak_days'],
     ],
     'units' => array_values($unitsById),
