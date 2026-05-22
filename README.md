@@ -88,3 +88,24 @@ InfinityFree 의 `htdocs/` 에 저장소 내용을 그대로 업로드한다.
   - `ping.php` 헬스 체크
 - DB 스키마 (`api/_init/schema.sql`)
   - `users` · `units` · `lessons` · `questions` · `user_lesson_progress`
+
+### 2. 메인 페이지 + 마스코트 (`feat/home` → PR)
+
+- 마스코트 캐릭터 “**도토리**” (다람쥐) 디자인
+  - 순수 SVG 로 그림. 그라데이션 털, 큰 눈, 분홍 볼터치, 도토리 들고 있는 손
+  - 인라인 SVG 라서 눈동자가 마우스를 따라 움직임 (`home.js`)
+  - 부드러운 상하 bobbing 애니메이션 (CSS keyframes)
+  - 사본은 `assets/img/mascot-dotori.svg` 로도 단독 보존
+- Hero 섹션
+  - 헤드라인에 그라데이션 텍스트, 듀오링고 “푸시 버튼” CTA
+  - 마스코트 주변에 떠다니는 칩 (`+12.4% / 코인 +5 / 환율 안정 / XP +20`) 으로
+    “주식 = 게임” 분위기
+  - 학습자 수 trust 뱃지
+- Features (3 카드) — 짧은 레슨 · 매일 습관 · 게이미피케이션
+- How-it-works (3 단계) — 점선으로 연결된 1→2→3 진행
+- Stats — 카운트업 애니메이션 (IntersectionObserver, 이징 적용)
+- Final CTA — 그린 그라데이션 박스
+- Footer — 템플릿 14번 영감 attribution
+- 진입 애니메이션 — `data-anim` 요소가 뷰포트에 들어올 때 페이드/슬라이드
+- 그리드 디버깅: `1.05fr 1fr` 가 stage 컬럼 폭을 못 잡아서 SVG 가 0×0
+  으로 렌더되던 이슈는 `minmax(0, …fr)` + `width: 100%` 로 해결
