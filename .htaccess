@@ -1,0 +1,49 @@
+# =============================================================
+# FinEdu — Apache 설정 (InfinityFree)
+#
+# 기본 동작:
+#   - .html 확장자 없이도 페이지 접근 가능
+#   - /api/ 하위는 그대로 PHP 로 전달
+#   - 정적 자원 캐싱
+# =============================================================
+
+# UTF-8 기본 인코딩
+AddDefaultCharset UTF-8
+
+# .html 확장자 제거: /login -> /login.html
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 이미 존재하는 파일/디렉터리는 그대로
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # /api/...  는 그대로 (PHP 가 처리)
+    RewriteRule ^api/ - [L]
+
+    # /foo  ->  /foo.html  (해당 파일이 존재할 때만)
+    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+    RewriteRule ^([^.]+)$ $1.html [L]
+</IfModule>
+
+# 정적 자원 캐싱 (브라우저)
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css                "access plus 7 days"
+    ExpiresByType application/javascript  "access plus 7 days"
+    ExpiresByType image/png               "access plus 30 days"
+    ExpiresByType image/jpeg              "access plus 30 days"
+    ExpiresByType image/svg+xml           "access plus 30 days"
+    ExpiresByType image/webp              "access plus 30 days"
+    ExpiresByType font/woff2              "access plus 365 days"
+</IfModule>
+
+# 디렉터리 인덱싱 비활성화
+Options -Indexes
+
+# 설정 파일 직접 접근 차단
+<FilesMatch "^(config\.php|config\.example\.php|.*\.sql)$">
+    Require all denied
+</FilesMatch>
