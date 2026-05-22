@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#58cc02" />
+  <title>레슨 · FinEdu</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/lesson.css" />
+</head>
+<body>
+
+  <header class="lesson-top">
+    <div class="container lesson-top__inner">
+      <a class="lesson-top__close" href="/learn" aria-label="레슨 종료">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <line x1="6" y1="6" x2="18" y2="18"/>
+          <line x1="6" y1="18" x2="18" y2="6"/>
+        </svg>
+      </a>
+
+      <div class="lesson-top__progress">
+        <div class="progress" aria-label="진행도">
+          <div id="lesson-progress-bar" class="progress__bar" style="width:0%;"></div>
+        </div>
+        <div id="lesson-title" class="sr-only"></div>
+      </div>
+
+      <span class="lesson-top__hearts" aria-label="목숨">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21 C 4 14, 2 9, 6 5 c2 -2 6 -2 6 2 c0 -4 4 -4 6 -2 c4 4 2 9 -6 16 Z"/></svg>
+        ∞
+      </span>
+    </div>
+  </header>
+
+  <main id="lesson-root" class="q-shell">
+    <article class="q-card" aria-busy="true">
+      <div class="q-card__no">불러오는 중</div>
+      <h2 class="q-card__prompt">레슨을 준비하고 있어요…</h2>
+    </article>
+  </main>
+
+  <footer id="lesson-bottom" class="lesson-bottom">
+    <div class="container lesson-bottom__inner">
+      <button id="confirm-btn" class="btn btn--lg" type="button" disabled aria-disabled="true">
+        확인 →
+      </button>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/lesson.js"></script>
+</body>
+</html>
