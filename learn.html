@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#58cc02" />
+  <title>학습공간 · FinEdu</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/learn.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-logo" href="/">
+        <span class="site-logo__mark" aria-hidden="true">F</span>
+        <span>FinEdu</span>
+      </a>
+
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a class="site-nav__link" href="/">홈</a>
+        <a class="site-nav__link is-active" href="/learn">학습</a>
+
+        <div class="site-nav__actions">
+          <div id="user-stats" class="user-stats" aria-live="polite"></div>
+          <div id="user-menu"  class="user-menu"></div>
+          <button id="logout-btn" class="btn btn--ghost btn--sm" type="button">로그아웃</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="learn-hello" data-anim>
+      <div>
+        <h1>안녕, <span id="hello-name">친구</span>!</h1>
+        <p>오늘도 5 분 함께 배워볼까요? 잠긴 단원은 직전 레슨을 끝내면 열려요.</p>
+      </div>
+      <img class="learn-hello__mascot" src="assets/img/mascot-dotori.svg" alt="" />
+    </section>
+
+    <div id="units-root">
+      <!-- 스켈레톤 -->
+      <div class="lesson-skeleton">
+        <div class="lesson-skeleton__row"></div>
+        <div class="lesson-skeleton__row"></div>
+        <div class="lesson-skeleton__row"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p class="site-footer__credit">© 2026 FinEdu</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/learn.js"></script>
+</body>
+</html>
