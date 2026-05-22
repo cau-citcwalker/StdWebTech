@@ -93,6 +93,10 @@ function renderUserStats(user) {
       <svg viewBox="0 0 24 24" fill="#ff7a00" stroke="none"><path d="M12 3 c0 4 -5 5 -5 10 a5 5 0 0 0 10 0 c0 -2 -2 -3 -3 -5 c0 3 -2 4 -2 4 z"/></svg>
       D-${user.streak_days}
     </span>
+    <a class="stat-chip stat-chip--coin" href="/market" title="스킨 마켓으로 이동">
+      <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9" fill="#ffd14d"/><text x="12" y="16" font-size="11" font-weight="800" text-anchor="middle" fill="#7a5300">₩</text></svg>
+      ${(user.coins ?? 0).toLocaleString("ko-KR")}
+    </a>
   `;
 
   const menu = $("#user-menu");

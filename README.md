@@ -175,3 +175,20 @@ InfinityFree 의 `htdocs/` 에 저장소 내용을 그대로 업로드한다.
   - 학습공간에 아직 단원이 없을 때 도토리 + 안내 문구
   - 잘못된 레슨 주소 / 빈 문제 등 친근한 한국어 메시지로 안내
 - 미세 버그 수정: 답 기록 시점을 “계속” 시점으로 단일화, 다음 문제 진입 시 하단 바 복귀
+
+### 6. 통화 시스템 — 코인 (`feat/currency` → PR)
+
+- DB 변경 (`api/_init/migrations/0001_coins.sql`)
+  - `users.coins` 컬럼 추가
+  - `coin_ledger` 테이블 신설 (감사용 — 모든 코인 변동을 한 줄씩 기록)
+  - 이미 설치된 DB 는 이 마이그레이션만 phpMyAdmin 에서 실행하면 됨
+  - 새 설치는 `schema.sql` 최신본이 이미 포함
+- 백엔드
+  - `api/_lib/coins.php` — `award_coins($uid, $delta, $reason, ...)` 트랜잭션 + 음수 잔액 방지
+  - `submit.php` 통과 시 코인 지급
+    - 첫 통과: **+10 코인**, 재도전: **+3 코인**
+    - 스트릭 7 의 배수 (D-7 / D-14 ...) 신규 도달 시 **+50 코인 보너스**
+  - `me.php` · `map.php` 응답에 `coins` 추가
+- 프론트
+  - 학습공간 헤더에 코인 stat 칩 (XP/스트릭 옆) — 추후 마켓 링크
+  - 레슨 완료 카드에 “+N 코인” 보상 표시 (`rewards.coins_awarded` 필드)

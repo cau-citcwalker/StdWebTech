@@ -241,6 +241,7 @@ body { background: var(--color-bg-soft); }
 .done-stat--xp     { background: var(--color-brand-bg); border-color: var(--color-brand-soft); }
 .done-stat--score  { background: #fff3c2; border-color: #ffe69b; }
 .done-stat--streak { background: #fde2c8; border-color: #f7caa1; }
+.done-stat--coin   { background: #fff2bd; border-color: #ffd87a; }
 .done-stat__label {
   font-size: var(--fs-12);
   letter-spacing: 0.12em;

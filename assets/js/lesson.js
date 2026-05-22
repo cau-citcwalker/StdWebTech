@@ -232,9 +232,11 @@ async function submitLesson() {
   renderDone(res.data);
 }
 
-function renderDone({ summary, user }) {
+function renderDone({ summary, user, rewards }) {
   if (progressBar) progressBar.style.width = "100%";
   const passed = summary.passed;
+  const xpGain   = rewards?.xp_awarded ?? summary.xp_awarded;
+  const coinGain = rewards?.coins_awarded ?? 0;
 
   root.innerHTML = `
     <div class="done-card">
@@ -246,14 +248,18 @@ function renderDone({ summary, user }) {
           : "조금만 더 정답을 맞히면 통과예요. 한 번 더 도전해 볼까요?"}
       </p>
 
-      <div class="done-stats">
+      <div class="done-stats" style="grid-template-columns: repeat(4, 1fr);">
         <div class="done-stat done-stat--score">
           <div class="done-stat__label">점수</div>
           <div class="done-stat__num">${summary.score_pct}<small style="font-size:0.5em;"> %</small></div>
         </div>
         <div class="done-stat done-stat--xp">
           <div class="done-stat__label">XP</div>
-          <div class="done-stat__num">+${summary.xp_awarded}</div>
+          <div class="done-stat__num">+${xpGain}</div>
+        </div>
+        <div class="done-stat done-stat--coin">
+          <div class="done-stat__label">코인</div>
+          <div class="done-stat__num">+${coinGain}</div>
         </div>
         <div class="done-stat done-stat--streak">
           <div class="done-stat__label">스트릭</div>
