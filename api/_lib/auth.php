@@ -131,6 +131,7 @@ function public_user(array $row): array
         'email' => $row['email'],
         'display_name' => $row['display_name'],
         'xp' => (int)$row['xp'],
+        'coins' => (int)($row['coins'] ?? 0),
         'streak_days' => (int)$row['streak_days'],
         'created_at' => $row['created_at'],
         'last_active_at' => $row['last_active_at'],

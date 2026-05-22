@@ -22,6 +22,11 @@
 
 require __DIR__ . '/../_lib/bootstrap.php';
 require __DIR__ . '/../_lib/auth.php';
+require __DIR__ . '/../_lib/coins.php';
+
+const COIN_REWARD_FIRST_PASS = 10;
+const COIN_REWARD_RETRY      = 3;
+const COIN_REWARD_STREAK_7   = 50;   // D-7 / D-14 / D-21 ... 도달 시
 
 require_method('POST');
 $uid = require_login();
@@ -150,6 +155,8 @@ if ($passed) {
         $newStreak = 1;                              // 끊김
     }
 
+    $prevStreak = (int)$userRow['streak_days'];
+
     db()->prepare(
         'UPDATE users
            SET xp = xp + :gain,
@@ -157,6 +164,18 @@ if ($passed) {
                last_active_at = NOW()
          WHERE id = :id'
     )->execute([':gain' => $xpAwarded, ':s' => $newStreak, ':id' => $uid]);
+
+    // 코인 지급
+    $coinDelta = $alreadyCompleted ? COIN_REWARD_RETRY : COIN_REWARD_FIRST_PASS;
+    award_coins($uid, $coinDelta, $alreadyCompleted ? 'lesson_retry' : 'lesson_pass', 'lesson', $lessonId);
+
+    // 스트릭 7 의 배수에 새로 도달 시 보너스
+    if ($newStreak > $prevStreak
+        && $newStreak % 7 === 0
+        && $newStreak >= 7) {
+        award_coins($uid, COIN_REWARD_STREAK_7, 'streak_bonus', 'streak', $newStreak);
+        $coinDelta += COIN_REWARD_STREAK_7;
+    }
 }
 
 $user = load_user_by_id($uid);
@@ -173,6 +192,11 @@ json_ok([
     ],
     'user' => [
         'xp'          => (int)$user['xp'],
+        'coins'       => (int)$user['coins'],
         'streak_days' => (int)$user['streak_days'],
+    ],
+    'rewards' => [
+        'xp_awarded'    => $xpAwarded,
+        'coins_awarded' => isset($coinDelta) ? $coinDelta : 0,
     ],
 ]);

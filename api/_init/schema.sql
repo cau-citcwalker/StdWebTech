@@ -17,12 +17,29 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash   VARCHAR(255)       NOT NULL,
     display_name    VARCHAR(60)        NOT NULL,
     xp              INT UNSIGNED       NOT NULL DEFAULT 0,
+    coins           INT UNSIGNED       NOT NULL DEFAULT 0,
     streak_days     INT UNSIGNED       NOT NULL DEFAULT 0,
     last_active_at  DATETIME           DEFAULT NULL,
     created_at      DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uniq_users_username (username),
     UNIQUE KEY uniq_users_email    (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 코인 변동 원장 (감사용)
+CREATE TABLE IF NOT EXISTS coin_ledger (
+    id              INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+    user_id         INT UNSIGNED       NOT NULL,
+    delta           INT                NOT NULL,
+    reason          VARCHAR(40)        NOT NULL,
+    ref_type        VARCHAR(20)        NULL,
+    ref_id          INT UNSIGNED       NULL,
+    balance_after   INT UNSIGNED       NOT NULL,
+    created_at      DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_coin_ledger_user_date (user_id, created_at),
+    CONSTRAINT fk_coin_ledger_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -------------------------------------------------------------
