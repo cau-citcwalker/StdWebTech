@@ -109,3 +109,28 @@ InfinityFree 의 `htdocs/` 에 저장소 내용을 그대로 업로드한다.
 - 진입 애니메이션 — `data-anim` 요소가 뷰포트에 들어올 때 페이드/슬라이드
 - 그리드 디버깅: `1.05fr 1fr` 가 stage 컬럼 폭을 못 잡아서 SVG 가 0×0
   으로 렌더되던 이슈는 `minmax(0, …fr)` + `width: 100%` 로 해결
+
+### 3. 로그인 / 회원가입 + 인증 백엔드 (`feat/auth` → PR)
+
+- 새 페이지: `/signup`, `/login` — 좌측 폼 + 우측 마스코트 일러스트 split 레이아웃
+- 폼 UX
+  - 인풋별 inline 에러, 폼 상단 배너로 서버 일반 오류 표시
+  - 비밀번호 표시 토글 (눈 아이콘)
+  - 진입 시 페이드업 카드, 칩 떠다님
+- PHP 인증 백엔드 (`api/auth/*.php` + `_lib/auth.php`)
+  - `signup.php` — 검증 (아이디 영문/숫자/_ 3~40자 · 이메일 · 비밀번호 8자+)
+    → bcrypt 해시 → INSERT → 세션 시작
+  - `login.php` — 아이디 **또는** 이메일 식별자 + 비밀번호 → `password_verify`
+  - `logout.php` — 세션 + 쿠키 파기, 멱등
+  - `me.php` — 현재 로그인 사용자 조회 (게스트는 `user: null`)
+- 인증 헬퍼
+  - `validate_signup_input` · `create_user` · `verify_credentials`
+  - `login_user(user)` — `session_regenerate_id(true)` 로 fixation 방지,
+    `last_active_at` 갱신
+  - `public_user($row)` — 외부에 비밀번호 해시가 새지 않도록 안전 필드만 추림
+- 프론트
+  - `api.js` 에 `extra` 필드를 추가해 서버가 돌려준 필드별 에러 (`fields`) 를
+    클라이언트로 전달
+  - `auth.js` 가 `me.php` 로 페이지 진입 시 세션 체크 → 이미 로그인이면 `/learn` 으로 이동
+- 동시성/에러
+  - MySQL 1062 (UNIQUE 충돌) 를 이메일/아이디로 구분해 친근한 한국어 메시지로 응답
