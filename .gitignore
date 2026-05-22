@@ -1,0 +1,31 @@
+# Claude Code (개인 설정 / 업로드 금지)
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 에디터
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 백엔드 설정 (DB 자격증명 포함되므로 절대 커밋 금지)
+api/config.php
+api/config.local.php
+
+# 로그
+*.log
+logs/
+
+# PHP 의존성 (직접 vendor 사용 시)
+vendor/
+
+# Node 도구 (혹시 빌드 도구 추가 시)
+node_modules/
+npm-debug.log*
+
+# 빌드 결과물
+dist/
+build/
