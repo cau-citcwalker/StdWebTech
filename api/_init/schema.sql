@@ -157,3 +157,21 @@ CREATE TABLE IF NOT EXISTS user_equipment (
     CONSTRAINT fk_equipment_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_equipment_item FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- 친구 관계
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS friendships (
+    id              INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+    requester_id    INT UNSIGNED       NOT NULL,
+    addressee_id    INT UNSIGNED       NOT NULL,
+    status          VARCHAR(16)        NOT NULL DEFAULT 'pending',
+    created_at      DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    decided_at      DATETIME           NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uniq_friendship_pair (requester_id, addressee_id),
+    KEY idx_addressee_status (addressee_id, status),
+    KEY idx_requester_status (requester_id, status),
+    CONSTRAINT fk_friend_requester FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_friend_addressee FOREIGN KEY (addressee_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
