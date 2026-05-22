@@ -1,0 +1,224 @@
+/* =============================================================
+ * FinEdu — 학습공간 (`/learn`) 전용 스타일
+ *
+ * 레슨 맵: 단원 카드 안에 “지그재그”로 늘어선 원형 노드.
+ * 각 노드는 잠금 / 가능 / 완료 상태에 따라 색이 달라진다.
+ * ============================================================= */
+
+/* -------------------------------------------------------------
+ * 사용자 stat 위젯 (헤더 오른쪽)
+ * ------------------------------------------------------------- */
+.user-stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-soft);
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-14);
+}
+.stat-chip svg { width: 16px; height: 16px; }
+.stat-chip--xp { background: var(--color-brand-bg); color: var(--color-brand-darker); }
+.stat-chip--streak { background: #fff3c2; color: #6e4a00; }
+.stat-chip--coin { background: #fff3c2; color: #5a3d00; }
+
+.user-menu { display: flex; align-items: center; gap: var(--space-2); }
+.user-menu__name { font-weight: var(--fw-bold); color: var(--color-text); font-size: var(--fs-14); }
+.user-menu__avatar {
+  width: 36px; height: 36px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--color-brand-bg);
+  color: var(--color-brand-darker);
+  font-weight: var(--fw-black);
+}
+
+/* -------------------------------------------------------------
+ * 환영 배너
+ * ------------------------------------------------------------- */
+.learn-hello {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-8) var(--space-8);
+  margin: var(--space-8) 0;
+  background: linear-gradient(135deg, var(--color-brand-bg) 0%, #fffadc 100%);
+  border: 2px solid var(--color-brand-soft);
+  border-radius: var(--radius-2xl);
+}
+.learn-hello h1 {
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+.learn-hello p {
+  margin-top: var(--space-2);
+  color: var(--color-text-soft);
+}
+.learn-hello__mascot {
+  width: 120px;
+  height: 120px;
+  animation: bob-soft 5s ease-in-out infinite;
+}
+@media (max-width: 720px) {
+  .learn-hello { grid-template-columns: 1fr; text-align: center; }
+  .learn-hello__mascot { justify-self: center; width: 96px; height: 96px; }
+}
+
+/* -------------------------------------------------------------
+ * 단원 섹션
+ * ------------------------------------------------------------- */
+.unit-section { margin-bottom: var(--space-16); }
+.unit-section__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  background: var(--unit-color, var(--color-brand));
+  color: white;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 6px 0 0 color-mix(in srgb, var(--unit-color, var(--color-brand)) 70%, black 0%);
+  margin-bottom: var(--space-8);
+}
+.unit-section__title { font-size: var(--fs-24); color: white; }
+.unit-section__subtitle { font-size: var(--fs-14); opacity: 0.9; }
+.unit-section__progress {
+  margin-left: auto;
+  display: flex; align-items: center; gap: var(--space-3);
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-14);
+}
+.unit-section__progress .progress {
+  width: 160px; height: 10px;
+  background: rgba(255,255,255,0.3);
+}
+.unit-section__progress .progress__bar {
+  background: white;
+  box-shadow: none;
+}
+.unit-section__progress .progress__bar::after { background: rgba(255,255,255,0.4); }
+
+/* -------------------------------------------------------------
+ * 지그재그 레슨 패스
+ * ------------------------------------------------------------- */
+.lesson-path {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-6) 0;
+}
+.lesson-row {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.lesson-row:nth-child(4n+1) { transform: translateX(-110px); }
+.lesson-row:nth-child(4n+2) { transform: translateX(0); }
+.lesson-row:nth-child(4n+3) { transform: translateX(110px); }
+.lesson-row:nth-child(4n+0) { transform: translateX(0); }
+
+@media (max-width: 720px) {
+  .lesson-row:nth-child(4n+1) { transform: translateX(-60px); }
+  .lesson-row:nth-child(4n+3) { transform: translateX(60px); }
+}
+
+/* 노드 본체 */
+.lesson-node {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--node-bg, var(--color-bg-muted));
+  color: var(--node-fg, var(--color-text-muted));
+  border: 4px solid var(--node-border, var(--color-border-strong));
+  box-shadow: 0 6px 0 0 var(--node-shadow, var(--color-border-strong));
+  transition:
+    transform var(--dur-base) var(--ease-out-bounce),
+    box-shadow var(--dur-base) var(--ease-out-soft);
+  text-decoration: none;
+  cursor: not-allowed;
+  user-select: none;
+}
+.lesson-node svg { width: 40px; height: 40px; }
+
+.lesson-node[data-state="available"] {
+  --node-bg: var(--color-brand);
+  --node-fg: white;
+  --node-border: white;
+  --node-shadow: var(--color-brand-dark);
+  cursor: pointer;
+  animation: node-pulse 2.4s var(--ease-out-soft) infinite;
+}
+.lesson-node[data-state="available"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 0 0 var(--node-shadow);
+}
+.lesson-node[data-state="available"]:active {
+  transform: translateY(6px);
+  box-shadow: 0 0 0 0 var(--node-shadow);
+}
+@keyframes node-pulse {
+  0%, 100% { box-shadow: 0 6px 0 0 var(--node-shadow), 0 0 0 0 var(--color-brand-soft); }
+  60%      { box-shadow: 0 6px 0 0 var(--node-shadow), 0 0 0 14px rgba(88,204,2,0); }
+}
+
+.lesson-node[data-state="completed"] {
+  --node-bg: var(--color-accent-yellow);
+  --node-fg: #5a3d00;
+  --node-border: white;
+  --node-shadow: var(--color-accent-yellow-dark);
+  cursor: pointer;
+}
+.lesson-node[data-state="completed"]:hover { transform: translateY(-2px); }
+
+.lesson-node[data-state="locked"] svg { opacity: 0.6; }
+
+/* 노드 위쪽 별 — 완료 표시 */
+.lesson-node__check {
+  position: absolute;
+  top: -10px; right: -10px;
+  width: 28px; height: 28px;
+  background: #ffffff;
+  color: var(--color-accent-yellow-dark);
+  border: 3px solid var(--color-accent-yellow-dark);
+  border-radius: 50%;
+  display: grid; place-items: center;
+}
+.lesson-node__check svg { width: 14px; height: 14px; }
+
+/* 노드 캡션 */
+.lesson-row__caption {
+  margin-left: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 260px;
+}
+.lesson-row__caption-title { font-weight: var(--fw-extrabold); font-size: var(--fs-15); }
+.lesson-row__caption-sub   { color: var(--color-text-soft); font-size: var(--fs-13); margin-top: 2px; }
+
+/* 스켈레톤 (불러오는 동안) */
+.lesson-skeleton {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-8);
+  padding: var(--space-8) 0;
+}
+.lesson-skeleton__row {
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--color-bg-muted) 0%, #f0f0f0 50%, var(--color-bg-muted) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
