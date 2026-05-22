@@ -192,3 +192,26 @@ InfinityFree 의 `htdocs/` 에 저장소 내용을 그대로 업로드한다.
 - 프론트
   - 학습공간 헤더에 코인 stat 칩 (XP/스트릭 옆) — 추후 마켓 링크
   - 레슨 완료 카드에 “+N 코인” 보상 표시 (`rewards.coins_awarded` 필드)
+
+### 7. 캐릭터 커스텀 — 옷장 (`feat/character` → PR)
+
+- DB (`api/_init/migrations/0002_items.sql`)
+  - `items` 카탈로그 (slug · name · slot · svg_markup · price · rarity)
+  - `user_items` 인벤토리
+  - `user_equipment` 슬롯당 1 개 (`hat` · `glasses` · `scarf` · `background`)
+- 시드 (`api/_init/seed_items.sql`)
+  - 무료 starter: 노란 빵모자 / 둥근 안경 / 빨간 스카프 (가입 시 자동 지급)
+  - 유료: 학사모 · 산타모 · 왕관 · 선글라스 · 하트 안경 · 줄무늬 머플러 · 별빛 배경 · 무지개 배경 등
+- 백엔드
+  - `_lib/character.php` — `list_items` · `user_owned_items` · `user_equipment`
+    · `ensure_starter_items` (멱등) · `equip_item` (보유/슬롯 일치 검증)
+  - `api/character/state.php` — 옷장 한 번에 (catalog + owned + equipped + coins)
+  - `api/character/equip.php` — 슬롯에 장착 또는 해제
+- 마스코트 컴포저 (`assets/js/mascot.js`)
+  - 기본 도토리 SVG + 장착 아이템 SVG 조각을 합성
+  - 레이어 순서: `background → base → scarf → glasses → hat`
+  - 카탈로그 미리보기에도 재사용
+- 페이지 `/closet`
+  - 좌측 sticky 마스코트 미리보기 + 코인 잔액
+  - 우측 슬롯 탭 (모자/안경/스카프/배경) + 아이템 그리드
+  - 미보유 아이템은 잠금 표시 (마켓 안내) — 실제 구매는 PR #9 마켓 에서

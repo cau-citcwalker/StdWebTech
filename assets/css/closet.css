@@ -1,0 +1,190 @@
+/* =============================================================
+ * FinEdu — 옷장 (`/closet`)
+ *
+ * 왼쪽 마스코트 미리보기 (sticky), 오른쪽 슬롯 탭 + 아이템 그리드.
+ * ============================================================= */
+
+body { background: var(--color-bg-soft); }
+
+.closet-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: var(--space-10);
+  padding: var(--space-8) 0 var(--space-16);
+}
+@media (max-width: 880px) {
+  .closet-shell { grid-template-columns: 1fr; }
+}
+
+/* -------------------------------------------------------------
+ * 좌측 — 마스코트 무대
+ * ------------------------------------------------------------- */
+.closet-stage {
+  position: sticky;
+  top: 88px;
+  align-self: start;
+  padding: var(--space-8) var(--space-6);
+  background: linear-gradient(135deg, var(--color-brand-bg) 0%, #fffadc 100%);
+  border: 2px solid var(--color-brand-soft);
+  border-radius: var(--radius-2xl);
+  text-align: center;
+}
+.closet-stage__title {
+  font-size: var(--fs-14);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-brand-darker);
+  font-weight: var(--fw-bold);
+}
+.closet-stage__name {
+  margin-top: 4px;
+  font-size: var(--fs-24);
+  font-weight: var(--fw-black);
+}
+.closet-stage__mascot {
+  margin: var(--space-6) auto 0;
+  width: min(100%, 320px);
+  aspect-ratio: 1;
+  display: grid; place-items: center;
+}
+.closet-stage__mascot svg { width: 100%; height: 100%; animation: bob-soft 5s ease-in-out infinite; }
+
+.closet-stage__coins {
+  margin-top: var(--space-5);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: #fff3c2;
+  color: #5a3d00;
+  font-weight: var(--fw-extrabold);
+}
+
+/* -------------------------------------------------------------
+ * 우측 — 슬롯 탭 + 아이템 그리드
+ * ------------------------------------------------------------- */
+.closet-main { min-width: 0; }
+
+.closet-tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+}
+.closet-tab {
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-soft);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out-soft);
+}
+.closet-tab:hover { color: var(--color-text); }
+.closet-tab.is-active {
+  background: var(--color-brand);
+  color: white;
+  border-color: var(--color-brand);
+  box-shadow: 0 3px 0 0 var(--color-brand-dark);
+}
+
+/* -------------------------------------------------------------
+ * 아이템 카드 그리드
+ * ------------------------------------------------------------- */
+.closet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-4);
+}
+
+.item-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: var(--space-3);
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out-soft);
+}
+.item-card:hover { transform: translateY(-2px); border-color: var(--color-border-strong); box-shadow: var(--shadow-sm); }
+
+.item-card.is-equipped {
+  border-color: var(--color-brand);
+  background: var(--color-brand-bg);
+  box-shadow: 0 4px 0 0 var(--color-brand-dark);
+}
+.item-card.is-locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.item-card.is-locked:hover { transform: none; box-shadow: none; }
+
+.item-card__preview {
+  position: relative;
+  aspect-ratio: 1;
+  background: linear-gradient(180deg, #ffffff 0%, var(--color-bg-soft) 100%);
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.item-card__preview svg { width: 100%; height: 100%; }
+
+.item-card__name {
+  margin-top: var(--space-2);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-extrabold);
+  text-align: center;
+}
+.item-card__meta {
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-12);
+  color: var(--color-text-soft);
+}
+
+.item-card__rarity { padding: 2px 8px; border-radius: var(--radius-pill); font-size: 11px; font-weight: var(--fw-bold); }
+.item-card__rarity--starter { background: var(--color-brand-bg); color: var(--color-brand-darker); }
+.item-card__rarity--common  { background: var(--color-bg-muted); color: var(--color-text-soft); }
+.item-card__rarity--rare    { background: #d2efff; color: #075f8a; }
+.item-card__rarity--epic    { background: #f0d6ff; color: #5b1a8a; }
+
+.item-card__badge {
+  position: absolute; top: 6px; left: 6px;
+  padding: 2px 8px;
+  background: var(--color-brand);
+  color: white;
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  font-weight: var(--fw-extrabold);
+}
+.item-card.is-locked .item-card__badge {
+  background: var(--color-bg-muted);
+  color: var(--color-text-muted);
+}
+
+.item-card__price {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-weight: var(--fw-bold);
+  color: var(--color-accent-yellow-dark);
+}
+.item-card__price svg { width: 12px; height: 12px; }
+
+/* “해제” 카드 (슬롯 비우기) */
+.item-card--none .item-card__preview {
+  background: repeating-linear-gradient(45deg, #f7f7f7 0 8px, #efefef 8px 16px);
+}
+.item-card--none .item-card__preview::after {
+  content: "✕";
+  position: absolute;
+  font-size: 36px;
+  color: var(--color-text-muted);
+}
