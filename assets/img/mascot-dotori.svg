@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  도토리 — FinEdu 마스코트 다람쥐
+  외부 사용을 위한 단독 SVG. 페이지에서는 인라인 사본을 사용하면
+  내부 요소에 클래스를 부여해 CSS 로 애니메이션을 줄 수 있다.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" aria-label="도토리 마스코트">
+  <defs>
+    <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d68b4a"/>
+      <stop offset="1" stop-color="#a35a26"/>
+    </linearGradient>
+    <linearGradient id="belly" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff2dd"/>
+      <stop offset="1" stop-color="#ffd9a8"/>
+    </linearGradient>
+    <radialGradient id="cheek" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ff8aa0" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#ff8aa0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 그림자 -->
+  <ellipse cx="160" cy="296" rx="90" ry="10" fill="#000" opacity="0.12"/>
+
+  <!-- 큰 꼬리 (뒤쪽) -->
+  <g>
+    <path d="M70 200
+             C 10 180, 20 90, 90 60
+             C 80 110, 110 170, 130 200 Z"
+          fill="url(#fur)" stroke="#7a4116" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M70 195
+             C 35 175, 40 110, 90 80
+             C 90 120, 105 165, 120 190 Z"
+          fill="#c47636" opacity="0.6"/>
+  </g>
+
+  <!-- 몸 -->
+  <ellipse cx="170" cy="220" rx="78" ry="68" fill="url(#fur)" stroke="#7a4116" stroke-width="6"/>
+  <!-- 배 -->
+  <ellipse cx="170" cy="232" rx="48" ry="44" fill="url(#belly)"/>
+
+  <!-- 다리 -->
+  <ellipse cx="135" cy="282" rx="22" ry="14" fill="#9a5224" stroke="#7a4116" stroke-width="5"/>
+  <ellipse cx="205" cy="282" rx="22" ry="14" fill="#9a5224" stroke="#7a4116" stroke-width="5"/>
+
+  <!-- 머리 -->
+  <g class="dotori-head">
+    <!-- 귀 -->
+    <path d="M110 90 C 95 50, 130 30, 142 60 Z" fill="url(#fur)" stroke="#7a4116" stroke-width="6"/>
+    <path d="M222 90 C 235 50, 200 30, 188 60 Z" fill="url(#fur)" stroke="#7a4116" stroke-width="6"/>
+    <path d="M118 80 C 110 60, 130 50, 138 70 Z" fill="#ffb38a"/>
+    <path d="M214 80 C 222 60, 202 50, 194 70 Z" fill="#ffb38a"/>
+
+    <!-- 얼굴 -->
+    <circle cx="166" cy="118" r="78" fill="url(#fur)" stroke="#7a4116" stroke-width="6"/>
+    <!-- 얼굴 밝은 부분 -->
+    <ellipse cx="166" cy="138" rx="55" ry="42" fill="#ffe6cb"/>
+
+    <!-- 볼터치 -->
+    <circle cx="110" cy="142" r="14" fill="url(#cheek)"/>
+    <circle cx="222" cy="142" r="14" fill="url(#cheek)"/>
+
+    <!-- 눈 -->
+    <g class="dotori-eyes">
+      <circle cx="142" cy="116" r="14" fill="#1f1f1f"/>
+      <circle cx="190" cy="116" r="14" fill="#1f1f1f"/>
+      <circle cx="146" cy="111" r="5" fill="#fff"/>
+      <circle cx="194" cy="111" r="5" fill="#fff"/>
+    </g>
+
+    <!-- 코 -->
+    <path d="M160 138 q 6 -6 12 0 q -6 8 -12 0 Z" fill="#1f1f1f"/>
+
+    <!-- 입 (살짝 미소) -->
+    <path d="M160 152 q 6 8 12 0" fill="none" stroke="#1f1f1f" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- 도토리 (손에 들고 있는) -->
+  <g>
+    <ellipse cx="232" cy="220" rx="22" ry="26" fill="#f4c47a" stroke="#7a4116" stroke-width="5"/>
+    <path d="M212 200 q 20 -18 40 0 q -4 8 -20 8 q -16 0 -20 -8 Z" fill="#5e3713" stroke="#3d220a" stroke-width="3"/>
+    <rect x="226" y="184" width="12" height="10" rx="3" fill="#5e3713"/>
+  </g>
+
+  <!-- 팔 (도토리 잡는 손) -->
+  <path d="M210 220 q -8 -10 -28 -8" fill="none" stroke="#7a4116" stroke-width="10" stroke-linecap="round"/>
+</svg>
