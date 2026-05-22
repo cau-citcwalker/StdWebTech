@@ -1,16 +1,17 @@
 /* =============================================================
  * FinEdu — 레슨 풀이 (`/lesson?id=N`)
  *
- * 흐름:
- *   1) /api/auth/me.php  로그인 체크
- *   2) /api/learn/lesson.php?id=N  으로 문제 불러오기
- *   3) 사용자가 한 문제씩 답하고 "확인" → 답 저장 & 다음
- *   4) 마지막 문제 후 /api/learn/submit.php 로 일괄 채점
- *   5) 결과 화면: 점수, XP, 스트릭, 다시 풀기 / 학습공간으로
- *      통과 시 컨페티 효과
+ * 한 문제씩 “즉시 피드백” 흐름:
+ *   1) 로그인 체크
+ *   2) /api/learn/lesson.php?id=N 으로 문제 받기
+ *   3) 사용자가 답 → "확인" → /api/learn/grade.php 호출
+ *   4) 슬라이드업 피드백 패널 표시 (정답/오답 + 해설), 효과음
+ *   5) "계속" → 다음 문제
+ *   6) 마지막 문제 후 /api/learn/submit.php 로 일괄 제출 → 완료 카드 (컨페티)
  * ============================================================= */
 
 import { api } from "./api.js";
+import { sfx } from "./sfx.js";
 
 const $  = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
@@ -19,73 +20,74 @@ const params = new URLSearchParams(location.search);
 const lessonId = Number(params.get("id"));
 const root = $("#lesson-root");
 const progressBar = $("#lesson-progress-bar");
+const bottomBar = $("#lesson-bottom");
+const confirmBtn = $("#confirm-btn");
 
 const state = {
   lesson: null,
   questions: [],
   index: 0,
-  answers: {},       // { [question_id]: string }
-  selected: null,    // 현재 선택값 (확정 전)
+  answers: {},
+  selected: null,
+  phase: "answer",  // 'answer' | 'feedback'
+  lastResult: null, // grade.php 응답
 };
 
 function updateProgress() {
   const total = state.questions.length;
   const done = state.index;
-  progressBar.style.width = total ? `${(100 * done) / total}%` : "0%";
+  if (progressBar) progressBar.style.width = total ? `${(100 * done) / total}%` : "0%";
 }
 
-function setConfirmEnabled(on) {
-  const btn = $("#confirm-btn");
-  if (!btn) return;
-  btn.disabled = !on;
-  btn.setAttribute("aria-disabled", on ? "false" : "true");
+function setConfirm(enabled, label = "확인 →", variant = "") {
+  if (!confirmBtn) return;
+  confirmBtn.textContent = label;
+  confirmBtn.disabled = !enabled;
+  confirmBtn.setAttribute("aria-disabled", enabled ? "false" : "true");
+  confirmBtn.className = "btn btn--lg" + (variant ? " " + variant : "");
 }
 
 /* -------------------------------------------------------------
- * 렌더러
+ * 문제 렌더링
  * ------------------------------------------------------------- */
 function renderQuestion() {
   const q = state.questions[state.index];
-  if (!q) {
-    submitLesson();
-    return;
-  }
+  if (!q) { submitLesson(); return; }
   state.selected = null;
-  setConfirmEnabled(false);
+  state.phase = "answer";
+  if (bottomBar) bottomBar.removeAttribute("hidden");
+  setConfirm(false, "확인 →");
   updateProgress();
-
-  const safePrompt = q.prompt;
 
   if (q.type === "multiple_choice") {
     const labels = ["A", "B", "C", "D", "E"];
-    const optionsHtml = (q.options || []).map((opt, i) => `
+    const opts = (q.options || []).map((opt, i) => `
       <button class="q-option" type="button" data-value="${i}">
         <span class="q-option__index">${labels[i]}</span>
         <span>${opt}</span>
       </button>
     `).join("");
-
     root.innerHTML = `
       <article class="q-card">
         <div class="q-card__no">문제 ${state.index + 1} / ${state.questions.length}</div>
-        <h2 class="q-card__prompt">${safePrompt}</h2>
-        <div class="q-options">${optionsHtml}</div>
+        <h2 class="q-card__prompt">${q.prompt}</h2>
+        <div class="q-options">${opts}</div>
       </article>
     `;
-
     $$(".q-option", root).forEach((btn) => {
       btn.addEventListener("click", () => {
         $$(".q-option", root).forEach((b) => b.classList.remove("is-selected"));
         btn.classList.add("is-selected");
         state.selected = btn.dataset.value;
-        setConfirmEnabled(true);
+        setConfirm(true, "확인 →");
+        sfx.tap();
       });
     });
   } else if (q.type === "true_false") {
     root.innerHTML = `
       <article class="q-card">
         <div class="q-card__no">문제 ${state.index + 1} / ${state.questions.length}</div>
-        <h2 class="q-card__prompt">${safePrompt}</h2>
+        <h2 class="q-card__prompt">${q.prompt}</h2>
         <div class="q-tf">
           <button class="q-tf__btn" type="button" data-value="true">O · 맞아요</button>
           <button class="q-tf__btn" type="button" data-value="false">X · 틀려요</button>
@@ -97,14 +99,15 @@ function renderQuestion() {
         $$(".q-tf__btn", root).forEach((b) => b.classList.remove("is-selected"));
         btn.classList.add("is-selected");
         state.selected = btn.dataset.value;
-        setConfirmEnabled(true);
+        setConfirm(true, "확인 →");
+        sfx.tap();
       });
     });
   } else if (q.type === "fill_blank") {
     root.innerHTML = `
       <article class="q-card">
         <div class="q-card__no">문제 ${state.index + 1} / ${state.questions.length}</div>
-        <h2 class="q-card__prompt">${safePrompt}</h2>
+        <h2 class="q-card__prompt">${q.prompt}</h2>
         <div class="q-blank">
           <input class="input" id="blank-input" type="text" autocomplete="off"
                  inputmode="text" placeholder="여기에 입력" />
@@ -114,95 +117,147 @@ function renderQuestion() {
     const input = $("#blank-input", root);
     input.addEventListener("input", () => {
       state.selected = input.value;
-      setConfirmEnabled(input.value.trim().length > 0);
+      setConfirm(input.value.trim().length > 0, "확인 →");
     });
     setTimeout(() => input.focus(), 80);
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && state.selected?.trim()) {
         e.preventDefault();
-        confirmAnswer();
+        onConfirm();
       }
     });
   }
 }
 
-function confirmAnswer() {
-  const q = state.questions[state.index];
-  if (!q || state.selected == null || state.selected === "") return;
-  state.answers[q.id] = String(state.selected);
-  state.index += 1;
-  renderQuestion();
+/* -------------------------------------------------------------
+ * 피드백 패널
+ * ------------------------------------------------------------- */
+function hideFeedback() {
+  document.querySelector(".feedback")?.remove();
+}
+
+function showFeedback(result) {
+  hideFeedback();
+  const isOk = result.correct;
+  const icon = isOk
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="7 12 11 16 17 9"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>`;
+
+  const ans = result.type === "multiple_choice"
+    ? `보기 ${"ABCDE"[Number(result.answer)]}`
+    : result.answer;
+
+  const panel = document.createElement("aside");
+  panel.className = "feedback " + (isOk ? "feedback--ok" : "feedback--bad");
+  panel.innerHTML = `
+    <div class="container feedback__inner">
+      <div>
+        <div class="feedback__title">${icon} ${isOk ? "정답이에요!" : "아쉬워요"}</div>
+        ${isOk ? "" : `<div class="feedback__answer" style="margin-top:8px;">정답: <code>${ans}</code></div>`}
+        ${result.explanation ? `<p class="feedback__explain">${result.explanation}</p>` : ""}
+      </div>
+      <button id="continue-btn" class="btn btn--lg ${isOk ? "" : "btn--red"}" type="button">계속 →</button>
+    </div>
+  `;
+  document.body.appendChild(panel);
+  requestAnimationFrame(() => panel.classList.add("is-shown"));
+
+  panel.querySelector("#continue-btn").addEventListener("click", () => {
+    // 현재 문제 답을 기록
+    const current = state.questions[state.index];
+    state.answers[current.id] = String(state.selected);
+    hideFeedback();
+    state.index += 1;
+    if (state.index >= state.questions.length) {
+      submitLesson();
+    } else {
+      renderQuestion();
+    }
+  });
+
+  if (isOk) sfx.correct(); else sfx.wrong();
+  // confirm 버튼은 피드백 동안 숨기기 — 패널 안의 “계속” 으로 진행
+  if (bottomBar) bottomBar.setAttribute("hidden", "");
 }
 
 /* -------------------------------------------------------------
- * 제출 + 결과 화면
+ * 확인 클릭
+ * ------------------------------------------------------------- */
+async function onConfirm() {
+  if (state.phase !== "answer") return;
+  const q = state.questions[state.index];
+  if (!q || state.selected == null || state.selected === "") return;
+
+  state.phase = "feedback";
+  setConfirm(false, "채점 중…");
+
+  const res = await api.post("/learn/grade.php", {
+    question_id: q.id,
+    answer: String(state.selected),
+  });
+
+  if (!res.ok) {
+    if (window.toast) window.toast(res.error || "채점 실패", { variant: "danger" });
+    state.phase = "answer";
+    setConfirm(true, "확인 →");
+    return;
+  }
+  state.lastResult = res.data;
+  showFeedback(res.data);
+}
+
+confirmBtn?.addEventListener("click", onConfirm);
+
+/* -------------------------------------------------------------
+ * 마지막 제출 + 완료 화면
  * ------------------------------------------------------------- */
 async function submitLesson() {
+  hideFeedback();
+  if (bottomBar) bottomBar.setAttribute("hidden", "");
   root.innerHTML = `
     <article class="q-card" aria-busy="true">
-      <div class="q-card__no">채점 중</div>
-      <h2 class="q-card__prompt">잠시만요, 결과를 정리하고 있어요…</h2>
+      <div class="q-card__no">결과 정리 중</div>
+      <h2 class="q-card__prompt">잠시만요…</h2>
     </article>
   `;
-  $("#confirm-btn")?.setAttribute("hidden", "");
 
   const res = await api.post("/learn/submit.php", {
     lesson_id: lessonId,
     answers: state.answers,
   });
-
   if (!res.ok) {
     if (window.toast) window.toast(res.error || "제출 실패", { variant: "danger" });
     return;
   }
-
   renderDone(res.data);
 }
 
-function renderDone({ summary, user, results }) {
-  // 진행바 끝까지
-  progressBar.style.width = "100%";
-
+function renderDone({ summary, user }) {
+  if (progressBar) progressBar.style.width = "100%";
   const passed = summary.passed;
-  const xp = summary.xp_awarded;
-  const score = summary.score_pct;
-  const streak = user.streak_days;
-
-  const wrongList = results
-    .filter((r) => !r.correct)
-    .map((r) => `
-      <div class="card" style="text-align: left;">
-        <div class="badge badge--yellow" style="margin-bottom: 8px;">오답</div>
-        <div style="font-weight:800;">${state.questions.find((q) => q.id === r.question_id)?.prompt ?? "문제"}</div>
-        <div class="feedback__answer" style="margin-top:6px;">정답: <code>${r.answer}</code></div>
-        ${r.explanation ? `<div class="feedback__explain">${r.explanation}</div>` : ""}
-      </div>
-    `).join("");
-
-  const mascot = `<img class="done-card__mascot" src="assets/img/mascot-dotori.svg" alt="">`;
 
   root.innerHTML = `
     <div class="done-card">
-      ${mascot}
+      <img class="done-card__mascot" src="assets/img/mascot-dotori.svg" alt="">
       <h2 class="done-card__title">${passed ? "완벽해요!" : "거의 다 왔어요"}</h2>
       <p class="done-card__sub">
         ${passed
-          ? "오늘의 도토리가 자랑스러워해요. 다음 레슨도 도전해 볼까요?"
-          : "조금만 더 정답을 맞히면 통과예요. 다시 한 번!"}
+          ? "오늘의 도토리가 자랑스러워해요. 다음 레슨도 도전!"
+          : "조금만 더 정답을 맞히면 통과예요. 한 번 더 도전해 볼까요?"}
       </p>
 
       <div class="done-stats">
         <div class="done-stat done-stat--score">
           <div class="done-stat__label">점수</div>
-          <div class="done-stat__num">${score}<small style="font-size:0.5em;"> %</small></div>
+          <div class="done-stat__num">${summary.score_pct}<small style="font-size:0.5em;"> %</small></div>
         </div>
         <div class="done-stat done-stat--xp">
           <div class="done-stat__label">XP</div>
-          <div class="done-stat__num">+${xp}</div>
+          <div class="done-stat__num">+${summary.xp_awarded}</div>
         </div>
         <div class="done-stat done-stat--streak">
           <div class="done-stat__label">스트릭</div>
-          <div class="done-stat__num">D-${streak}</div>
+          <div class="done-stat__num">D-${user.streak_days}</div>
         </div>
       </div>
 
@@ -213,29 +268,17 @@ function renderDone({ summary, user, results }) {
           : `<a class="btn btn--lg" href="javascript:location.reload()">다시 풀기</a>
              <a class="btn btn--secondary btn--sm" href="/learn">나중에 하기</a>`}
       </div>
-
-      ${wrongList ? `<div style="margin-top:32px; text-align:left; display: grid; gap: 12px;">
-        <h3 style="font-size: 16px; color: var(--color-text-soft); letter-spacing: 0.06em; text-transform: uppercase;">놓친 문제 복습</h3>
-        ${wrongList}
-      </div>` : ""}
     </div>
   `;
-  $("#lesson-bottom")?.setAttribute("hidden", "");
-  $("#confirm-btn")?.setAttribute("hidden", "");
-
-  if (passed) launchConfetti();
+  if (passed) { launchConfetti(); sfx.win(); }
 }
 
-/* -------------------------------------------------------------
- * 컨페티
- * ------------------------------------------------------------- */
 function launchConfetti() {
   const colors = ["#58cc02", "#1cb0f6", "#ffc800", "#ce82ff", "#ff86d0", "#ff4b4b"];
   const host = document.createElement("div");
   host.className = "confetti";
   document.body.appendChild(host);
-  const N = 120;
-  for (let i = 0; i < N; i++) {
+  for (let i = 0; i < 120; i++) {
     const s = document.createElement("span");
     s.style.left = Math.random() * 100 + "vw";
     s.style.background = colors[i % colors.length];
@@ -255,31 +298,24 @@ async function init() {
     root.innerHTML = `<article class="q-card"><h2 class="q-card__prompt">잘못된 레슨 주소예요.</h2></article>`;
     return;
   }
-
   const me = await api.get("/auth/me.php");
   if (!me.ok || !me.data?.user) {
     window.location.replace(`/login?next=${encodeURIComponent(location.pathname + location.search)}`);
     return;
   }
-
   const res = await api.get(`/learn/lesson.php?id=${lessonId}`);
   if (!res.ok) {
     if (window.toast) window.toast(res.error || "레슨을 불러오지 못했어요.", { variant: "danger" });
     return;
   }
-
   state.lesson = res.data.lesson;
   state.questions = res.data.questions;
-
-  // 헤더 제목
-  const titleEl = $("#lesson-title");
-  if (titleEl) titleEl.textContent = `${state.lesson.unit_title} · ${state.lesson.title}`;
-
-  // 진행도 첫 칸
+  if (state.questions.length === 0) {
+    root.innerHTML = `<article class="q-card"><h2 class="q-card__prompt">아직 문제가 준비되지 않았어요.</h2></article>`;
+    return;
+  }
   updateProgress();
   renderQuestion();
 }
-
-$("#confirm-btn")?.addEventListener("click", confirmAnswer);
 
 init();

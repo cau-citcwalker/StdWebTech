@@ -206,6 +206,18 @@
 .lesson-row__caption-title { font-weight: var(--fw-extrabold); font-size: var(--fs-15); }
 .lesson-row__caption-sub   { color: var(--color-text-soft); font-size: var(--fs-13); margin-top: 2px; }
 
+/* 빈 / 에러 상태 */
+.learn-empty {
+  text-align: center;
+  padding: var(--space-16) var(--space-6);
+  display: grid;
+  place-items: center;
+  gap: var(--space-3);
+}
+.learn-empty img { width: 140px; height: 140px; }
+.learn-empty h2 { font-size: var(--fs-24); }
+.learn-empty p { color: var(--color-text-soft); }
+
 /* 스켈레톤 (불러오는 동안) */
 .lesson-skeleton {
   display: flex; flex-direction: column; align-items: center; gap: var(--space-8);
