@@ -250,3 +250,30 @@ InfinityFree 의 `htdocs/` 에 저장소 내용을 그대로 업로드한다.
   - 마스코트 합성은 `items` 카탈로그를 그대로 노출 (공개 정보)
 - UX
   - 친구 카드 아바타가 친구의 장착 그대로 보이려면 별도 호출이 필요해서 본 PR 에서는 단순 베이스 마스코트로. (향후 list.php 응답에 `equipped` 묶어 보내는 최적화 여지)
+
+### 10. 마스코트 휴머노이드 아바타 전환 (`feat/avatar-redesign` → PR)
+
+기존 다람쥐 “도토리”를 **휴머노이드 chibi 캐릭터** 로 전환. 슬롯 체계도 새로 정리.
+
+- 슬롯 변경
+  - 이전: `hat` · `glasses` · `scarf` · `background`
+  - 신규: `hair` · `face` · `top` · `bottom` · `shoes` · `accessory`
+- DB
+  - `migrations/0004_avatar.sql` — 기존 `items`/`user_items`/`user_equipment` TRUNCATE (외래키 cascade 로 자동 정리)
+  - `seed_avatar.sql` — 새 슬롯 기준 아이템 시드
+    - 초기 starter 풍부히: 머리 3종(대머리/검정/갈색), 표정 3종(기본/웃음/윙크), 상의 2종, 하의 2종, 신발 1종
+    - 유료: 픽시컷·양갈래·백발 / 졸음·화남·반짝 / 후디·로고티·셔츠·재킷 / 카고·트렁크·슬림진 / 검정/체커/런너/부츠 / 캡·비니·둥근안경·선글라스·하트안경·카메라·왕관
+- 베이스 캐릭터
+  - viewBox `0 0 400 600` 휴머노이드 chibi (피부, 머리, 몸통, 팔다리, 볼터치)
+  - `mascot.js` BASE_BODY 재작성 + 레이어 순서: `BASE → bottom → top → shoes → face → hair → accessory`
+  - `mascot-dotori.svg` 정적 파일도 휴머노이드 + 기본 아웃핏으로 교체 (auth/learn 페이지의 `<img>` 자동 갱신)
+  - index.html 인라인 마스코트도 동일하게 교체 (`data-eye`/`data-pupil="true"` 로 strict XML 호환, 눈동자 추적 유지)
+- CSS 비율 보정
+  - hero stage, closet stage, 아이템 카드, friend 프로필, lesson 완료 카드 등 모든 마스코트 컨테이너의 aspect-ratio 를 `1:1` → `2:3` 으로
+  - 친구 목록 아바타는 원형 → 둥근 직사각형 (64×96) 으로 변경해 휴머노이드를 자연스럽게 담음
+- 정리
+  - 기존 다람쥐용 `seed_items.sql` 제거
+- 호환성
+  - 모든 backend API 시그니처 그대로. PHP `ITEM_SLOTS` 만 새 슬롯 6 종으로 교체
+  - frontend `closet.js` / `market.js` 의 SLOTS 라벨만 한글로 갱신
+  - `buildMascotSvg` / `renderMascotInto` 동일 시그니처 → 호출부 (`closet/market/friend`) 코드 변경 없음

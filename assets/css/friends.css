@@ -69,14 +69,14 @@ body { background: var(--color-bg-soft); }
 .friend-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); border-color: var(--color-border-strong); }
 
 .friend-card__avatar {
-  width: 72px; height: 72px;
+  width: 64px; height: 96px;
   flex-shrink: 0;
-  border-radius: 50%;
+  border-radius: 14px;
   background: var(--color-brand-bg);
   display: grid; place-items: center;
   overflow: hidden;
 }
-.friend-card__avatar svg { width: 110%; height: 110%; }
+.friend-card__avatar svg { width: 100%; height: 100%; }
 
 .friend-card__body { min-width: 0; flex: 1; }
 .friend-card__name { font-weight: var(--fw-extrabold); font-size: var(--fs-15); }
@@ -115,7 +115,7 @@ body { background: var(--color-bg-soft); }
 }
 .profile-stage__mascot {
   margin: var(--space-3) auto;
-  width: min(100%, 320px); aspect-ratio: 1;
+  width: min(100%, 320px); aspect-ratio: 2 / 3;
   display: grid; place-items: center;
 }
 .profile-stage__mascot svg { width: 100%; height: 100%; animation: bob-soft 5s ease-in-out infinite; }
