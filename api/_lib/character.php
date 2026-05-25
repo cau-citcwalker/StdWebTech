@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-const ITEM_SLOTS = ['hat', 'glasses', 'scarf', 'background'];
+const ITEM_SLOTS = ['hair', 'face', 'top', 'bottom', 'shoes', 'accessory'];
 
 function list_items(): array
 {

@@ -11,11 +11,13 @@ import { sfx } from "./sfx.js";
 import { buildMascotSvg } from "./mascot.js";
 
 const SLOTS = [
-  { key: "all",        label: "전체" },
-  { key: "hat",        label: "모자" },
-  { key: "glasses",    label: "안경" },
-  { key: "scarf",      label: "스카프" },
-  { key: "background", label: "배경" },
+  { key: "all",       label: "전체" },
+  { key: "hair",      label: "머리" },
+  { key: "face",      label: "표정" },
+  { key: "top",       label: "상의" },
+  { key: "bottom",    label: "하의" },
+  { key: "shoes",     label: "신발" },
+  { key: "accessory", label: "엑세서리" },
 ];
 
 const state = {
