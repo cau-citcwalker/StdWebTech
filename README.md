@@ -315,3 +315,19 @@ FTP 클라이언트(또는 cPanel File Manager)로 `htdocs/` 아래에 업로드
   - `user_lesson_progress.completed_at >= weekStart` 의 lesson XP SUM 으로 이번 주 XP
   - 본인 이번 주 / 누적 순위 계산, 다음 티어까지 to_go 안내
 - 모든 페이지 네비에 “리그” 링크 추가
+
+### 13. 알림 시스템 (`feat/notifications` → PR)
+
+- DB
+  - `notifications(user_id, type, title, body, link, is_read, created_at, read_at)`
+- 백엔드
+  - `_lib/notify.php` — `notify()` / `list_notifications()` / `mark_notification_read()` / `unread_count()`
+  - `api/notifications/list.php` · `read.php`
+- 자동 생성 트리거
+  - 회원가입 → `system` 환영 알림
+  - 친구 신청 받음 → `friend_request` 알림
+  - 친구 신청 수락(편의 자동 수락 포함) → 양쪽에 `friend_accepted`
+- 프런트
+  - `site.js` 가 모든 보호 페이지 헤더에 벨 아이콘 + 드롭다운 자동 주입
+  - 미읽음 카운트 뱃지, 클릭 시 자동 읽음 처리
+  - 페이지 진입 시 미읽음만 가벼운 1건 fetch, 드롭다운 열면 전체 30건 fetch
