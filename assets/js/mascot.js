@@ -1,8 +1,5 @@
 /* =============================================================
- * FinEdu — 아바타 컴포저 (휴머노이드)
- *
- * 기본 캐릭터(naked chibi) + 슬롯 아이템 SVG 조각을 합성해
- * 하나의 SVG markup 문자열로 돌려준다.
+ * FinEdu — 아바타 컴포저 (휴머노이드 chibi v2)
  *
  *   buildMascotSvg({ equipped, items, size = 360 })
  *   renderMascotInto(el, opts)
@@ -11,56 +8,68 @@
  *   레이어 순서 (뒤 → 앞):
  *     BASE → bottom → top → shoes → face → hair → accessory
  *
- *   ViewBox 0 0 400 600 (3:4.5 비율, 위쪽이 머리)
+ *   ViewBox 0 0 400 600
+ *
+ *   주요 앵커 (아이템 SVG 디자인 시 참조):
+ *     head    cx 200, cy 158, r 108
+ *     neck    x 180–220, y 260–300
+ *     shoulder line  y 300, x 128–272 (좌우 어깨)
+ *     waist line     y 422, x 152–248
+ *     hip / 가랑이    y 446
+ *     무릎              y 514
+ *     발등              y 568
+ *     팔 끝(손)         (118, 446) · (282, 446)
+ *     눈                cx 172 · cx 228,  cy 162
+ *     입                cy 210
  * ============================================================= */
 
 const LAYER_ORDER = ["BASE", "bottom", "top", "shoes", "face", "hair", "accessory"];
 
 const BASE_BODY_SVG = `
   <!-- 그림자 -->
-  <ellipse cx="200" cy="586" rx="120" ry="9" fill="#000" opacity="0.10"/>
+  <ellipse cx="200" cy="586" rx="118" ry="9" fill="#000" opacity="0.10"/>
 
-  <!-- 다리 (피부) -->
-  <path d="M170 450 q-2 80 -4 110 q14 6 28 0 q-2 -30 -4 -110 z"
+  <!-- 다리 (살색) -->
+  <path d="M168 422 Q170 500 174 562 Q188 568 196 562 Q200 500 200 422 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M210 450 q2 80 4 110 q14 6 28 0 q-2 -30 -4 -110 z"
+  <path d="M232 422 Q230 500 226 562 Q212 568 204 562 Q200 500 200 422 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
 
-  <!-- 발 (기본 맨발 — shoes 슬롯이 덮음) -->
-  <ellipse cx="184" cy="572" rx="22" ry="10" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-  <ellipse cx="224" cy="572" rx="22" ry="10" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
+  <!-- 발 (맨발 — shoes 슬롯이 덮음) -->
+  <ellipse cx="184" cy="570" rx="22" ry="10" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
+  <ellipse cx="216" cy="570" rx="22" ry="10" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
 
-  <!-- 팔 -->
-  <path d="M132 320 q-12 60 0 100 q14 6 24 0 q12 -50 0 -110 z"
+  <!-- 팔 (어깨에서 손까지 하나의 곡선) -->
+  <path d="M128 304 Q108 360 112 428 Q120 446 138 442 Q146 392 148 332 Q146 312 138 302 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M268 320 q12 60 0 100 q-14 6 -24 0 q-12 -50 0 -110 z"
+  <path d="M272 304 Q292 360 288 428 Q280 446 262 442 Q254 392 252 332 Q254 312 262 302 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
 
   <!-- 손 -->
-  <circle cx="138" cy="430" r="16" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-  <circle cx="262" cy="430" r="16" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
+  <circle cx="118" cy="446" r="18" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
+  <circle cx="282" cy="446" r="18" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
 
-  <!-- 토르소 (몸통, top 슬롯이 덮음) -->
-  <path d="M152 300 q48 -16 96 0 v140 q-48 14 -96 0 z"
+  <!-- 토르소 — 어깨가 넓고 허리가 살짝 좁아지는 사다리꼴 -->
+  <path d="M130 300 Q200 290 270 300 L262 422 Q200 442 138 422 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
 
-  <!-- 목 -->
-  <rect x="184" y="262" width="32" height="40" rx="4"
-        fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
+  <!-- 목 (토르소 위에 덮음) -->
+  <path d="M178 268 L222 268 L218 302 L182 302 Z"
+        fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
 
-  <!-- 머리 (대머리, hair 슬롯이 덮음) -->
-  <circle cx="200" cy="170" r="116"
+  <!-- 머리 -->
+  <circle cx="200" cy="158" r="108"
           fill="#ffeacd" stroke="#b08570" stroke-width="5"/>
 
-  <!-- 귀 -->
-  <ellipse cx="86" cy="180" rx="14" ry="22"
+  <!-- 귀 (머리 옆에 붙여) -->
+  <ellipse cx="98" cy="170" rx="12" ry="18"
            fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-  <ellipse cx="314" cy="180" rx="14" ry="22"
+  <ellipse cx="302" cy="170" rx="12" ry="18"
            fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
 
   <!-- 볼터치 -->
-  <ellipse cx="118" cy="208" rx="20" ry="14" fill="#ffaac0" opacity="0.5"/>
-  <ellipse cx="282" cy="208" rx="20" ry="14" fill="#ffaac0" opacity="0.5"/>
+  <ellipse cx="138" cy="196" rx="18" ry="13" fill="#ffaac0" opacity="0.55"/>
+  <ellipse cx="262" cy="196" rx="18" ry="13" fill="#ffaac0" opacity="0.55"/>
 `;
 
 /**
@@ -81,7 +90,6 @@ export function buildMascotSvg({ equipped = {}, items = [], size = 360, withWrap
   const body = layers.join("\n");
   if (!withWrapper) return body;
 
-  // 너비를 size 로 두면 높이는 viewBox 비율(1.5)에 맞춰 자동 — auto 로 비워둔다.
   return `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600"
          width="${size}" height="${Math.round(size * 1.5)}"

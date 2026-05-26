@@ -1,7 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect x="4" y="4" width="56" height="56" rx="14" fill="#58cc02"/>
-  <rect x="4" y="38" width="56" height="22" rx="14" fill="#58a700"/>
-  <path d="M22 40 V24 a4 4 0 0 1 4 -4 h12 a8 8 0 0 1 0 16 h-4 v8 h-4 v-8 h-4 v8 z
-           M30 24 v8 h8 a4 4 0 0 0 0 -8 z"
-        fill="#ffffff"/>
+  <!-- 위로 자라는 잎 (성장) -->
+  <path d="M32 10 Q22 12 22 22 Q28 22 34 18 Q32 14 32 10 Z" fill="#7ad637" stroke="#3c7a00" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M32 12 L32 26" stroke="#3c7a00" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- 코인 -->
+  <circle cx="32" cy="38" r="22" fill="#58cc02" stroke="#3c7a00" stroke-width="3"/>
+  <circle cx="32" cy="38" r="17" fill="#ffe27a" stroke="#7a5300" stroke-width="1.5"/>
+  <text x="32" y="46" font-size="20" font-weight="900" text-anchor="middle" fill="#7a5300" font-family="system-ui, sans-serif">₩</text>
 </svg>
