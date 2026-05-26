@@ -4,7 +4,7 @@
   <path d="M32 12 L32 26" stroke="#3c7a00" stroke-width="2" stroke-linecap="round"/>
 
   <!-- 코인 -->
-  <circle cx="32" cy="38" r="22" fill="#58cc02" stroke="#3c7a00" stroke-width="3"/>
+  <circle cx="32" cy="38" r="22" fill="#4154f1" stroke="#1f2d99" stroke-width="3"/>
   <circle cx="32" cy="38" r="17" fill="#ffe27a" stroke="#7a5300" stroke-width="1.5"/>
   <text x="32" y="46" font-size="20" font-weight="900" text-anchor="middle" fill="#7a5300" font-family="system-ui, sans-serif">₩</text>
 </svg>

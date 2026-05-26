@@ -13,8 +13,8 @@
   overflow: hidden;
   padding: var(--space-16) 0 var(--space-20);
   background:
-    radial-gradient(120% 80% at 100% 0%, #e7ffd0 0%, transparent 55%),
-    radial-gradient(80% 70% at 0% 100%, #d9f1ff 0%, transparent 55%),
+    radial-gradient(120% 80% at 100% 0%, #ecf0ff 0%, transparent 55%),
+    radial-gradient(80% 70% at 0% 100%, #e6e1ff 0%, transparent 55%),
     linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
 }
 
@@ -51,7 +51,7 @@
 }
 .hero__title em {
   font-style: normal;
-  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-accent-blue) 100%);
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-accent-purple) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -120,6 +120,28 @@
 @keyframes bob {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-12px); }
+}
+
+/* 추상 일러스트 */
+.hero__illustration {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  animation: bob 6s ease-in-out infinite;
+}
+
+/* 내부 떠다니는 요소들 */
+.hero-float { animation: drift 5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.hero-float--a { animation-delay: 0s;   animation-duration: 5.2s; }
+.hero-float--b { animation-delay: 0.8s; animation-duration: 4.6s; }
+.hero-float--c { animation-delay: 1.6s; animation-duration: 5.8s; }
+.hero-float--d { animation-delay: 0.4s; animation-duration: 6.0s; }
+.hero-float--e { animation-delay: 1.2s; animation-duration: 5.4s; }
+@keyframes drift {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
 }
 
 /* CTA hover 시 마스코트가 살짝 점프 — 인터랙션 연결 */
@@ -322,7 +344,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-6);
   padding: var(--space-10);
-  background: linear-gradient(135deg, #f6ffe7 0%, #e7ffd0 100%);
+  background: linear-gradient(135deg, #f3f5ff 0%, #ecf0ff 100%);
   border: 2px solid var(--color-brand-soft);
   border-radius: var(--radius-2xl);
 }
