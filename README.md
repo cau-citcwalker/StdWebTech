@@ -288,3 +288,15 @@ FTP 클라이언트(또는 cPanel File Manager)로 `htdocs/` 아래에 업로드
   - 모든 backend API 시그니처 그대로. PHP `ITEM_SLOTS` 만 새 슬롯 6 종으로 교체
   - frontend `closet.js` / `market.js` 의 SLOTS 라벨만 한글로 갱신
   - `buildMascotSvg` / `renderMascotInto` 동일 시그니처 → 호출부 (`closet/market/friend`) 코드 변경 없음
+
+### 11. 내 프로필 / 대시보드 (`feat/dashboard` → PR)
+
+- 페이지 `/profile`
+  - 좌측 sticky 아바타 (내 장착 그대로) + 닉네임 + 가입일
+  - 우측 통계 그리드 6 개: XP · 코인 · 스트릭 · 완료 레슨(N/총) · 친구 · 보유 아이템
+  - 주간 XP 차트 — 지난 7 일 (CSS bar chart, 오늘은 노랑으로 강조)
+  - 최근 활동 — 마지막 8 개 완료 레슨 (점수 + 상대 시간 “3 시간 전”)
+- 백엔드 `api/me/overview.php`
+  - 모든 집계를 한 번에 (서브쿼리로 묶음) — N+1 없이 4 개 쿼리
+  - 주간 XP 는 `user_lesson_progress.completed_at` 의 day group SUM
+- 모든 페이지 네비에 “프로필” 링크 추가

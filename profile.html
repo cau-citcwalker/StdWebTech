@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#58cc02" />
+  <title>내 프로필 · FinEdu</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/profile.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-logo" href="/">
+        <span class="site-logo__mark" aria-hidden="true">F</span>
+        <span>FinEdu</span>
+      </a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a class="site-nav__link" href="/">홈</a>
+        <a class="site-nav__link" href="/learn">학습</a>
+        <a class="site-nav__link" href="/closet">옷장</a>
+        <a class="site-nav__link" href="/market">마켓</a>
+        <a class="site-nav__link" href="/friends">친구</a>
+        <a class="site-nav__link is-active" href="/profile">프로필</a>
+        <div class="site-nav__actions"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="profile-shell">
+
+      <!-- 좌측: 아바타 + 이름 -->
+      <aside class="profile-aside">
+        <div id="aside-mascot" class="profile-aside__mascot" aria-hidden="true"></div>
+        <h1 id="aside-name" class="profile-aside__name">…</h1>
+        <p id="aside-handle" class="profile-aside__handle"></p>
+        <p id="aside-joined" class="profile-aside__joined"></p>
+        <div class="profile-aside__actions">
+          <a class="btn btn--secondary btn--sm" href="/closet">옷장 가기</a>
+          <a class="btn btn--sm" href="/learn">학습 계속</a>
+        </div>
+      </aside>
+
+      <!-- 우측: 통계 + 차트 + 활동 -->
+      <section class="profile-main">
+
+        <!-- 통계 그리드 -->
+        <div class="stat-grid">
+          <div class="stat-card stat-card--xp">
+            <div class="stat-card__label">XP</div>
+            <div class="stat-card__num"><span id="stat-xp">0</span></div>
+          </div>
+          <div class="stat-card stat-card--coins">
+            <div class="stat-card__label">코인</div>
+            <div class="stat-card__num"><span id="stat-coins">0</span></div>
+          </div>
+          <div class="stat-card stat-card--streak">
+            <div class="stat-card__label">스트릭</div>
+            <div class="stat-card__num">D-<span id="stat-streak">0</span></div>
+          </div>
+          <div class="stat-card stat-card--done">
+            <div class="stat-card__label">완료 레슨</div>
+            <div class="stat-card__num">
+              <span id="stat-done">0</span>
+              <small id="stat-done-total"></small>
+            </div>
+          </div>
+          <div class="stat-card stat-card--friend">
+            <div class="stat-card__label">친구</div>
+            <div class="stat-card__num"><span id="stat-friend">0</span></div>
+          </div>
+          <div class="stat-card stat-card--owned">
+            <div class="stat-card__label">보유 아이템</div>
+            <div class="stat-card__num"><span id="stat-owned">0</span></div>
+          </div>
+        </div>
+
+        <!-- 주간 XP 차트 -->
+        <section class="profile-section">
+          <header class="profile-section__head">
+            <h2 class="profile-section__title">지난 7일 XP</h2>
+            <span class="profile-section__sub">레슨 완료로 얻은 XP 기준</span>
+          </header>
+          <div id="weekly-chart" class="weekly-chart"></div>
+        </section>
+
+        <!-- 최근 활동 -->
+        <section class="profile-section">
+          <header class="profile-section__head">
+            <h2 class="profile-section__title">최근 활동</h2>
+            <span class="profile-section__sub">최근 완료한 레슨</span>
+          </header>
+          <div id="recent-list" class="recent-list"></div>
+        </section>
+
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p class="site-footer__credit">© 2026 FinEdu</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/profile.js"></script>
+</body>
+</html>
