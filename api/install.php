@@ -86,7 +86,9 @@ if ($force) {
     step('기존 테이블 DROP', true, '강제 재설치 모드');
 }
 
-// SQL 파일 실행 헬퍼 — phpMyAdmin Import 와 동일하게 ;로 문장 분리해서 실행
+// SQL 파일 실행 헬퍼
+//   1) 줄/블록 주석 제거 → 2) 줄바꿈 정규화 → 3) `;` 로 분할 → 4) 하나씩 exec
+//   schema/seed 들은 SQL 문자열 안에 `;` 가 없으므로 단순 분할로 충분.
 function run_sql_file(PDO $pdo, string $path): array {
     if (!file_exists($path)) {
         return ['ok' => false, 'detail' => "파일 없음: $path"];
@@ -95,21 +97,30 @@ function run_sql_file(PDO $pdo, string $path): array {
     if ($sql === false) {
         return ['ok' => false, 'detail' => "읽기 실패: $path"];
     }
-    // DELIMITER 등 phpMyAdmin 전용 명령은 제거, 주석 라인은 그대로 PDO 가 무시
-    // 단순 분할이라 문자열 안의 ;는 처리 못 함 — seed 들은 안전
-    $statements = array_filter(
-        array_map('trim', explode(";\n", $sql)),
-        fn($s) => $s !== '' && !preg_match('/^\s*(--|\/\*)/m', substr($s, 0, 4))
-    );
+
+    // CRLF → LF 정규화
+    $sql = str_replace("\r\n", "\n", $sql);
+    // 줄 주석 제거 (--... EOL)
+    $sql = preg_replace('/--[^\n]*/m', '', $sql);
+    // 블록 주석 제거 (/* ... */)
+    $sql = preg_replace('/\/\*.*?\*\//s', '', $sql);
+
+    // `;` 로 분할, 공백/빈 문장 제거
+    $parts = explode(';', $sql);
+    $statements = [];
+    foreach ($parts as $p) {
+        $t = trim($p);
+        if ($t !== '') $statements[] = $t;
+    }
+
     $count = 0;
     try {
         foreach ($statements as $stmt) {
-            if (trim($stmt) === '') continue;
             $pdo->exec($stmt);
             $count++;
         }
     } catch (Throwable $e) {
-        return ['ok' => false, 'detail' => htmlspecialchars($e->getMessage()) . " (실행한 문장 수: $count)"];
+        return ['ok' => false, 'detail' => htmlspecialchars($e->getMessage()) . " (실행한 문장 수: $count / 전체 " . count($statements) . ")"];
     }
     return ['ok' => true, 'detail' => "$count 개 SQL 문장 실행 완료"];
 }
