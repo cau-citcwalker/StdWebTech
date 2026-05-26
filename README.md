@@ -54,12 +54,23 @@
 ## 배포
 
 InfinityFree 의 `htdocs/` 에 저장소 내용을 그대로 업로드한다.
+`.git`, `.claude`, `ppt.md` 같은 운영에 필요 없는 파일은 제외.
 
-1. `api/config.example.php` 를 참고해 `api/config.php` 를 만들어 서버에 올린다
-   (자격 증명이 포함되므로 git 에 커밋되지 않음).
-2. cPanel → phpMyAdmin 에서 `api/_init/schema.sql` 을 실행한다.
-3. 브라우저에서 `https://<도메인>/api/ping.php` 가 `{"data":{"db":"up"}}` 를 돌려주면
-   백엔드는 정상.
+### 1) 파일 업로드
+FTP 클라이언트(또는 cPanel File Manager)로 `htdocs/` 아래에 업로드.
+
+### 2) 서버 전용 설정 파일
+`api/config.example.php` 를 참고해 `api/config.php` 를 만들어
+서버에만 올린다 (자격 증명이 포함되므로 git 에 커밋되지 않는다).
+
+### 3) DB 설치 — phpMyAdmin 에서 다음 3 파일 순서대로 실행
+1. `api/_init/schema.sql` — 모든 테이블 생성
+2. `api/_init/seed.sql` — 학습 콘텐츠 (단원/레슨/문제)
+3. `api/_init/seed_avatar.sql` — 캐릭터 아이템 카탈로그
+
+### 4) 헬스 체크
+브라우저에서 `https://<도메인>/api/ping.php` 가
+`{"data":{"db":"up", ...}}` 를 돌려주면 백엔드 정상.
 
 ## 제작 일지
 
