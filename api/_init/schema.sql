@@ -175,3 +175,22 @@ CREATE TABLE IF NOT EXISTS friendships (
     CONSTRAINT fk_friend_requester FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_friend_addressee FOREIGN KEY (addressee_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- 알림
+--   type: 'friend_request' | 'friend_accepted' | 'system' | 'streak' | 'league'
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS notifications (
+    id              INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+    user_id         INT UNSIGNED       NOT NULL,
+    type            VARCHAR(24)        NOT NULL,
+    title           VARCHAR(120)       NOT NULL,
+    body            VARCHAR(255)       NULL,
+    link            VARCHAR(255)       NULL,
+    is_read         TINYINT(1)         NOT NULL DEFAULT 0,
+    created_at      DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    read_at         DATETIME           NULL,
+    PRIMARY KEY (id),
+    KEY idx_notif_user_read (user_id, is_read, created_at),
+    CONSTRAINT fk_notif_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

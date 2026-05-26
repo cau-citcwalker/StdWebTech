@@ -10,6 +10,7 @@
 require __DIR__ . '/../_lib/bootstrap.php';
 require __DIR__ . '/../_lib/auth.php';
 require __DIR__ . '/../_lib/friends.php';
+require __DIR__ . '/../_lib/notify.php';
 
 require_method('POST');
 $uid = require_login();
@@ -27,6 +28,8 @@ if ($targetId === $uid) json_error('자기 자신에게는 친구 신청을 보�
 if (are_friends($uid, $targetId)) {
     json_error('이미 친구예요.', 409);
 }
+
+$me = load_user_by_id($uid);
 
 // 이미 (uid → target) pending 이 있으면 중복
 $existSelf = pending_between($uid, $targetId);
@@ -49,6 +52,9 @@ if ($existIn && $existIn['status'] === 'pending') {
     db()->prepare(
         "UPDATE friendships SET status = 'accepted', decided_at = NOW() WHERE id = :id"
     )->execute([':id' => $existIn['id']]);
+    // 양쪽에 “친구가 되었어요” 알림
+    notify($uid,      'friend_accepted', '친구가 되었어요!', "{$target['display_name']} 님과 친구가 되었어요.", '/friend?id=' . $targetId);
+    notify($targetId, 'friend_accepted', '친구가 되었어요!', "{$me['display_name']} 님과 친구가 되었어요.",     '/friend?id=' . $uid);
     json_ok(['accepted' => true, 'request_id' => (int)$existIn['id']]);
 }
 
@@ -56,4 +62,11 @@ $ins = db()->prepare(
     'INSERT INTO friendships (requester_id, addressee_id) VALUES (:r, :a)'
 );
 $ins->execute([':r' => $uid, ':a' => $targetId]);
+
+// 받는 사람에게 알림
+notify($targetId, 'friend_request',
+    '새 친구 신청이 도착했어요',
+    "{$me['display_name']} 님이 친구가 되고 싶어해요.",
+    '/friends');
+
 json_ok(['request_id' => (int)db()->lastInsertId()]);
