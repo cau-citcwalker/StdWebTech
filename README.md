@@ -300,3 +300,18 @@ FTP 클라이언트(또는 cPanel File Manager)로 `htdocs/` 아래에 업로드
   - 모든 집계를 한 번에 (서브쿼리로 묶음) — N+1 없이 4 개 쿼리
   - 주간 XP 는 `user_lesson_progress.completed_at` 의 day group SUM
 - 모든 페이지 네비에 “프로필” 링크 추가
+
+### 12. 리그 — 주간 순위 + 6 단계 티어 (`feat/leagues` → PR)
+
+- 페이지 `/league`
+  - 상단 “내 카드” — 티어 컬러 그라데이션 박스, 이번 주 XP / 누적 XP / 누적 순위, 다음 티어까지 progress bar
+  - 탭 2 종: **이번 주 순위** · **명예의 전당** (누적 XP)
+  - 리스트 — 1·2·3 위 금/은/동 컬러, 본인 행은 그린 하이라이트로 표시
+- 티어 정의 (`_lib/league.php`)
+  - 🥉 브론즈(0+) · 🥈 실버(100+) · 🥇 골드(500+) · 💎 사파이어(2k+) · ♦️ 루비(5k+) · 👑 다이아(10k+)
+  - 누적 XP 기준 단일 진행 (경쟁 X) — 1인 사용자 환경에서도 의미가 있도록
+- 백엔드 `api/league/leaderboard.php`
+  - 이번 주 시작일을 월요일로 계산 (`week_start_date()`)
+  - `user_lesson_progress.completed_at >= weekStart` 의 lesson XP SUM 으로 이번 주 XP
+  - 본인 이번 주 / 누적 순위 계산, 다음 티어까지 to_go 안내
+- 모든 페이지 네비에 “리그” 링크 추가

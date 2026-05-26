@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#58cc02" />
+  <title>리그 · FinEdu</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/league.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-logo" href="/">
+        <span class="site-logo__mark" aria-hidden="true">F</span>
+        <span>FinEdu</span>
+      </a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a class="site-nav__link" href="/">홈</a>
+        <a class="site-nav__link" href="/learn">학습</a>
+        <a class="site-nav__link" href="/closet">옷장</a>
+        <a class="site-nav__link" href="/market">마켓</a>
+        <a class="site-nav__link" href="/friends">친구</a>
+        <a class="site-nav__link" href="/profile">프로필</a>
+        <a class="site-nav__link is-active" href="/league">리그</a>
+        <div class="site-nav__actions"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container league-shell">
+
+    <!-- 내 카드 -->
+    <section id="my-card" class="my-league">
+      <div id="my-crest" class="my-league__crest">🥉</div>
+      <div style="flex: 1; min-width: 0;">
+        <div class="my-league__sub" id="my-rank">…</div>
+        <h1 id="my-tier-name" class="my-league__name">…</h1>
+        <div class="my-league__stats">
+          <div class="my-league__stat">
+            <strong id="my-weekly-xp">0</strong>
+            <span>이번 주 XP</span>
+          </div>
+          <div class="my-league__stat">
+            <strong id="my-total-xp">0</strong>
+            <span>누적 XP</span>
+          </div>
+          <div class="my-league__stat">
+            <strong id="my-total-rank">—</strong>
+            <span>누적 순위</span>
+          </div>
+        </div>
+        <div id="next-tier" class="next-tier"></div>
+      </div>
+    </section>
+
+    <!-- 탭 -->
+    <div class="league-tabs">
+      <button class="league-tab is-active" type="button" data-tab="weekly">이번 주 순위</button>
+      <button class="league-tab" type="button" data-tab="hall">명예의 전당</button>
+    </div>
+
+    <!-- 리스트 -->
+    <section id="lb-list" class="lb-section"></section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p class="site-footer__credit">© 2026 FinEdu</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/league.js"></script>
+</body>
+</html>

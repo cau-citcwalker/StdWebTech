@@ -1,0 +1,148 @@
+/* =============================================================
+ * FinEdu — 리그 (`/league`)
+ * ============================================================= */
+
+body { background: var(--color-bg-soft); }
+
+.league-shell { padding: var(--space-8) 0 var(--space-16); }
+
+/* 내 카드 — 티어 / 진행도 */
+.my-league {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-8);
+  margin-bottom: var(--space-8);
+  background: linear-gradient(135deg, var(--tier-color, var(--color-brand)) 0%, color-mix(in srgb, var(--tier-color, var(--color-brand)) 70%, black 0%) 100%);
+  color: white;
+  border-radius: var(--radius-2xl);
+  position: relative;
+  overflow: hidden;
+}
+.my-league::after {
+  content: ""; position: absolute; inset: -40% -10% auto auto;
+  width: 60%; aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 60%);
+  pointer-events: none;
+}
+.my-league__crest {
+  width: 80px; height: 80px;
+  display: grid; place-items: center;
+  background: rgba(255,255,255,0.18);
+  border-radius: 50%;
+  font-size: 36px;
+  flex-shrink: 0;
+}
+.my-league__name { font-size: var(--fs-30); color: white; line-height: 1.05; letter-spacing: -0.02em; }
+.my-league__sub  { margin-top: 2px; color: rgba(255,255,255,0.92); font-size: var(--fs-14); }
+.my-league__stats {
+  margin-top: var(--space-3);
+  display: flex; gap: var(--space-6); flex-wrap: wrap;
+}
+.my-league__stat strong {
+  font-family: var(--font-display);
+  font-size: var(--fs-24);
+  font-weight: var(--fw-black);
+  display: block;
+}
+.my-league__stat span {
+  font-size: var(--fs-12);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: var(--fw-bold);
+  color: rgba(255,255,255,0.8);
+}
+
+/* 다음 티어까지 진행도 */
+.next-tier {
+  margin-top: var(--space-4);
+}
+.next-tier__row {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: var(--fs-13); font-weight: var(--fw-bold);
+  margin-bottom: 6px;
+}
+.next-tier .progress { background: rgba(255,255,255,0.25); height: 10px; }
+.next-tier .progress__bar { background: rgba(255,255,255,0.95); box-shadow: none; }
+.next-tier .progress__bar::after { background: rgba(255,255,255,0.3); }
+
+/* 탭 (이번 주 / 명예의 전당) */
+.league-tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  border-bottom: 2px solid var(--color-divider);
+}
+.league-tab {
+  padding: 10px 18px;
+  font-weight: var(--fw-bold);
+  color: var(--color-text-soft);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+}
+.league-tab.is-active { color: var(--color-brand-darker); border-bottom-color: var(--color-brand); }
+
+/* 리더보드 */
+.lb-section {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+}
+.lb-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-divider);
+}
+.lb-row:last-child { border-bottom: 0; }
+.lb-row.is-me {
+  background: var(--color-brand-bg);
+  border-top: 2px solid var(--color-brand);
+  border-bottom: 2px solid var(--color-brand);
+}
+
+.lb-rank {
+  font-family: var(--font-display);
+  font-weight: var(--fw-black);
+  font-size: var(--fs-20);
+  text-align: center;
+  color: var(--color-text-soft);
+}
+.lb-row:nth-child(1) .lb-rank { color: #ffc800; font-size: 28px; }
+.lb-row:nth-child(2) .lb-rank { color: #aaa;    font-size: 26px; }
+.lb-row:nth-child(3) .lb-rank { color: #d68b4a; font-size: 24px; }
+
+.lb-info { min-width: 0; }
+.lb-info__name { font-weight: var(--fw-extrabold); font-size: var(--fs-15); }
+.lb-info__handle { color: var(--color-text-soft); font-size: var(--fs-13); }
+
+.lb-tier {
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: var(--fw-black);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: white;
+}
+
+.lb-xp {
+  font-family: var(--font-display);
+  font-weight: var(--fw-black);
+  font-size: var(--fs-18);
+  color: var(--color-brand-darker);
+  text-align: right;
+}
+.lb-xp small { font-size: 0.55em; color: var(--color-text-soft); font-weight: var(--fw-bold); margin-left: 4px; }
+
+.lb-empty {
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  color: var(--color-text-soft);
+}
+.lb-empty img { width: 120px; height: 180px; margin: 0 auto var(--space-3); }
