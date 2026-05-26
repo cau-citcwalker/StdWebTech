@@ -29,3 +29,6 @@ npm-debug.log*
 # 빌드 결과물
 dist/
 build/
+
+# 우연히 묻을 수 있는 압축/에셋
+*.zip
