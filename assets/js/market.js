@@ -158,7 +158,7 @@ function openBuyModal(item) {
 async function init() {
   const me = await api.get("/auth/me.php");
   if (!me.ok || !me.data?.user) {
-    window.location.replace("/login");
+    window.location.replace("/login.html");
     return;
   }
   const res = await api.get("/character/state.php");

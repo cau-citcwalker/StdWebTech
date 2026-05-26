@@ -13,7 +13,23 @@ body { background: var(--color-bg-soft); }
   padding: var(--space-8) 0 var(--space-16);
 }
 @media (max-width: 880px) {
-  .closet-shell { grid-template-columns: 1fr; }
+  .closet-shell {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    padding: var(--space-4) 0 var(--space-10);
+  }
+  /* sticky 해제 — 모바일에선 위에 한 번만 보이고 스크롤로 흘러가게 */
+  .closet-stage {
+    position: static;
+    padding: var(--space-5) var(--space-4);
+  }
+  .closet-stage__mascot { width: min(70%, 220px); }
+  .closet-tabs { gap: 6px; }
+  .closet-tab { padding: 8px 12px; font-size: var(--fs-14); }
+  .closet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: var(--space-3);
+  }
 }
 
 /* -------------------------------------------------------------

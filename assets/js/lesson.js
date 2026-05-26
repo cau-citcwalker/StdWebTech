@@ -1,5 +1,5 @@
 /* =============================================================
- * FinEdu — 레슨 풀이 (`/lesson?id=N`)
+ * FinEdu — 레슨 풀이 (`/lesson.html?id=N`)
  *
  * 한 문제씩 “즉시 피드백” 흐름:
  *   1) 로그인 체크
@@ -269,10 +269,10 @@ function renderDone({ summary, user, rewards }) {
 
       <div class="done-actions">
         ${passed
-          ? `<a class="btn btn--lg" href="/learn">학습공간으로 →</a>
+          ? `<a class="btn btn--lg" href="/learn.html">학습공간으로 →</a>
              <a class="btn btn--secondary btn--sm" href="javascript:location.reload()">다시 풀기</a>`
           : `<a class="btn btn--lg" href="javascript:location.reload()">다시 풀기</a>
-             <a class="btn btn--secondary btn--sm" href="/learn">나중에 하기</a>`}
+             <a class="btn btn--secondary btn--sm" href="/learn.html">나중에 하기</a>`}
       </div>
     </div>
   `;

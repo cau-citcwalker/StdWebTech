@@ -18,14 +18,22 @@
       <a class="site-logo" href="/">
                 <span>FinEdu</span>
       </a>
-      <nav class="site-nav" aria-label="주요 메뉴">
+
+      <button class="site-nav__toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primary-nav">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <line x1="3" y1="7"  x2="21" y2="7"  />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="17" x2="21" y2="17" />
+        </svg>
+      </button>
+      <nav id="primary-nav" class="site-nav" aria-label="주요 메뉴">
         <a class="site-nav__link" href="/">홈</a>
-        <a class="site-nav__link" href="/learn">학습</a>
-        <a class="site-nav__link" href="/closet">옷장</a>
-        <a class="site-nav__link" href="/market">마켓</a>
-        <a class="site-nav__link" href="/friends">친구</a>
-        <a class="site-nav__link" href="/profile">프로필</a>
-        <a class="site-nav__link" href="/league">리그</a>
+        <a class="site-nav__link" href="/learn.html">학습</a>
+        <a class="site-nav__link" href="/closet.html">옷장</a>
+        <a class="site-nav__link" href="/market.html">마켓</a>
+        <a class="site-nav__link" href="/friends.html">친구</a>
+        <a class="site-nav__link" href="/profile.html">프로필</a>
+        <a class="site-nav__link" href="/league.html">리그</a>
         <div class="site-nav__actions"></div>
       </nav>
     </div>
@@ -57,11 +65,11 @@
         <p style="color: var(--color-text-soft);">친구가 어떤 도토리를 입고 있는지 구경해 보세요. 자기 자신의 프로필은 옷장에서 직접 꾸미면 즉시 반영돼요.</p>
 
         <div id="profile-self-note" hidden style="margin-top: 24px; padding: 16px; background: var(--color-brand-bg); border-radius: 12px;">
-          이건 본인 프로필이에요. 옷장(<a href="/closet">/closet</a>)에서 변경하면 친구에게도 이렇게 보입니다.
+          이건 본인 프로필이에요. 옷장(<a href="/closet.html">/closet</a>)에서 변경하면 친구에게도 이렇게 보입니다.
         </div>
 
         <div class="profile-actions" style="margin-top: 24px;">
-          <a class="btn btn--secondary" href="/friends">← 친구 목록</a>
+          <a class="btn btn--secondary" href="/friends.html">← 친구 목록</a>
           <button id="profile-remove" class="btn btn--ghost btn--sm" type="button" style="color: var(--color-accent-red-dark);">친구 끊기</button>
         </div>
       </section>

@@ -1,5 +1,5 @@
 /* =============================================================
- * FinEdu — 친구 프로필 (`/friend?id=N`)
+ * FinEdu — 친구 프로필 (`/friend.html?id=N`)
  * ============================================================= */
 
 import { api } from "./api.js";
@@ -17,13 +17,13 @@ async function init() {
   }
   const me = await api.get("/auth/me.php");
   if (!me.ok || !me.data?.user) {
-    window.location.replace("/login");
+    window.location.replace("/login.html");
     return;
   }
 
   const res = await api.get(`/friends/profile.php?id=${id}`);
   if (!res.ok) {
-    document.body.innerHTML = `<main class="container" style="padding:80px 0; text-align:center;"><h1>${res.error}</h1><p><a href="/friends">친구 목록으로 돌아가기</a></p></main>`;
+    document.body.innerHTML = `<main class="container" style="padding:80px 0; text-align:center;"><h1>${res.error}</h1><p><a href="/friends.html">친구 목록으로 돌아가기</a></p></main>`;
     return;
   }
   render(res.data);
@@ -52,7 +52,7 @@ function render({ user, equipped, items }) {
       return;
     }
     if (window.toast) window.toast("친구를 끊었어요.");
-    window.location.assign("/friends");
+    window.location.assign("/friends.html");
   });
 }
 

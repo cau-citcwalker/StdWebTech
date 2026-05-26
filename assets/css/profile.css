@@ -10,7 +10,24 @@ body { background: var(--color-bg-soft); }
   gap: var(--space-10);
   padding: var(--space-8) 0 var(--space-16);
 }
-@media (max-width: 880px) { .profile-shell { grid-template-columns: 1fr; } }
+@media (max-width: 880px) {
+  .profile-shell {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    padding: var(--space-4) 0 var(--space-10);
+  }
+  .profile-aside {
+    position: static;
+    padding: var(--space-5) var(--space-4);
+  }
+  .profile-aside__mascot { width: min(70%, 220px); }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+  .stat-card { padding: var(--space-4); }
+  .stat-card__num { font-size: var(--fs-24); }
+  .recent-row { gap: var(--space-3); }
+  .recent-row__icon { width: 32px; height: 32px; }
+  .weekly-chart { height: 140px; }
+}
 
 /* 좌측 — 아바타 / 정체성 */
 .profile-aside {

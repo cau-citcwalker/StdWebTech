@@ -61,7 +61,7 @@ function renderRecent(recent) {
     $("#recent-list").innerHTML = `
       <div class="recent-empty">
         <p>아직 완료한 레슨이 없어요.</p>
-        <p><a class="btn btn--sm" href="/learn" style="margin-top:8px;">학습 시작하기 →</a></p>
+        <p><a class="btn btn--sm" href="/learn.html" style="margin-top:8px;">학습 시작하기 →</a></p>
       </div>`;
     return;
   }
@@ -83,7 +83,7 @@ function renderRecent(recent) {
 async function init() {
   const me = await api.get("/auth/me.php");
   if (!me.ok || !me.data?.user) {
-    window.location.replace("/login");
+    window.location.replace("/login.html");
     return;
   }
   const res = await api.get("/me/overview.php");

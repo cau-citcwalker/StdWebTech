@@ -13,7 +13,7 @@ import { api } from "./api.js";
 (async function bootstrapAuthPage() {
   const me = await api.get("/auth/me.php");
   if (me.ok && me.data?.user) {
-    window.location.replace("/learn");
+    window.location.replace("/learn.html");
   }
 })();
 
@@ -69,7 +69,7 @@ function setSubmitLoading(btn, loading) {
   }
 }
 
-async function handleSubmit(form, endpoint, successMsg, redirect = "/learn") {
+async function handleSubmit(form, endpoint, successMsg, redirect = "/learn.html") {
   clearFieldErrors(form);
 
   const data = Object.fromEntries(new FormData(form).entries());

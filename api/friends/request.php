@@ -53,8 +53,8 @@ if ($existIn && $existIn['status'] === 'pending') {
         "UPDATE friendships SET status = 'accepted', decided_at = NOW() WHERE id = :id"
     )->execute([':id' => $existIn['id']]);
     // 양쪽에 “친구가 되었어요” 알림
-    notify($uid,      'friend_accepted', '친구가 되었어요!', "{$target['display_name']} 님과 친구가 되었어요.", '/friend?id=' . $targetId);
-    notify($targetId, 'friend_accepted', '친구가 되었어요!', "{$me['display_name']} 님과 친구가 되었어요.",     '/friend?id=' . $uid);
+    notify($uid,      'friend_accepted', '친구가 되었어요!', "{$target['display_name']} 님과 친구가 되었어요.", '/friend.html?id=' . $targetId);
+    notify($targetId, 'friend_accepted', '친구가 되었어요!', "{$me['display_name']} 님과 친구가 되었어요.",     '/friend.html?id=' . $uid);
     json_ok(['accepted' => true, 'request_id' => (int)$existIn['id']]);
 }
 
@@ -67,6 +67,6 @@ $ins->execute([':r' => $uid, ':a' => $targetId]);
 notify($targetId, 'friend_request',
     '새 친구 신청이 도착했어요',
     "{$me['display_name']} 님이 친구가 되고 싶어해요.",
-    '/friends');
+    '/friends.html');
 
 json_ok(['request_id' => (int)db()->lastInsertId()]);

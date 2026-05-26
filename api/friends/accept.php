@@ -37,7 +37,7 @@ notify(
     'friend_accepted',
     '친구 신청이 수락됐어요',
     "{$me['display_name']} 님이 친구 신청을 수락했어요.",
-    '/friend?id=' . $uid
+    '/friend.html?id=' . $uid
 );
 
 json_ok(['ok' => true]);
