@@ -35,8 +35,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   background:
-    radial-gradient(80% 60% at 100% 0%, #e7ffd0 0%, transparent 60%),
-    radial-gradient(80% 70% at 0% 100%, #d9f1ff 0%, transparent 60%),
+    radial-gradient(80% 60% at 100% 0%, #ecf0ff 0%, transparent 60%),
+    radial-gradient(80% 70% at 0% 100%, #e6e1ff 0%, transparent 60%),
     var(--color-bg);
 }
 
