@@ -146,3 +146,25 @@ body { background: var(--color-bg-soft); }
   color: var(--color-text-soft);
 }
 .lb-empty img { width: 120px; height: 180px; margin: 0 auto var(--space-3); }
+
+@media (max-width: 720px) {
+  .my-league {
+    grid-template-columns: 1fr;
+    padding: var(--space-5);
+    text-align: center;
+    gap: var(--space-3);
+  }
+  .my-league__crest { width: 64px; height: 64px; font-size: 28px; margin: 0 auto; }
+  .my-league__name { font-size: var(--fs-24); }
+  .my-league__stats { justify-content: center; gap: var(--space-4); }
+  .my-league__stat strong { font-size: var(--fs-18); }
+  .lb-row {
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+  /* 모바일에선 티어 뱃지 숨김 — 자리 부족 */
+  .lb-tier { display: none; }
+  .lb-xp { font-size: var(--fs-15); }
+  .lb-rank { font-size: var(--fs-16); }
+}

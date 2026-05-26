@@ -32,8 +32,22 @@ body { background: var(--color-bg-soft); }
   border: 2px solid #ffd87a;
 }
 .market-head__coins svg { width: 22px; height: 22px; }
-@media (max-width: 720px) {
-  .market-head { grid-template-columns: 1fr; }
+@media (max-width: 880px) {
+  .market-shell { padding: var(--space-4) 0 var(--space-10); }
+  .market-head {
+    grid-template-columns: 1fr;
+    padding: var(--space-5);
+    gap: var(--space-3);
+  }
+  .market-head__title { font-size: var(--fs-24); }
+  .market-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-3); }
+  .market-card { padding: var(--space-3); }
+  .market-card__title { font-size: var(--fs-14); }
+  .market-card__desc { font-size: var(--fs-12); min-height: 28px; }
+  .market-tabs { gap: 6px; }
+  .market-tab { padding: 8px 12px; font-size: var(--fs-13); }
+  .modal { padding: var(--space-6); }
+  .modal__preview { width: 100px; height: 150px; }
 }
 
 .market-tabs {

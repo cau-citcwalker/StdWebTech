@@ -42,7 +42,7 @@ notify(
     'system',
     '환영해요, ' . $user['display_name'] . '!',
     '첫 레슨을 풀고 도토리를 자랑해보세요. 옷장에서 바로 꾸밀 수도 있어요.',
-    '/learn'
+    '/learn.html'
 );
 
 json_ok(['user' => public_user($user)]);

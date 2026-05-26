@@ -94,7 +94,13 @@
 @media (max-width: 880px) {
   .auth-shell { grid-template-columns: 1fr; min-height: 0; }
   .auth-illustration-panel { display: none; }
-  .auth-form-panel { padding: var(--space-8) var(--space-5); }
+  .auth-form-panel { padding: var(--space-6) var(--space-4); }
+  .auth-header__inner { height: 60px; }
+  .auth-header__alt { font-size: var(--fs-12); }
+  .auth-card { padding: var(--space-6); border-radius: var(--radius-xl); }
+  .auth-card__title { font-size: var(--fs-24); }
+  .auth-card__form { gap: var(--space-4); margin-top: var(--space-6); }
+  .input, .textarea, .select { padding: 12px 14px; font-size: var(--fs-15); }
 }
 
 /* -------------------------------------------------------------

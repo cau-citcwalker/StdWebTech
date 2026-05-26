@@ -124,9 +124,26 @@
 .lesson-row:nth-child(4n+3) { transform: translateX(110px); }
 .lesson-row:nth-child(4n+0) { transform: translateX(0); }
 
-@media (max-width: 720px) {
-  .lesson-row:nth-child(4n+1) { transform: translateX(-60px); }
-  .lesson-row:nth-child(4n+3) { transform: translateX(60px); }
+@media (max-width: 880px) {
+  .lesson-row:nth-child(4n+1) { transform: translateX(-50px); }
+  .lesson-row:nth-child(4n+3) { transform: translateX(50px); }
+  .lesson-node { width: 80px; height: 80px; border-width: 3px; }
+  .lesson-node svg { width: 32px; height: 32px; }
+  .unit-section__head {
+    flex-wrap: wrap;
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-2);
+  }
+  .unit-section__title { font-size: var(--fs-18); }
+  .unit-section__progress { width: 100%; }
+  .unit-section__progress .progress { flex: 1; }
+  .lesson-row__caption { display: none; } /* 모바일에선 노드 옆 설명 숨김 */
+}
+@media (max-width: 480px) {
+  .lesson-row:nth-child(4n+1) { transform: translateX(-30px); }
+  .lesson-row:nth-child(4n+3) { transform: translateX(30px); }
+  .lesson-node { width: 72px; height: 72px; }
+  .lesson-node svg { width: 28px; height: 28px; }
 }
 
 /* 노드 본체 */
