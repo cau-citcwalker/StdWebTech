@@ -63,7 +63,19 @@ FTP 클라이언트(또는 cPanel File Manager)로 `htdocs/` 아래에 업로드
 `api/config.example.php` 를 참고해 `api/config.php` 를 만들어
 서버에만 올린다 (자격 증명이 포함되므로 git 에 커밋되지 않는다).
 
-### 3) DB 설치 — phpMyAdmin 에서 다음 3 파일 순서대로 실행
+### 3) DB 설치 — 두 가지 방법 중 하나
+
+#### A. 원샷 설치 (권장)
+브라우저에서 한 번 접속하면 모든 SQL 이 실행됨:
+```
+https://<도메인>/api/install.php
+```
+- 이미 설치된 상태면 자동 거부 (덮어쓰기 방지)
+- 강제 재설치: `?force=1&confirm=RESET`
+- **설치 끝나면 `api/install.php` 파일을 서버에서 반드시 삭제**
+
+#### B. 수동 — phpMyAdmin Import
+다음 3 파일을 순서대로 import:
 1. `api/_init/schema.sql` — 모든 테이블 생성
 2. `api/_init/seed.sql` — 학습 콘텐츠 (단원/레슨/문제)
 3. `api/_init/seed_avatar.sql` — 캐릭터 아이템 카탈로그
