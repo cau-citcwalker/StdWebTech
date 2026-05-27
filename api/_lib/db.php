@@ -22,7 +22,9 @@ function db(): PDO
         $pdo = new PDO($dsn, $cfg['user'], $cfg['password'], [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
+            // 같은 named param 을 한 쿼리에서 여러 번 쓸 수 있도록 (예: WHERE a=:u OR b=:u)
+            // PDO 가 client-side 에서 처리. 보안적 차이는 거의 없음.
+            PDO::ATTR_EMULATE_PREPARES   => true,
         ]);
     } catch (Throwable $e) {
         if (!empty($GLOBALS['FINEDU_CONFIG']['debug'])) {

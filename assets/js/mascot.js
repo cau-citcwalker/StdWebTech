@@ -70,6 +70,19 @@ const BASE_BODY_SVG = `
   <!-- 볼터치 -->
   <ellipse cx="138" cy="196" rx="18" ry="13" fill="#ffaac0" opacity="0.55"/>
   <ellipse cx="262" cy="196" rx="18" ry="13" fill="#ffaac0" opacity="0.55"/>
+
+  <!-- 기본 아웃핏 (baked) — bottom/top/shoes 슬롯이 덮어쓸 수 있음 -->
+  <!-- 흰 반바지 -->
+  <path d="M132 422 Q200 412 268 422 Q278 470 256 510 Q230 518 210 510 L204 470 Q200 466 196 470 L190 510 Q170 518 144 510 Q122 470 132 422 Z"
+        fill="#ffffff" stroke="#777" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="200" y1="424" x2="200" y2="460" stroke="#777" stroke-width="2"/>
+  <!-- 흰 탱크탑 -->
+  <path d="M126 304 Q200 294 274 304 L264 426 Q200 446 136 426 Z"
+        fill="#ffffff" stroke="#777" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M178 304 q22 -8 44 0" stroke="#777" stroke-width="3" fill="none"/>
+  <!-- 흰 운동화 -->
+  <ellipse cx="180" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
+  <ellipse cx="220" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
 `;
 
 /**

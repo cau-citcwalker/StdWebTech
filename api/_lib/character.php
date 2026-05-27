@@ -52,12 +52,36 @@ function user_equipment(int $userId): array
 
 function ensure_starter_items(int $userId): void
 {
-    // 사용자가 starter 아이템을 아직 받지 않았다면 모두 지급
-    $stmt = db()->prepare(
+    // 1) 인벤토리에 starter 전부 추가 (이미 있으면 IGNORE)
+    db()->prepare(
         "INSERT IGNORE INTO user_items (user_id, item_id)
          SELECT :u, id FROM items WHERE rarity = 'starter'"
-    );
-    $stmt->execute([':u' => $userId]);
+    )->execute([':u' => $userId]);
+
+    // 2) 각 슬롯에 아직 아무것도 장착돼있지 않으면, 그 슬롯의 starter 첫 번째를 자동 장착.
+    //    의도적으로 빈 마크업인 starter (예: '대머리') 는 제외해서 처음부터 옷이 입혀진 상태로.
+    foreach (ITEM_SLOTS as $slot) {
+        $hasEq = db()->prepare(
+            "SELECT 1 FROM user_equipment WHERE user_id = :u AND slot = :s LIMIT 1"
+        );
+        $hasEq->execute([':u' => $userId, ':s' => $slot]);
+        if ($hasEq->fetchColumn() !== false) continue;
+
+        $pick = db()->prepare(
+            "SELECT id FROM items
+             WHERE rarity = 'starter' AND slot = :s AND svg_markup <> ''
+             ORDER BY sort_order ASC, id ASC
+             LIMIT 1"
+        );
+        $pick->execute([':s' => $slot]);
+        $itemId = $pick->fetchColumn();
+        if ($itemId) {
+            db()->prepare(
+                "INSERT IGNORE INTO user_equipment (user_id, slot, item_id)
+                 VALUES (:u, :s, :i)"
+            )->execute([':u' => $userId, ':s' => $slot, ':i' => (int)$itemId]);
+        }
+    }
 }
 
 function equip_item(int $userId, string $slot, ?int $itemId): void
