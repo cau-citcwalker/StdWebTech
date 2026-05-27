@@ -69,19 +69,6 @@ function renderGrid() {
   const slot = state.activeSlot;
   const items = (state.itemsBySlot[slot] || []);
 
-  // 슬롯 비우기 옵션
-  const noneEquipped = !state.equipped[slot];
-  const noneCard = `
-    <div class="item-card item-card--none ${noneEquipped ? "is-equipped" : ""}"
-         data-action="unequip" data-slot="${slot}">
-      <div class="item-card__preview">
-        ${noneEquipped ? '<span class="item-card__badge">착용중</span>' : ""}
-      </div>
-      <div class="item-card__name">비우기</div>
-      <div class="item-card__meta">아무것도 안 입기</div>
-    </div>
-  `;
-
   const cards = items.map((it) => {
     const owned    = state.owned.has(it.id);
     const equipped = state.equipped[slot] === it.id;
@@ -111,7 +98,7 @@ function renderGrid() {
     `;
   }).join("");
 
-  gridEl.innerHTML = noneCard + cards;
+  gridEl.innerHTML = cards;
 
   gridEl.querySelectorAll(".item-card").forEach((el) => {
     el.addEventListener("click", () => handleCardClick(el));
@@ -128,17 +115,9 @@ async function handleCardClick(el) {
     return;
   }
   const slot = state.activeSlot;
-  if (el.dataset.action === "unequip") {
-    await doEquip(slot, null);
-  } else {
-    const id = Number(el.dataset.id);
-    if (state.equipped[slot] === id) {
-      // 이미 장착 — 다시 누르면 해제
-      await doEquip(slot, null);
-    } else {
-      await doEquip(slot, id);
-    }
-  }
+  const id = Number(el.dataset.id);
+  if (state.equipped[slot] === id) return; // 이미 장착중이면 무시
+  await doEquip(slot, id);
 }
 
 async function doEquip(slot, itemId) {
@@ -176,7 +155,7 @@ async function init() {
   state.coins    = res.data.coins ?? 0;
   state.user     = res.data.user;
 
-  if (nameEl)  nameEl.textContent = state.user?.display_name ?? "도토리";
+  if (nameEl)  nameEl.textContent = state.user?.display_name ?? "내 캐릭터";
   if (coinsEl) coinsEl.textContent = state.coins.toLocaleString("ko-KR");
 
   renderTabs();

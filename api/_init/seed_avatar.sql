@@ -23,23 +23,23 @@ INSERT INTO items (slug, name, description, slot, svg_markup, price, rarity, sor
   ('hair-bald',  '대머리',     '깔끔한 민머리.',           'hair', '', 0, 'starter', 0),
 
   ('hair-black-bob', '검은 단발', '클래식한 검정 단발 머리.', 'hair',
-   '<g><path d="M96 168 Q98 65 200 50 Q302 65 304 168 Q304 184 292 192 Q276 158 240 150 Q200 142 160 150 Q124 158 108 192 Q96 184 96 168 Z" fill="#1f1f1f"/><path d="M128 130 Q164 102 200 102 Q236 102 272 130 Q260 156 220 162 Q210 146 200 152 Q190 146 180 162 Q140 156 128 130 Z" fill="#1f1f1f"/></g>',
+   '<path d="M92 158 A110 110 0 0 1 308 158 Q304 178 290 188 Q266 158 232 150 Q212 146 200 152 Q188 146 168 150 Q134 158 110 188 Q96 178 92 158 Z" fill="#1f1f1f"/>',
    0, 'starter', 1),
 
   ('hair-brown-bob', '갈색 단발', '따뜻한 갈색 단발 머리.', 'hair',
-   '<g><path d="M96 168 Q98 65 200 50 Q302 65 304 168 Q304 184 292 192 Q276 158 240 150 Q200 142 160 150 Q124 158 108 192 Q96 184 96 168 Z" fill="#7a4a1a"/><path d="M128 130 Q164 102 200 102 Q236 102 272 130 Q260 156 220 162 Q210 146 200 152 Q190 146 180 162 Q140 156 128 130 Z" fill="#7a4a1a"/></g>',
+   '<path d="M92 158 A110 110 0 0 1 308 158 Q304 178 290 188 Q266 158 232 150 Q212 146 200 152 Q188 146 168 150 Q134 158 110 188 Q96 178 92 158 Z" fill="#7a4a1a"/>',
    0, 'starter', 2),
 
   ('hair-blonde-pixy', '노란 픽시', '발랄한 노랑 픽시컷.', 'hair',
-   '<g><path d="M100 162 Q104 70 200 56 Q296 70 300 162 Q300 176 290 184 Q272 156 240 150 Q200 144 160 150 Q128 156 110 184 Q100 176 100 162 Z" fill="#ffd14d"/><path d="M132 124 Q168 100 200 100 Q232 100 268 124 Q258 148 226 154 Q212 138 200 146 Q188 138 174 154 Q142 148 132 124 Z" fill="#ffd14d"/></g>',
+   '<path d="M100 158 A104 104 0 0 1 300 158 Q298 174 286 182 Q266 158 232 150 Q214 144 200 150 Q186 144 168 150 Q134 158 114 182 Q102 174 100 158 Z" fill="#ffd14d"/>',
    30, 'common', 3),
 
   ('hair-pink-twin', '분홍 양갈래', '귀여운 분홍 양갈래.', 'hair',
-   '<g><path d="M96 168 Q98 65 200 50 Q302 65 304 168 Q304 184 290 192 Q272 158 240 150 Q200 142 160 150 Q128 158 110 192 Q96 184 96 168 Z" fill="#ff86d0"/><path d="M128 130 Q164 102 200 102 Q236 102 272 130 Q260 154 220 160 Q210 144 200 152 Q190 144 180 160 Q140 154 128 130 Z" fill="#ff86d0"/><ellipse cx="80" cy="230" rx="22" ry="44" fill="#ff86d0" stroke="#c43a73" stroke-width="3"/><ellipse cx="320" cy="230" rx="22" ry="44" fill="#ff86d0" stroke="#c43a73" stroke-width="3"/></g>',
+   '<g><path d="M92 158 A110 110 0 0 1 308 158 Q304 180 290 190 Q266 158 232 150 Q212 146 200 152 Q188 146 168 150 Q134 158 110 190 Q96 180 92 158 Z" fill="#ff86d0"/><ellipse cx="78" cy="230" rx="22" ry="44" fill="#ff86d0" stroke="#c43a73" stroke-width="3"/><ellipse cx="322" cy="230" rx="22" ry="44" fill="#ff86d0" stroke="#c43a73" stroke-width="3"/></g>',
    60, 'rare', 4),
 
   ('hair-white-long', '백발 장발', '신비로운 백발 장발.', 'hair',
-   '<g><path d="M76 220 Q72 70 200 50 Q328 70 324 220 Q324 240 308 246 Q288 200 244 188 Q200 178 156 188 Q112 200 92 246 Q76 240 76 220 Z" fill="#f0f0f0" stroke="#aaa" stroke-width="2"/><path d="M84 240 Q80 340 116 432 Q126 438 138 432 Q108 348 108 240 Z" fill="#f0f0f0" stroke="#aaa" stroke-width="2"/><path d="M316 240 Q320 340 284 432 Q274 438 262 432 Q292 348 292 240 Z" fill="#f0f0f0" stroke="#aaa" stroke-width="2"/></g>',
+   '<g><path d="M92 158 A110 110 0 0 1 308 158 Q306 200 296 230 Q278 188 240 178 Q200 170 160 178 Q122 188 104 230 Q94 200 92 158 Z" fill="#f0f0f0" stroke="#aaa" stroke-width="2"/><path d="M96 220 Q88 340 122 430 Q132 436 144 430 Q112 348 116 218 Z" fill="#f0f0f0" stroke="#aaa" stroke-width="2"/><path d="M304 220 Q312 340 278 430 Q268 436 256 430 Q288 348 284 218 Z" fill="#f0f0f0" stroke="#aaa" stroke-width="2"/></g>',
    120, 'epic', 5);
 
 -- ----- FACE ---------------------------------------------------
@@ -122,23 +122,23 @@ INSERT INTO items (slug, name, description, slot, svg_markup, price, rarity, sor
 -- 발 cx 184 / 216, cy 570
 INSERT INTO items (slug, name, description, slot, svg_markup, price, rarity, sort_order) VALUES
   ('shoes-white-sneakers', '흰 운동화', '기본 흰 운동화.', 'shoes',
-   '<g><ellipse cx="184" cy="572" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/><ellipse cx="216" cy="572" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/><path d="M168 572 q16 -4 32 0" stroke="#bbb" stroke-width="2" fill="none"/><path d="M200 572 q16 -4 32 0" stroke="#bbb" stroke-width="2" fill="none"/></g>',
+   '<g><ellipse cx="180" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/><ellipse cx="220" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/><path d="M164 568 q16 -4 32 0" stroke="#bbb" stroke-width="2" fill="none"/><path d="M204 568 q16 -4 32 0" stroke="#bbb" stroke-width="2" fill="none"/></g>',
    0, 'starter', 1),
 
   ('shoes-black-sneakers', '검정 운동화', '깔끔한 검정 운동화.', 'shoes',
-   '<g><ellipse cx="184" cy="572" rx="26" ry="13" fill="#1f1f1f" stroke="#000" stroke-width="3"/><ellipse cx="216" cy="572" rx="26" ry="13" fill="#1f1f1f" stroke="#000" stroke-width="3"/><path d="M160 572 q24 6 48 0" stroke="#fff" stroke-width="2" fill="none"/><path d="M192 572 q24 6 48 0" stroke="#fff" stroke-width="2" fill="none"/></g>',
+   '<g><ellipse cx="180" cy="568" rx="26" ry="13" fill="#1f1f1f" stroke="#000" stroke-width="3"/><ellipse cx="220" cy="568" rx="26" ry="13" fill="#1f1f1f" stroke="#000" stroke-width="3"/><path d="M156 568 q24 6 48 0" stroke="#fff" stroke-width="2" fill="none"/><path d="M196 568 q24 6 48 0" stroke="#fff" stroke-width="2" fill="none"/></g>',
    30, 'common', 2),
 
   ('shoes-checker-slipon', '체커 슬립온', '클래식 체커보드 슬립온.', 'shoes',
-   '<g><ellipse cx="184" cy="572" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/><ellipse cx="216" cy="572" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/><g fill="#1f1f1f"><rect x="162" y="564" width="6" height="6"/><rect x="174" y="564" width="6" height="6"/><rect x="168" y="570" width="6" height="6"/><rect x="180" y="570" width="6" height="6"/><rect x="198" y="564" width="6" height="6"/><rect x="210" y="564" width="6" height="6"/><rect x="204" y="570" width="6" height="6"/><rect x="216" y="570" width="6" height="6"/><rect x="226" y="564" width="6" height="6"/><rect x="234" y="570" width="6" height="6"/></g></g>',
+   '<g><ellipse cx="180" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/><ellipse cx="220" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/><g fill="#1f1f1f"><rect x="158" y="560" width="6" height="6"/><rect x="170" y="560" width="6" height="6"/><rect x="164" y="566" width="6" height="6"/><rect x="176" y="566" width="6" height="6"/><rect x="198" y="560" width="6" height="6"/><rect x="210" y="560" width="6" height="6"/><rect x="204" y="566" width="6" height="6"/><rect x="216" y="566" width="6" height="6"/><rect x="226" y="560" width="6" height="6"/><rect x="234" y="566" width="6" height="6"/></g></g>',
    60, 'common', 3),
 
   ('shoes-rainbow-runners', '무지개 런너', '에어 쿠션이 빛나는 런닝화.', 'shoes',
-   '<g><ellipse cx="184" cy="572" rx="28" ry="14" fill="#1f1f1f" stroke="#000" stroke-width="3"/><ellipse cx="216" cy="572" rx="28" ry="14" fill="#1f1f1f" stroke="#000" stroke-width="3"/><path d="M158 576 q12 8 26 0" stroke="#58cc02" stroke-width="3" fill="none"/><path d="M194 576 q12 8 26 0" stroke="#58cc02" stroke-width="3" fill="none"/><path d="M160 570 q12 -4 24 0" stroke="#ff4b4b" stroke-width="2" fill="none"/><path d="M196 570 q12 -4 24 0" stroke="#1cb0f6" stroke-width="2" fill="none"/></g>',
+   '<g><ellipse cx="180" cy="568" rx="28" ry="14" fill="#1f1f1f" stroke="#000" stroke-width="3"/><ellipse cx="220" cy="568" rx="28" ry="14" fill="#1f1f1f" stroke="#000" stroke-width="3"/><path d="M154 572 q12 8 26 0" stroke="#58cc02" stroke-width="3" fill="none"/><path d="M194 572 q12 8 26 0" stroke="#58cc02" stroke-width="3" fill="none"/><path d="M156 566 q12 -4 24 0" stroke="#ff4b4b" stroke-width="2" fill="none"/><path d="M196 566 q12 -4 24 0" stroke="#1cb0f6" stroke-width="2" fill="none"/></g>',
    90, 'rare', 4),
 
   ('shoes-boots', '워커 부츠', '단단한 가죽 부츠.', 'shoes',
-   '<g><path d="M158 540 h28 q4 16 4 30 q-14 6 -28 0 q-4 -14 -4 -30 z" fill="#3a2510" stroke="#1a0f00" stroke-width="3" stroke-linejoin="round"/><path d="M212 540 h28 q0 16 -4 30 q-14 6 -28 0 q0 -14 4 -30 z" fill="#3a2510" stroke="#1a0f00" stroke-width="3" stroke-linejoin="round"/><line x1="162" y1="552" x2="186" y2="552" stroke="#fff" stroke-width="1.5"/><line x1="216" y1="552" x2="240" y2="552" stroke="#fff" stroke-width="1.5"/></g>',
+   '<g><path d="M154 536 h28 q4 16 4 30 q-14 6 -28 0 q-4 -14 -4 -30 z" fill="#3a2510" stroke="#1a0f00" stroke-width="3" stroke-linejoin="round"/><path d="M216 536 h28 q0 16 -4 30 q-14 6 -28 0 q0 -14 4 -30 z" fill="#3a2510" stroke="#1a0f00" stroke-width="3" stroke-linejoin="round"/><line x1="158" y1="548" x2="182" y2="548" stroke="#fff" stroke-width="1.5"/><line x1="220" y1="548" x2="244" y2="548" stroke="#fff" stroke-width="1.5"/></g>',
    70, 'rare', 5);
 
 -- ----- ACCESSORY ----------------------------------------------

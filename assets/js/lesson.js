@@ -244,7 +244,7 @@ function renderDone({ summary, user, rewards }) {
       <h2 class="done-card__title">${passed ? "완벽해요!" : "거의 다 왔어요"}</h2>
       <p class="done-card__sub">
         ${passed
-          ? "오늘의 도토리가 자랑스러워해요. 다음 레슨도 도전!"
+          ? "오늘의 학습가 자랑스러워해요. 다음 레슨도 도전!"
           : "조금만 더 정답을 맞히면 통과예요. 한 번 더 도전해 볼까요?"}
       </p>
 

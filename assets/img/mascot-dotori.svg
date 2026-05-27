@@ -55,8 +55,8 @@
   <path d="M178 304 q22 -8 44 0" stroke="#777" stroke-width="3" fill="none"/>
 
   <!-- 신발 -->
-  <ellipse cx="184" cy="572" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
-  <ellipse cx="216" cy="572" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
+  <ellipse cx="180" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
+  <ellipse cx="220" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
 
   <!-- 표정: 활짝 웃음 -->
   <path d="M150 132 q14 -8 28 -2" stroke="#3a2510" stroke-width="5" stroke-linecap="round" fill="none"/>
@@ -72,8 +72,7 @@
   <path d="M174 204 q26 24 52 0 q-2 10 -26 10 q-24 0 -26 -10 z"
         fill="#a0394a" stroke="#3a2510" stroke-width="3" stroke-linejoin="round"/>
 
-  <!-- 머리: 검은 단발 -->
-  <path d="M96 168 Q98 65 200 50 Q302 65 304 168 Q304 184 292 192 Q276 158 240 150 Q200 142 160 150 Q124 158 108 192 Q96 184 96 168 Z" fill="#1f1f1f"/>
-  <path d="M128 130 Q164 102 200 102 Q236 102 272 130 Q260 156 220 162 Q210 146 200 152 Q190 146 180 162 Q140 156 128 130 Z" fill="#1f1f1f"/>
+  <!-- 머리: 검은 단발 (정수리부터 완전 덮음) -->
+  <path d="M92 158 A110 110 0 0 1 308 158 Q304 178 290 188 Q266 158 232 150 Q212 146 200 152 Q188 146 168 150 Q134 158 110 188 Q96 178 92 158 Z" fill="#1f1f1f"/>
 
 </svg>

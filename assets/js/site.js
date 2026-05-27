@@ -54,6 +54,37 @@
   };
 })();
 
+(async function syncHeaderAuth() {
+  /**
+   * 로그인된 사용자가 비-보호 페이지(예: 메인) 헤더에 와도
+   * 여전히 "로그인 / 무료 시작" 이 뜨는 문제 해결.
+   * actions 안에 /login.html 링크가 있으면 (= 로그아웃 상태 헤더로 판정)
+   * me.php 결과에 따라 actions 를 교체.
+   */
+  const actions = document.querySelector(".site-header__inner .site-nav__actions");
+  if (!actions) return;
+  const loginLink = actions.querySelector('a[href="/login.html"]');
+  if (!loginLink) return;
+
+  let me;
+  try {
+    const res = await fetch("/api/auth/me.php", { credentials: "same-origin" });
+    if (!res.ok) return;
+    me = await res.json();
+  } catch (_) { return; }
+
+  if (!me?.data?.user) return; // 로그아웃 상태 → 그대로
+
+  actions.innerHTML = `
+    <a class="btn btn--secondary btn--sm" href="/learn.html">학습 계속</a>
+    <button class="btn btn--ghost btn--sm" id="header-logout" type="button">로그아웃</button>
+  `;
+  actions.querySelector("#header-logout").addEventListener("click", async () => {
+    await fetch("/api/auth/logout.php", { method: "POST", credentials: "same-origin" });
+    location.reload();
+  });
+})();
+
 (function initSfxToggle() {
   /**
    * 사운드 토글 버튼을 헤더에 자동 주입. `localStorage.finedu.sound` 와 동기화.
