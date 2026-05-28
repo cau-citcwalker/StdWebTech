@@ -198,17 +198,17 @@
 .form-banner.is-shown { display: block; animation: pop-in 320ms var(--ease-out-bounce); }
 
 /* 비밀번호 표시 토글
- *   .field 가 [label · input · hint] 세로 배치라 top:50% 는 input 가운데가 아님.
- *   input 만의 wrap 을 별도로 두는 대신, 픽셀 단위로 input 영역에 정렬.
- *   label 높이(~18) + .field gap(8) ≈ 26px 부터 input 시작. input 약 50px.
+ *   .field 가 [label · input · hint] 세로 배치라 .field 기준 top:50% 는 input 중앙이 아님.
+ *   input 만의 wrap (.field__input-wrap) 을 두고 그 안에서 정확히 center.
  */
-.field--password { position: relative; }
+.field__input-wrap { position: relative; }
 .field--password .input { padding-right: 44px; }
 .password-toggle {
   position: absolute;
   right: 8px;
-  top: 26px;            /* label 아래 input 시작점 */
-  height: 50px;          /* input 높이와 동일 */
+  top: 50%;
+  transform: translateY(-50%);
+  height: 40px;
   width: 36px;
   display: grid;
   place-items: center;
