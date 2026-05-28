@@ -421,19 +421,22 @@
  * ------------------------------------------------------------- */
 .toast-host {
   position: fixed;
-  inset: auto 0 24px 0;
+  inset: auto 0 36px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   z-index: var(--z-toast);
   pointer-events: none;
 }
 .toast {
-  min-width: 240px;
-  max-width: min(92vw, 480px);
-  padding: 12px 18px;
-  font-weight: var(--fw-bold);
+  min-width: 320px;
+  max-width: min(94vw, 560px);
+  padding: 18px 28px;
+  font-size: var(--fs-16);
+  font-weight: var(--fw-extrabold);
+  line-height: 1.4;
+  text-align: center;
   background: var(--color-text);
   color: var(--color-text-invert);
   border-radius: var(--radius-pill);
