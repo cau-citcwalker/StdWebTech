@@ -1,31 +1,19 @@
 /* =============================================================
- * FinEdu — 아바타 컴포저 (휴머노이드 chibi v4 — outfit set 단위)
+ * FinEdu — 아바타 컴포저 (휴머노이드 chibi v5 — outfit-only)
  *
  *   buildMascotSvg({ equipped, items, size = 360 })
  *   renderMascotInto(el, opts)
  *
- *   슬롯:
- *     outfit    — 풀세트 painterly JPEG (머리/옷/바지/신발 모두 통합)
- *                 /assets/img/items/outfit/{slug}.jpeg
- *     accessory — 안경/모자/왕관 같은 SVG overlay (item-assets.js 가 미리 fetch)
+ *   슬롯: outfit (단일)
+ *     /assets/img/items/outfit/{slug}.jpeg
  *
- *   레이어 순서 (뒤 → 앞):
- *     outfit (없으면 BASE_BODY_SVG fallback) → accessory
- *
- *   ViewBox 0 0 400 600 — JPEG 들은 portrait (~0.44 비율) 라 fit-meet 으로
+ *   ViewBox 0 0 400 600 — JPEG 들은 portrait (~0.44 비율) 이라 fit-meet 으로
  *   가로 가운데 정렬되며 좌우 약간의 여백이 생긴다.
  *
- *   accessory 앵커 (안경/선글라스/모자류 디자인 시 참조):
- *     눈 cx 172 / 228, cy 162
- *     머리 cx 200, cy 158, r 108
+ *   outfit 이 비어 있을 땐 BASE_BODY_SVG (bald + face baked-in) 가 fallback.
+ *   ensure_starter_items 가 starter outfit 을 자동 장착해주므로 평상시엔 안 보임.
  * ============================================================= */
 
-import { getItemSvg } from "./item-assets.js";
-
-const LAYER_ORDER = ["outfit", "accessory"];
-
-// outfit 슬롯이 비었을 때 보여줄 fallback — face baked-in 한 SVG 본체.
-// (ensure_starter_items 가 starter outfit 을 자동 장착해주므로 평상시엔 안 보임)
 const BASE_BODY_SVG = `
   <ellipse cx="200" cy="586" rx="118" ry="9" fill="#000" opacity="0.10"/>
   <path d="M168 422 Q170 500 174 562 Q188 568 196 562 Q200 500 200 422 Z"
@@ -72,17 +60,10 @@ function outfitLayer(item) {
  */
 export function buildMascotSvg({ equipped = {}, items = [], size = 360, withWrapper = true } = {}) {
   const itemsById = new Map((items || []).map((it) => [Number(it.id), it]));
+  const outfitId = equipped.outfit;
+  const outfitItem = outfitId ? itemsById.get(Number(outfitId)) : null;
+  const body = outfitLayer(outfitItem);
 
-  const layers = LAYER_ORDER.map((slot) => {
-    const id = equipped[slot];
-    const item = id ? itemsById.get(Number(id)) : null;
-
-    if (slot === "outfit") return outfitLayer(item);
-    if (slot === "accessory") return item?.slug ? getItemSvg(item.slug) : "";
-    return "";
-  });
-
-  const body = layers.join("\n");
   if (!withWrapper) return body;
 
   return `

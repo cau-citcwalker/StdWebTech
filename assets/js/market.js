@@ -9,12 +9,10 @@
 import { api } from "./api.js";
 import { sfx } from "./sfx.js";
 import { buildMascotSvg } from "./mascot.js";
-import { loadItemAssets } from "./item-assets.js";
 
 const SLOTS = [
-  { key: "all",       label: "전체" },
-  { key: "outfit",    label: "옷차림" },
-  { key: "accessory", label: "엑세서리" },
+  { key: "all",    label: "전체" },
+  { key: "outfit", label: "옷차림" },
 ];
 
 const state = {
@@ -167,8 +165,6 @@ async function init() {
   state.owned = new Set(res.data.owned);
   setCoins(res.data.coins ?? 0);
   state.user  = res.data.user;
-
-  await loadItemAssets(state.items);
 
   renderTabs();
   renderGrid();

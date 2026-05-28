@@ -4,7 +4,6 @@
 
 import { api } from "./api.js";
 import { renderMascotInto } from "./mascot.js";
-import { loadItemAssets } from "./item-assets.js";
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => Array.from(document.querySelectorAll(s));
@@ -99,7 +98,6 @@ async function init() {
   renderWeekly(weekly_xp);
   renderRecent(recent);
 
-  await loadItemAssets(items);
   renderMascotInto($("#aside-mascot"), { equipped, items, size: 300 });
 }
 
