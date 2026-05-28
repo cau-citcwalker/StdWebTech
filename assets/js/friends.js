@@ -4,8 +4,6 @@
 
 import { api } from "./api.js";
 import { sfx } from "./sfx.js";
-import { buildMascotSvg } from "./mascot.js";
-import { loadItemAssets } from "./item-assets.js";
 
 const TABS = [
   { key: "friends",  label: "내 친구" },
@@ -16,10 +14,6 @@ const TABS = [
 const state = {
   data: { friends: [], incoming: [], outgoing: [] },
   tab: "friends",
-  // 친구 마스코트 렌더용 — 아이템 카탈로그 한 번만 받아 캐싱
-  catalog: [],
-  // friend_id → equipped 캐시 (profile.php 응답으로 채워짐)
-  equippedByUser: new Map(),
 };
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -33,15 +27,6 @@ async function load() {
     return;
   }
   state.data = res.data;
-
-  // 카탈로그가 없으면 한 번만 받아옴 (마스코트 합성용)
-  if (state.catalog.length === 0) {
-    const c = await api.get("/character/state.php");
-    if (c.ok) {
-      state.catalog = c.data.items;
-      await loadItemAssets(state.catalog);
-    }
-  }
   renderTabs();
   renderList();
 }
@@ -68,16 +53,18 @@ function renderTabs() {
   });
 }
 
-function avatarFor(userId, equipped = {}) {
-  return buildMascotSvg({ equipped, items: state.catalog, size: 80 });
+function avatarFor(user) {
+  // list.php 가 친구별 outfit slug 를 같이 내려주므로 그 JPEG 를 바로 <img> 로 박는다.
+  // 옷차림이 비어 있으면 기본 cream-tee 로 fallback.
+  const slug = user?.outfit_slug || "outfit-cream-tee";
+  return `<img src="/assets/img/items/outfit/${slug}.jpeg" alt="">`;
 }
 
 function friendCard(user, actionsHtml, opts = {}) {
-  const equipped = state.equippedByUser.get(user.id) || {};
   return `
     <article class="friend-card">
       <a class="friend-card__avatar" href="/friend?id=${user.id}" aria-label="${user.display_name}의 프로필">
-        ${avatarFor(user.id, equipped)}
+        ${avatarFor(user)}
       </a>
       <div class="friend-card__body">
         <div class="friend-card__name">${user.display_name}</div>
