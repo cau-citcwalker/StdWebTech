@@ -1,41 +1,40 @@
 /* =============================================================
- * FinEdu — 아바타 컴포저 (휴머노이드 chibi v6)
+ * FinEdu — 아바타 컴포저 (휴머노이드 chibi v7 — PNG · 투명 배경)
  *
  *   buildMascotSvg({ equipped, items, size = 360 })
  *   renderMascotInto(el, opts)
  *
  *   슬롯: outfit · hair
- *     outfit (전신 painterly JPEG)  → /assets/img/items/outfit/{slug}.jpeg
- *     hair   (전신 JPEG, 머리 부분만) → /assets/img/items/hair/{slug}.jpeg
+ *     outfit (전신 painterly PNG, 투명 배경) → /assets/img/items/outfit/{slug}.png
+ *     hair   (전신 PNG, clip 으로 상단만)     → /assets/img/items/hair/{slug}.png
  *
  *   레이어 순서 (뒤 → 앞): outfit → hair
  *
- *   hair JPEG 는 사실 base + 머리스타일이 통째로 그려진 풀바디 이미지라서,
- *   머리 위쪽만 보이게 clip-path 로 잘라내고 mix-blend-mode: multiply 로
- *   흰 배경을 underlying outfit 에 통과시킨다. (JPEG 라서 alpha 채널이 없음)
+ *   모든 캐릭터 PNG 는 PIL 로 corner flood-fill 해서 배경 흰색을 alpha 0 으로 빼둠.
+ *   덕분에 mix-blend-mode 같은 트릭 없이도 캐릭터 외곽이 깔끔하게 떠 있는다.
+ *   hair PNG 는 풀바디 그림이라 clip-path 로 상단 40%만 보이게 잘라낸다.
  *
- *   outfit 이 비어 있을 땐 character-base.jpeg (기본 흰옷 + bald) 가 fallback.
- *   ensure_starter_items 가 starter outfit 을 자동 장착해주므로 평상시엔 거의 안 보임.
+ *   outfit 미장착 시 character-base.png (기본 bald + 흰옷) 가 fallback.
  *
- *   ViewBox 0 0 400 600 — JPEG portrait (~0.44) 이라 fit-meet 으로 가운데 정렬.
+ *   ViewBox 0 0 400 600 — PNG portrait 가 fit-meet 으로 가운데 정렬.
  * ============================================================= */
 
-const BASE_IMAGE_HREF = "/assets/img/character-base.jpeg";
+const BASE_IMAGE_HREF = "/assets/img/character-base.png";
 
 function outfitLayer(item) {
   const href = item?.slug
-    ? `/assets/img/items/outfit/${item.slug}.jpeg`
+    ? `/assets/img/items/outfit/${item.slug}.png`
     : BASE_IMAGE_HREF;
   return `<image href="${href}" x="0" y="0" width="400" height="600" preserveAspectRatio="xMidYMid meet"/>`;
 }
 
 function hairLayer(item) {
   if (!item?.slug) return "";
-  // 윗부분(머리 + 약간의 얼굴) 만 보이게 잘라내고, 흰 배경은 multiply 로 통과.
-  return `<image href="/assets/img/items/hair/${item.slug}.jpeg"
+  // hair PNG 도 풀바디. 머리 + 약간의 얼굴만 보이게 상단 40% 로 자른다.
+  return `<image href="/assets/img/items/hair/${item.slug}.png"
                  x="0" y="0" width="400" height="600"
                  preserveAspectRatio="xMidYMid meet"
-                 style="clip-path: inset(0 0 60% 0); mix-blend-mode: multiply"/>`;
+                 style="clip-path: inset(0 0 60% 0)"/>`;
 }
 
 /**
