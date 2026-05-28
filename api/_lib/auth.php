@@ -49,16 +49,18 @@ function create_user(string $username, string $email, string $password, string $
 {
     $pw = $GLOBALS['FINEDU_CONFIG']['password'];
     $hash = password_hash($password, $pw['algo'], ['cost' => $pw['cost']]);
+    $token = bin2hex(random_bytes(16));
 
     $stmt = db()->prepare(
-        'INSERT INTO users (username, email, password_hash, display_name)
-         VALUES (:u, :e, :h, :d)'
+        'INSERT INTO users (username, email, password_hash, display_name, session_token)
+         VALUES (:u, :e, :h, :d, :t)'
     );
     $stmt->execute([
         ':u' => $username,
         ':e' => $email,
         ':h' => $hash,
         ':d' => $displayName,
+        ':t' => $token,
     ]);
 
     $id = (int)db()->lastInsertId();
@@ -96,7 +98,10 @@ function verify_credentials(string $identifier, string $password): ?array
 function login_user(array $user): void
 {
     session_regenerate_id(true);
-    $_SESSION['user_id'] = (int)$user['id'];
+    $_SESSION['user_id']       = (int)$user['id'];
+    // 계정 고유 토큰을 세션에 박아둔다. 매 요청마다 DB 값과 일치하는지 검증하므로
+    // DB 재설치로 같은 user_id 가 재발급돼도 옛 세션은 자동 무효화됨.
+    $_SESSION['session_token'] = (string)$user['session_token'];
 
     db()->prepare('UPDATE users SET last_active_at = NOW() WHERE id = :id')
         ->execute([':id' => $user['id']]);

@@ -144,6 +144,24 @@ try {
     // 이미 없는 경우가 정상 (force 재설치 또는 신규 설치)
 }
 
+// 2.6) 마이그레이션 — users.session_token 컬럼 추가 + 기존 행 백필
+//      phantom-session 방지용. 세션 쿠키가 들고 다니는 user_id 가 DB 의 동일 계정을
+//      가리키는지 token 으로 한 번 더 검증해서, 같은 ID 가 재발급된 경우 옛 세션을 끊는다.
+try {
+    $pdo->exec("ALTER TABLE users ADD COLUMN session_token VARCHAR(64) NOT NULL DEFAULT ''");
+    // 새로 만든 컬럼이라 기존 행은 전부 빈 값. 행별 무작위 hex 로 채워준다.
+    $rows = $pdo->query("SELECT id FROM users WHERE session_token = ''")->fetchAll(PDO::FETCH_COLUMN);
+    if ($rows) {
+        $upd = $pdo->prepare('UPDATE users SET session_token = :t WHERE id = :id');
+        foreach ($rows as $id) {
+            $upd->execute([':t' => bin2hex(random_bytes(16)), ':id' => (int)$id]);
+        }
+    }
+    step('마이그레이션 — users.session_token 추가 + 백필', true, count($rows) . '개 행 토큰 발급');
+} catch (Throwable $e) {
+    // 이미 있는 경우가 정상 (force 재설치 또는 두 번째 실행)
+}
+
 // 3) seed_avatar.sql
 $res = run_sql_file($pdo, __DIR__ . '/_init/seed_avatar.sql');
 step('seed_avatar.sql — 아바타 아이템 시드', $res['ok'], $res['detail']);

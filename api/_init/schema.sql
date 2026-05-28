@@ -16,6 +16,10 @@ CREATE TABLE IF NOT EXISTS users (
     email           VARCHAR(190)       NOT NULL,
     password_hash   VARCHAR(255)       NOT NULL,
     display_name    VARCHAR(60)        NOT NULL,
+    -- 세션 토큰: 각 계정마다 가입 시 발급되는 32바이트 hex. 세션 쿠키에 들어가는
+    -- user_id 만 믿지 말고 이 값까지 같이 검증해서 phantom-session 방지.
+    -- (DB 재설치 후 같은 user_id 가 다시 만들어져도 token 이 달라서 옛 쿠키 무효화)
+    session_token   VARCHAR(64)        NOT NULL,
     xp              INT UNSIGNED       NOT NULL DEFAULT 0,
     coins           INT UNSIGNED       NOT NULL DEFAULT 0,
     streak_days     INT UNSIGNED       NOT NULL DEFAULT 0,
