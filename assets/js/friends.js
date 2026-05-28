@@ -97,7 +97,7 @@ function renderList() {
     if (state.data.friends.length === 0) {
       listEl.innerHTML = `
         <div class="friends-empty">
-          <img src="assets/img/mascot-dotori.svg" alt=""/>
+          <img src="assets/img/items/outfit/outfit-cream-tee.jpeg" alt=""/>
           <h3>아직 친구가 없어요</h3>
           <p>위 검색창에 친구의 아이디나 이메일을 입력해서 신청해 보세요.</p>
         </div>`;

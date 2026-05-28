@@ -240,7 +240,7 @@ function renderDone({ summary, user, rewards }) {
 
   root.innerHTML = `
     <div class="done-card">
-      <img class="done-card__mascot" src="assets/img/mascot-dotori.svg" alt="">
+      <img class="done-card__mascot" src="assets/img/items/outfit/outfit-cream-tee.jpeg" alt="">
       <h2 class="done-card__title">${passed ? "완벽해요!" : "거의 다 왔어요"}</h2>
       <p class="done-card__sub">
         ${passed
