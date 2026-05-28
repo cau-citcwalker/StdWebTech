@@ -1,9 +1,0 @@
-<g>
-  <path d="M132 302 Q200 290 268 302 L260 422 Q200 442 140 422 Z" fill="#222" stroke="#000" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M132 302 Q108 320 102 392 Q124 402 144 392 Q142 348 138 304 Z" fill="#222" stroke="#000" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M268 302 Q292 320 298 392 Q276 402 256 392 Q258 348 262 304 Z" fill="#222" stroke="#000" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M158 274 Q200 258 242 274 Q250 290 244 304 Q200 314 156 304 Q150 290 158 274 Z" fill="#1a1a1a" stroke="#000" stroke-width="3"/>
-  <line x1="188" y1="304" x2="192" y2="332" stroke="#bbb" stroke-width="2"/>
-  <line x1="212" y1="304" x2="208" y2="332" stroke="#bbb" stroke-width="2"/>
-  <rect x="172" y="368" width="56" height="36" rx="4" fill="#1a1a1a" stroke="#000" stroke-width="2"/>
-</g>

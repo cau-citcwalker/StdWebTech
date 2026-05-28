@@ -144,16 +144,18 @@ try {
     // 이미 없는 경우가 정상 (force 재설치 또는 신규 설치)
 }
 
-// 2.55) 마이그레이션 — face 슬롯이 BASE 에 흡수됨. 기존 face 아이템과 그 관계 정리.
+// 2.55) 마이그레이션 — 슬롯 시스템 단순화: hair/top/bottom/shoes/face 전부 outfit 한 슬롯으로 흡수.
+//       기존 그 슬롯들의 아이템과 연관 행 정리.
 //       (force 모드면 items 테이블 자체가 drop 된 상태라 try 가 NOP 으로 끝남.)
 try {
-    $faceIds = $pdo->query("SELECT id FROM items WHERE slot = 'face'")->fetchAll(PDO::FETCH_COLUMN);
-    if ($faceIds) {
-        $in = implode(',', array_map('intval', $faceIds));
-        $pdo->exec("DELETE FROM user_equipment WHERE slot = 'face'");
+    $deadSlots = "'face','hair','top','bottom','shoes'";
+    $oldIds = $pdo->query("SELECT id FROM items WHERE slot IN ($deadSlots)")->fetchAll(PDO::FETCH_COLUMN);
+    if ($oldIds) {
+        $in = implode(',', array_map('intval', $oldIds));
+        $pdo->exec("DELETE FROM user_equipment WHERE slot IN ($deadSlots)");
         $pdo->exec("DELETE FROM user_items WHERE item_id IN ($in)");
-        $pdo->exec("DELETE FROM items WHERE slot = 'face'");
-        step('마이그레이션 — face 슬롯 정리', true, count($faceIds) . '개 아이템 + 관계 행 삭제');
+        $pdo->exec("DELETE FROM items WHERE slot IN ($deadSlots)");
+        step('마이그레이션 — 옛 슬롯 정리', true, count($oldIds) . '개 아이템 + 관계 행 삭제');
     }
 } catch (Throwable $e) {
     // 테이블이 없거나 이미 정리된 경우 — 무시

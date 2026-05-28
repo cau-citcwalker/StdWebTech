@@ -1,116 +1,70 @@
 /* =============================================================
- * FinEdu — 아바타 컴포저 (휴머노이드 chibi v3)
+ * FinEdu — 아바타 컴포저 (휴머노이드 chibi v4 — outfit set 단위)
  *
  *   buildMascotSvg({ equipped, items, size = 360 })
  *   renderMascotInto(el, opts)
  *
- *   슬롯: hair / top / bottom / shoes / accessory  (face 는 BASE 에 baked-in)
+ *   슬롯:
+ *     outfit    — 풀세트 painterly JPEG (머리/옷/바지/신발 모두 통합)
+ *                 /assets/img/items/outfit/{slug}.jpeg
+ *     accessory — 안경/모자/왕관 같은 SVG overlay (item-assets.js 가 미리 fetch)
+ *
  *   레이어 순서 (뒤 → 앞):
- *     BASE → bottom → top → shoes → hair → accessory
+ *     outfit (없으면 BASE_BODY_SVG fallback) → accessory
  *
- *   아이템 SVG fragment 는 item-assets.js 의 메모리 캐시에서 slug 로 lookup.
- *   호출 전에 loadItemAssets(items) 를 한 번 await 해두어야 한다.
+ *   ViewBox 0 0 400 600 — JPEG 들은 portrait (~0.44 비율) 라 fit-meet 으로
+ *   가로 가운데 정렬되며 좌우 약간의 여백이 생긴다.
  *
- *   ViewBox 0 0 400 600
- *
- *   주요 앵커 (아이템 SVG 디자인 시 참조):
- *     head    cx 200, cy 158, r 108
- *     neck    x 180–220, y 260–300
- *     shoulder line  y 300, x 128–272 (좌우 어깨)
- *     waist line     y 422, x 152–248
- *     hip / 가랑이    y 446
- *     무릎              y 514
- *     발등              y 568
- *     팔 끝(손)         (118, 446) · (282, 446)
- *     눈                cx 172 · cx 228,  cy 162
- *     입                cy 210
+ *   accessory 앵커 (안경/선글라스/모자류 디자인 시 참조):
+ *     눈 cx 172 / 228, cy 162
+ *     머리 cx 200, cy 158, r 108
  * ============================================================= */
 
 import { getItemSvg } from "./item-assets.js";
 
-const LAYER_ORDER = ["BASE", "bottom", "top", "shoes", "hair", "accessory"];
+const LAYER_ORDER = ["outfit", "accessory"];
 
+// outfit 슬롯이 비었을 때 보여줄 fallback — face baked-in 한 SVG 본체.
+// (ensure_starter_items 가 starter outfit 을 자동 장착해주므로 평상시엔 안 보임)
 const BASE_BODY_SVG = `
-  <!-- 그림자 -->
   <ellipse cx="200" cy="586" rx="118" ry="9" fill="#000" opacity="0.10"/>
-
-  <!-- 다리 (살색) -->
   <path d="M168 422 Q170 500 174 562 Q188 568 196 562 Q200 500 200 422 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
   <path d="M232 422 Q230 500 226 562 Q212 568 204 562 Q200 500 200 422 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-
-  <!-- 발 (맨발 — shoes 슬롯이 덮음) -->
   <ellipse cx="184" cy="570" rx="22" ry="10" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
   <ellipse cx="216" cy="570" rx="22" ry="10" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-
-  <!-- 팔 (어깨에서 손까지 하나의 곡선) -->
   <path d="M128 304 Q108 360 112 428 Q120 446 138 442 Q146 392 148 332 Q146 312 138 302 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
   <path d="M272 304 Q292 360 288 428 Q280 446 262 442 Q254 392 252 332 Q254 312 262 302 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-
-  <!-- 손 -->
   <circle cx="118" cy="446" r="18" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
   <circle cx="282" cy="446" r="18" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-
-  <!-- 토르소 — 어깨가 넓고 허리가 살짝 좁아지는 사다리꼴 -->
   <path d="M130 300 Q200 290 270 300 L262 422 Q200 442 138 422 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-
-  <!-- 목 (토르소 위에 덮음) -->
   <path d="M178 268 L222 268 L218 302 L182 302 Z"
         fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-
-  <!-- 머리 -->
-  <circle cx="200" cy="158" r="108"
-          fill="#ffeacd" stroke="#b08570" stroke-width="5"/>
-
-  <!-- 귀 (머리 옆에 붙여) -->
-  <ellipse cx="98" cy="170" rx="12" ry="18"
-           fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-  <ellipse cx="302" cy="170" rx="12" ry="18"
-           fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-
-  <!-- 볼터치 (옅게) -->
+  <circle cx="200" cy="158" r="108" fill="#ffeacd" stroke="#b08570" stroke-width="5"/>
+  <ellipse cx="98" cy="170" rx="12" ry="18" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
+  <ellipse cx="302" cy="170" rx="12" ry="18" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
   <ellipse cx="138" cy="202" rx="16" ry="10" fill="#ffbcae" opacity="0.45"/>
   <ellipse cx="262" cy="202" rx="16" ry="10" fill="#ffbcae" opacity="0.45"/>
-
-  <!-- ===== 얼굴 (face baked-in, v3 chibi) =====
-       눈 중심 cx 172 / 228 cy 162 — 기존 accessory(안경/선글라스) 앵커와 동일.
-       눈썹/입/코는 face 슬롯 안에 있던 좌표를 그대로 가져옴. -->
-
-  <!-- 눈썹 — 두꺼운 갈색, 살짝 안쪽 아래로 -->
   <path d="M148 128 Q172 120 192 130" stroke="#3a2510" stroke-width="7" stroke-linecap="round" fill="none"/>
   <path d="M208 130 Q228 120 252 128" stroke="#3a2510" stroke-width="7" stroke-linecap="round" fill="none"/>
-
-  <!-- 큰 눈 — 갈색 iris + 흰색 highlight -->
   <ellipse cx="172" cy="166" rx="18" ry="24" fill="#3a2510"/>
   <ellipse cx="228" cy="166" rx="18" ry="24" fill="#3a2510"/>
   <ellipse cx="178" cy="158" rx="6" ry="9" fill="#ffffff"/>
   <ellipse cx="234" cy="158" rx="6" ry="9" fill="#ffffff"/>
   <circle  cx="168" cy="176" r="2.5" fill="#ffffff" opacity="0.85"/>
   <circle  cx="224" cy="176" r="2.5" fill="#ffffff" opacity="0.85"/>
-
-  <!-- 코 — 옅은 핑크 작은 V -->
   <path d="M196 214 L200 222 L204 214" stroke="#d99088" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- 입 — 작은 가로 선 (살짝 미소) -->
   <path d="M188 242 Q200 246 212 242" stroke="#7a4030" stroke-width="3" fill="none" stroke-linecap="round"/>
-
-  <!-- 기본 아웃핏 (baked) — bottom/top/shoes 슬롯이 덮어쓸 수 있음 -->
-  <!-- 흰 반바지 (다리 중심에 정렬) -->
-  <path d="M138 422 Q200 412 262 422 Q272 470 232 510 Q216 518 202 510 L202 460 Q200 456 198 460 L198 510 Q184 518 168 510 Q128 470 138 422 Z"
-        fill="#ffffff" stroke="#777" stroke-width="3" stroke-linejoin="round"/>
-  <line x1="200" y1="424" x2="200" y2="456" stroke="#777" stroke-width="2"/>
-  <!-- 흰 탱크탑 -->
-  <path d="M126 304 Q200 294 274 304 L264 426 Q200 446 136 426 Z"
-        fill="#ffffff" stroke="#777" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M178 304 q22 -8 44 0" stroke="#777" stroke-width="3" fill="none"/>
-  <!-- 흰 운동화 (발 cx 184 / 216 와 정렬) -->
-  <ellipse cx="184" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
-  <ellipse cx="216" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
 `;
+
+function outfitLayer(item) {
+  if (!item?.slug) return BASE_BODY_SVG;
+  return `<image href="/assets/img/items/outfit/${item.slug}.jpeg" x="0" y="0" width="400" height="600" preserveAspectRatio="xMidYMid meet"/>`;
+}
 
 /**
  * @param {{ equipped?: Object, items?: Array, size?: number, withWrapper?: boolean }} opts
@@ -120,11 +74,12 @@ export function buildMascotSvg({ equipped = {}, items = [], size = 360, withWrap
   const itemsById = new Map((items || []).map((it) => [Number(it.id), it]));
 
   const layers = LAYER_ORDER.map((slot) => {
-    if (slot === "BASE") return BASE_BODY_SVG;
     const id = equipped[slot];
-    if (!id) return "";
-    const item = itemsById.get(Number(id));
-    return item?.slug ? getItemSvg(item.slug) : "";
+    const item = id ? itemsById.get(Number(id)) : null;
+
+    if (slot === "outfit") return outfitLayer(item);
+    if (slot === "accessory") return item?.slug ? getItemSvg(item.slug) : "";
+    return "";
   });
 
   const body = layers.join("\n");
