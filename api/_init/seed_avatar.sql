@@ -19,15 +19,6 @@ INSERT INTO items (slug, name, description, slot, price, rarity, sort_order) VAL
   ('hair-pink-twin',   '분홍 양갈래', '귀여운 분홍 양갈래.',       'hair',  60, 'rare',    4),
   ('hair-white-long',  '백발 장발',   '신비로운 백발 장발.',       'hair', 120, 'epic',    5);
 
--- ----- FACE ---------------------------------------------------
-INSERT INTO items (slug, name, description, slot, price, rarity, sort_order) VALUES
-  ('face-neutral', '기본 표정',  '단정한 기본 표정.',    'face',  0, 'starter', 1),
-  ('face-smile',   '활짝 웃음',  '기분 좋은 큰 미소.',   'face',  0, 'starter', 2),
-  ('face-wink',    '윙크',       '한쪽 눈 윙크.',         'face',  0, 'starter', 3),
-  ('face-sleepy',  '졸린 눈',    '나른한 표정.',         'face', 20, 'common',  4),
-  ('face-angry',   '화남',       '뾰루퉁한 화난 표정.',  'face', 25, 'common',  5),
-  ('face-stars',   '반짝반짝',   '두 눈에 별이 반짝!',   'face', 80, 'rare',    6);
-
 -- ----- TOP ----------------------------------------------------
 INSERT INTO items (slug, name, description, slot, price, rarity, sort_order) VALUES
   ('top-white-tank',    '흰 탱크탑',    '기본 흰 탱크탑.',           'top',   0, 'starter', 1),
