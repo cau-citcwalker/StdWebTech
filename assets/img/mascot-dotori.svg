@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  도토리 — FinEdu 휴머노이드 마스코트 (기본 아웃핏 차림)
-  주의: 이 파일은 <img> 태그용 정적 사본이다.
-        실제 사용자 캐릭터는 mascot.js 의 buildMascotSvg() 로 합성된다.
+  FinEdu 휴머노이드 마스코트 (기본 아웃핏 차림)
+  이 파일은 <img> 태그용 정적 사본이다.
+  실제 사용자 캐릭터는 mascot.js 의 buildMascotSvg() 로 합성된다.
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" aria-label="도토리 마스코트">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" aria-label="FinEdu 마스코트">
 
   <!-- 그림자 -->
   <ellipse cx="200" cy="586" rx="118" ry="9" fill="#000" opacity="0.10"/>
@@ -44,19 +44,19 @@
   <ellipse cx="138" cy="196" rx="18" ry="13" fill="#ffaac0" opacity="0.55"/>
   <ellipse cx="262" cy="196" rx="18" ry="13" fill="#ffaac0" opacity="0.55"/>
 
-  <!-- 하의: 흰 반바지 -->
-  <path d="M132 422 Q200 412 268 422 Q278 470 256 510 Q230 518 210 510 L204 470 Q200 466 196 470 L190 510 Q170 518 144 510 Q122 470 132 422 Z"
+  <!-- 하의: 흰 반바지 (다리 중심과 정렬) -->
+  <path d="M138 422 Q200 412 262 422 Q272 470 232 510 Q216 518 202 510 L202 460 Q200 456 198 460 L198 510 Q184 518 168 510 Q128 470 138 422 Z"
         fill="#ffffff" stroke="#777" stroke-width="3" stroke-linejoin="round"/>
-  <line x1="200" y1="424" x2="200" y2="460" stroke="#777" stroke-width="2"/>
+  <line x1="200" y1="424" x2="200" y2="456" stroke="#777" stroke-width="2"/>
 
   <!-- 상의: 흰 탱크탑 -->
   <path d="M126 304 Q200 294 274 304 L264 426 Q200 446 136 426 Z"
         fill="#ffffff" stroke="#777" stroke-width="3" stroke-linejoin="round"/>
   <path d="M178 304 q22 -8 44 0" stroke="#777" stroke-width="3" fill="none"/>
 
-  <!-- 신발 -->
-  <ellipse cx="180" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
-  <ellipse cx="220" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
+  <!-- 신발 (발 중심 cx 184 / 216 에 정렬) -->
+  <ellipse cx="184" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
+  <ellipse cx="216" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
 
   <!-- 표정: 활짝 웃음 -->
   <path d="M150 132 q14 -8 28 -2" stroke="#3a2510" stroke-width="5" stroke-linecap="round" fill="none"/>
@@ -72,7 +72,7 @@
   <path d="M174 204 q26 24 52 0 q-2 10 -26 10 q-24 0 -26 -10 z"
         fill="#a0394a" stroke="#3a2510" stroke-width="3" stroke-linejoin="round"/>
 
-  <!-- 머리: 검은 단발 (정수리부터 완전 덮음) -->
-  <path d="M92 158 A110 110 0 0 1 308 158 Q304 178 290 188 Q266 158 232 150 Q212 146 200 152 Q188 146 168 150 Q134 158 110 188 Q96 178 92 158 Z" fill="#1f1f1f"/>
+  <!-- 머리카락: 검은 단발 (정수리부터 완전 덮음) -->
+  <path d="M92 158 A108 108 0 0 1 308 158 Q304 174 290 168 Q268 144 234 138 Q216 130 200 138 Q184 130 166 138 Q132 144 110 168 Q96 174 92 158 Z" fill="#1f1f1f"/>
 
 </svg>

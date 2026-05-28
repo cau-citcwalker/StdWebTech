@@ -45,16 +45,18 @@
 
           <div class="field field--password">
             <label class="field__label" for="login-password">비밀번호</label>
-            <input class="input" type="password" id="login-password" name="password"
-                   autocomplete="current-password" placeholder="비밀번호" required>
-            <button type="button" class="password-toggle"
-                    aria-label="비밀번호 보기 토글" aria-pressed="false"
-                    data-target="#login-password">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-            </button>
+            <div class="field__input-wrap">
+              <input class="input" type="password" id="login-password" name="password"
+                     autocomplete="current-password" placeholder="비밀번호를 입력하세요" required>
+              <button type="button" class="password-toggle"
+                      aria-label="비밀번호 보기 토글" aria-pressed="false"
+                      data-target="#login-password">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
             <small class="field__error"></small>
           </div>
 
