@@ -57,7 +57,7 @@ function avatarFor(user) {
   // list.php 가 친구별 outfit slug 를 같이 내려주므로 그 JPEG 를 바로 <img> 로 박는다.
   // 옷차림이 비어 있으면 기본 cream-tee 로 fallback.
   const slug = user?.outfit_slug || "outfit-cream-tee";
-  return `<img src="/assets/img/items/outfit/${slug}.jpeg" alt="">`;
+  return `<img src="/assets/img/items/outfit/${slug}.png" alt="">`;
 }
 
 function friendCard(user, actionsHtml, opts = {}) {
@@ -84,7 +84,7 @@ function renderList() {
     if (state.data.friends.length === 0) {
       listEl.innerHTML = `
         <div class="friends-empty">
-          <img src="assets/img/items/outfit/outfit-cream-tee.jpeg" alt=""/>
+          <img src="assets/img/character-base.png" alt=""/>
           <h3>아직 친구가 없어요</h3>
           <p>위 검색창에 친구의 아이디나 이메일을 입력해서 신청해 보세요.</p>
         </div>`;

@@ -81,7 +81,7 @@ function renderList() {
   if (!list || list.length === 0) {
     host.innerHTML = `
       <div class="lb-empty">
-        <img src="assets/img/items/outfit/outfit-cream-tee.jpeg" alt=""/>
+        <img src="assets/img/character-base.png" alt=""/>
         <h3>${state.tab === "weekly" ? "이번 주 활동 기록이 아직 없어요" : "명예의 전당이 비어있어요"}</h3>
         <p>${state.tab === "weekly" ? "레슨을 풀면 순위에 올라가요." : "첫 학습자가 되어보세요!"}</p>
       </div>`;
