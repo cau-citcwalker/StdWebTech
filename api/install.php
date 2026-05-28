@@ -144,6 +144,21 @@ try {
     // 이미 없는 경우가 정상 (force 재설치 또는 신규 설치)
 }
 
+// 2.55) 마이그레이션 — face 슬롯이 BASE 에 흡수됨. 기존 face 아이템과 그 관계 정리.
+//       (force 모드면 items 테이블 자체가 drop 된 상태라 try 가 NOP 으로 끝남.)
+try {
+    $faceIds = $pdo->query("SELECT id FROM items WHERE slot = 'face'")->fetchAll(PDO::FETCH_COLUMN);
+    if ($faceIds) {
+        $in = implode(',', array_map('intval', $faceIds));
+        $pdo->exec("DELETE FROM user_equipment WHERE slot = 'face'");
+        $pdo->exec("DELETE FROM user_items WHERE item_id IN ($in)");
+        $pdo->exec("DELETE FROM items WHERE slot = 'face'");
+        step('마이그레이션 — face 슬롯 정리', true, count($faceIds) . '개 아이템 + 관계 행 삭제');
+    }
+} catch (Throwable $e) {
+    // 테이블이 없거나 이미 정리된 경우 — 무시
+}
+
 // 2.6) 마이그레이션 — users.session_token 컬럼 추가 + 기존 행 백필
 //      phantom-session 방지용. 세션 쿠키가 들고 다니는 user_id 가 DB 의 동일 계정을
 //      가리키는지 token 으로 한 번 더 검증해서, 같은 ID 가 재발급된 경우 옛 세션을 끊는다.

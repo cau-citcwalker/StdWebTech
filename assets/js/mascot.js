@@ -1,12 +1,12 @@
 /* =============================================================
- * FinEdu — 아바타 컴포저 (휴머노이드 chibi v2)
+ * FinEdu — 아바타 컴포저 (휴머노이드 chibi v3)
  *
  *   buildMascotSvg({ equipped, items, size = 360 })
  *   renderMascotInto(el, opts)
  *
- *   슬롯: hair / face / top / bottom / shoes / accessory
+ *   슬롯: hair / top / bottom / shoes / accessory  (face 는 BASE 에 baked-in)
  *   레이어 순서 (뒤 → 앞):
- *     BASE → bottom → top → shoes → face → hair → accessory
+ *     BASE → bottom → top → shoes → hair → accessory
  *
  *   아이템 SVG fragment 는 item-assets.js 의 메모리 캐시에서 slug 로 lookup.
  *   호출 전에 loadItemAssets(items) 를 한 번 await 해두어야 한다.
@@ -28,7 +28,7 @@
 
 import { getItemSvg } from "./item-assets.js";
 
-const LAYER_ORDER = ["BASE", "bottom", "top", "shoes", "face", "hair", "accessory"];
+const LAYER_ORDER = ["BASE", "bottom", "top", "shoes", "hair", "accessory"];
 
 const BASE_BODY_SVG = `
   <!-- 그림자 -->
@@ -72,9 +72,31 @@ const BASE_BODY_SVG = `
   <ellipse cx="302" cy="170" rx="12" ry="18"
            fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
 
-  <!-- 볼터치 -->
-  <ellipse cx="138" cy="196" rx="18" ry="13" fill="#ffaac0" opacity="0.55"/>
-  <ellipse cx="262" cy="196" rx="18" ry="13" fill="#ffaac0" opacity="0.55"/>
+  <!-- 볼터치 (옅게) -->
+  <ellipse cx="138" cy="202" rx="16" ry="10" fill="#ffbcae" opacity="0.45"/>
+  <ellipse cx="262" cy="202" rx="16" ry="10" fill="#ffbcae" opacity="0.45"/>
+
+  <!-- ===== 얼굴 (face baked-in, v3 chibi) =====
+       눈 중심 cx 172 / 228 cy 162 — 기존 accessory(안경/선글라스) 앵커와 동일.
+       눈썹/입/코는 face 슬롯 안에 있던 좌표를 그대로 가져옴. -->
+
+  <!-- 눈썹 — 두꺼운 갈색, 살짝 안쪽 아래로 -->
+  <path d="M148 128 Q172 120 192 130" stroke="#3a2510" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M208 130 Q228 120 252 128" stroke="#3a2510" stroke-width="7" stroke-linecap="round" fill="none"/>
+
+  <!-- 큰 눈 — 갈색 iris + 흰색 highlight -->
+  <ellipse cx="172" cy="166" rx="18" ry="24" fill="#3a2510"/>
+  <ellipse cx="228" cy="166" rx="18" ry="24" fill="#3a2510"/>
+  <ellipse cx="178" cy="158" rx="6" ry="9" fill="#ffffff"/>
+  <ellipse cx="234" cy="158" rx="6" ry="9" fill="#ffffff"/>
+  <circle  cx="168" cy="176" r="2.5" fill="#ffffff" opacity="0.85"/>
+  <circle  cx="224" cy="176" r="2.5" fill="#ffffff" opacity="0.85"/>
+
+  <!-- 코 — 옅은 핑크 작은 V -->
+  <path d="M196 214 L200 222 L204 214" stroke="#d99088" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 입 — 작은 가로 선 (살짝 미소) -->
+  <path d="M188 242 Q200 246 212 242" stroke="#7a4030" stroke-width="3" fill="none" stroke-linecap="round"/>
 
   <!-- 기본 아웃핏 (baked) — bottom/top/shoes 슬롯이 덮어쓸 수 있음 -->
   <!-- 흰 반바지 (다리 중심에 정렬) -->

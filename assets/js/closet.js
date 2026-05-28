@@ -14,7 +14,6 @@ import { loadItemAssets } from "./item-assets.js";
 
 const SLOTS = [
   { key: "hair",      label: "머리" },
-  { key: "face",      label: "표정" },
   { key: "top",       label: "상의" },
   { key: "bottom",    label: "하의" },
   { key: "shoes",     label: "신발" },
