@@ -1,0 +1,7 @@
+<g>
+  <path d="M150 134 q14 4 28 -2" stroke="#3a2510" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M222 132 q14 -2 28 2" stroke="#3a2510" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M160 160 h24 q-1 7 -12 7 q-11 0 -12 -7 z" fill="#3a2510"/>
+  <path d="M216 160 h24 q-1 7 -12 7 q-11 0 -12 -7 z" fill="#3a2510"/>
+  <line x1="192" y1="212" x2="208" y2="212" stroke="#3a2510" stroke-width="4" stroke-linecap="round"/>
+</g>

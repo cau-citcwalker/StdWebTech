@@ -134,6 +134,16 @@ if (!$res['ok']) { echo '</body></html>'; exit; }
 $res = run_sql_file($pdo, __DIR__ . '/_init/seed.sql');
 step('seed.sql — 학습 콘텐츠 시드', $res['ok'], $res['detail']);
 
+// 2.5) 마이그레이션 — 옛 items.svg_markup 컬럼이 남아있으면 제거
+//      (SVG fragment 가 /assets/img/items/{slot}/{slug}.svg 로 옮겨감.
+//       force 모드면 테이블 자체가 이미 drop 됐으니 try 가 실패해도 무해.)
+try {
+    $pdo->exec('ALTER TABLE items DROP COLUMN svg_markup');
+    step('마이그레이션 — items.svg_markup 컬럼 제거', true, '옛 컬럼 정리 완료');
+} catch (Throwable $e) {
+    // 이미 없는 경우가 정상 (force 재설치 또는 신규 설치)
+}
+
 // 3) seed_avatar.sql
 $res = run_sql_file($pdo, __DIR__ . '/_init/seed_avatar.sql');
 step('seed_avatar.sql — 아바타 아이템 시드', $res['ok'], $res['detail']);

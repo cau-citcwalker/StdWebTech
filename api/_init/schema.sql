@@ -126,7 +126,6 @@ CREATE TABLE IF NOT EXISTS items (
     name            VARCHAR(80)        NOT NULL,
     description     VARCHAR(255)       NULL,
     slot            VARCHAR(20)        NOT NULL,
-    svg_markup      TEXT               NOT NULL,
     price           INT UNSIGNED       NOT NULL DEFAULT 0,
     rarity          VARCHAR(20)        NOT NULL DEFAULT 'common',
     sort_order      INT UNSIGNED       NOT NULL DEFAULT 0,

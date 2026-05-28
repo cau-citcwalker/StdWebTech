@@ -8,6 +8,9 @@
  *   레이어 순서 (뒤 → 앞):
  *     BASE → bottom → top → shoes → face → hair → accessory
  *
+ *   아이템 SVG fragment 는 item-assets.js 의 메모리 캐시에서 slug 로 lookup.
+ *   호출 전에 loadItemAssets(items) 를 한 번 await 해두어야 한다.
+ *
  *   ViewBox 0 0 400 600
  *
  *   주요 앵커 (아이템 SVG 디자인 시 참조):
@@ -22,6 +25,8 @@
  *     눈                cx 172 · cx 228,  cy 162
  *     입                cy 210
  * ============================================================= */
+
+import { getItemSvg } from "./item-assets.js";
 
 const LAYER_ORDER = ["BASE", "bottom", "top", "shoes", "face", "hair", "accessory"];
 
@@ -97,7 +102,7 @@ export function buildMascotSvg({ equipped = {}, items = [], size = 360, withWrap
     const id = equipped[slot];
     if (!id) return "";
     const item = itemsById.get(Number(id));
-    return item?.svg_markup ?? "";
+    return item?.slug ? getItemSvg(item.slug) : "";
   });
 
   const body = layers.join("\n");

@@ -4,6 +4,7 @@
 
 import { api } from "./api.js";
 import { renderMascotInto } from "./mascot.js";
+import { loadItemAssets } from "./item-assets.js";
 import { sfx } from "./sfx.js";
 
 const $ = (s) => document.querySelector(s);
@@ -26,6 +27,7 @@ async function init() {
     document.body.innerHTML = `<main class="container" style="padding:80px 0; text-align:center;"><h1>${res.error}</h1><p><a href="/friends.html">친구 목록으로 돌아가기</a></p></main>`;
     return;
   }
+  await loadItemAssets(res.data.items);
   render(res.data);
 }
 

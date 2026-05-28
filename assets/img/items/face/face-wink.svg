@@ -1,0 +1,8 @@
+<g>
+  <path d="M150 130 q14 -6 28 0" stroke="#3a2510" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M222 130 q14 -6 28 0" stroke="#3a2510" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M161 162 q11 -8 22 0" stroke="#3a2510" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <ellipse cx="228" cy="162" rx="11" ry="15" fill="#3a2510"/>
+  <circle cx="232" cy="156" r="4" fill="#fff"/>
+  <path d="M184 208 q16 12 32 0" stroke="#3a2510" stroke-width="4" stroke-linecap="round" fill="none"/>
+</g>

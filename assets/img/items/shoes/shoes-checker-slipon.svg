@@ -1,0 +1,16 @@
+<g>
+  <ellipse cx="184" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
+  <ellipse cx="216" cy="568" rx="26" ry="13" fill="#fff" stroke="#1f1f1f" stroke-width="3"/>
+  <g fill="#1f1f1f">
+    <rect x="162" y="560" width="6" height="6"/>
+    <rect x="174" y="560" width="6" height="6"/>
+    <rect x="168" y="566" width="6" height="6"/>
+    <rect x="180" y="566" width="6" height="6"/>
+    <rect x="194" y="560" width="6" height="6"/>
+    <rect x="206" y="560" width="6" height="6"/>
+    <rect x="200" y="566" width="6" height="6"/>
+    <rect x="212" y="566" width="6" height="6"/>
+    <rect x="222" y="560" width="6" height="6"/>
+    <rect x="228" y="566" width="6" height="6"/>
+  </g>
+</g>
