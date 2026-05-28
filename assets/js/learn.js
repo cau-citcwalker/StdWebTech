@@ -9,6 +9,7 @@
  * ============================================================= */
 
 import { api } from "./api.js";
+import { renderMascotInto } from "./mascot.js";
 
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
@@ -126,6 +127,25 @@ async function init() {
   }
 
   renderUserStats(map.data.user);
+
+  // 인사 마스코트 — 사용자의 실제 장착(outfit + hair) 반영
+  const helloMascot = $(".learn-hello__mascot");
+  if (helloMascot) {
+    try {
+      const ch = await api.get("/character/state.php");
+      if (ch.ok) {
+        const holder = document.createElement("div");
+        holder.className = "learn-hello__mascot";
+        renderMascotInto(holder, {
+          equipped: ch.data.equipped,
+          items:    ch.data.items,
+          size:     110,
+        });
+        helloMascot.replaceWith(holder);
+      }
+    } catch (_) { /* 실패해도 정적 fallback 유지 */ }
+  }
+
   const root = $("#units-root");
   if (!root) return;
 

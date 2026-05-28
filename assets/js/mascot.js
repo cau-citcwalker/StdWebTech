@@ -62,10 +62,14 @@ export function buildMascotSvg({ equipped = {}, items = [], size = 360, withWrap
   const outfitItem = equipped.outfit ? itemsById.get(Number(equipped.outfit)) : null;
   const hairItem   = equipped.hair   ? itemsById.get(Number(equipped.hair))   : null;
 
+  // hair clip 범위: y=0..360 — 정수리부터 턱 + 약간의 목까지 포함.
+  // (이전 240 은 hair 별로 살짝 다른 chin 위치 때문에 일부 머리스타일에서 턱이 잘렸음.)
+  // hair PNG 의 body(흰 탱크탑) 가 outfit body 와 좌표 정렬이 비슷해서 turtle-neck
+  // 부분만 살짝 겹치는 정도는 시각적으로 큰 차이가 안 남.
   const defs = `
     <defs>
       <clipPath id="${HAIR_CLIP_ID}">
-        <rect x="0" y="0" width="400" height="240"/>
+        <rect x="0" y="0" width="400" height="360"/>
       </clipPath>
     </defs>
   `;
