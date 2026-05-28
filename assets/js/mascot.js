@@ -1,57 +1,41 @@
 /* =============================================================
- * FinEdu — 아바타 컴포저 (휴머노이드 chibi v5 — outfit-only)
+ * FinEdu — 아바타 컴포저 (휴머노이드 chibi v6)
  *
  *   buildMascotSvg({ equipped, items, size = 360 })
  *   renderMascotInto(el, opts)
  *
- *   슬롯: outfit (단일)
- *     /assets/img/items/outfit/{slug}.jpeg
+ *   슬롯: outfit · hair
+ *     outfit (전신 painterly JPEG)  → /assets/img/items/outfit/{slug}.jpeg
+ *     hair   (전신 JPEG, 머리 부분만) → /assets/img/items/hair/{slug}.jpeg
  *
- *   ViewBox 0 0 400 600 — JPEG 들은 portrait (~0.44 비율) 이라 fit-meet 으로
- *   가로 가운데 정렬되며 좌우 약간의 여백이 생긴다.
+ *   레이어 순서 (뒤 → 앞): outfit → hair
  *
- *   outfit 이 비어 있을 땐 BASE_BODY_SVG (bald + face baked-in) 가 fallback.
- *   ensure_starter_items 가 starter outfit 을 자동 장착해주므로 평상시엔 안 보임.
+ *   hair JPEG 는 사실 base + 머리스타일이 통째로 그려진 풀바디 이미지라서,
+ *   머리 위쪽만 보이게 clip-path 로 잘라내고 mix-blend-mode: multiply 로
+ *   흰 배경을 underlying outfit 에 통과시킨다. (JPEG 라서 alpha 채널이 없음)
+ *
+ *   outfit 이 비어 있을 땐 character-base.jpeg (기본 흰옷 + bald) 가 fallback.
+ *   ensure_starter_items 가 starter outfit 을 자동 장착해주므로 평상시엔 거의 안 보임.
+ *
+ *   ViewBox 0 0 400 600 — JPEG portrait (~0.44) 이라 fit-meet 으로 가운데 정렬.
  * ============================================================= */
 
-const BASE_BODY_SVG = `
-  <ellipse cx="200" cy="586" rx="118" ry="9" fill="#000" opacity="0.10"/>
-  <path d="M168 422 Q170 500 174 562 Q188 568 196 562 Q200 500 200 422 Z"
-        fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M232 422 Q230 500 226 562 Q212 568 204 562 Q200 500 200 422 Z"
-        fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-  <ellipse cx="184" cy="570" rx="22" ry="10" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-  <ellipse cx="216" cy="570" rx="22" ry="10" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-  <path d="M128 304 Q108 360 112 428 Q120 446 138 442 Q146 392 148 332 Q146 312 138 302 Z"
-        fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M272 304 Q292 360 288 428 Q280 446 262 442 Q254 392 252 332 Q254 312 262 302 Z"
-        fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-  <circle cx="118" cy="446" r="18" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-  <circle cx="282" cy="446" r="18" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-  <path d="M130 300 Q200 290 270 300 L262 422 Q200 442 138 422 Z"
-        fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M178 268 L222 268 L218 302 L182 302 Z"
-        fill="#ffeacd" stroke="#b08570" stroke-width="4" stroke-linejoin="round"/>
-  <circle cx="200" cy="158" r="108" fill="#ffeacd" stroke="#b08570" stroke-width="5"/>
-  <ellipse cx="98" cy="170" rx="12" ry="18" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-  <ellipse cx="302" cy="170" rx="12" ry="18" fill="#ffeacd" stroke="#b08570" stroke-width="4"/>
-  <ellipse cx="138" cy="202" rx="16" ry="10" fill="#ffbcae" opacity="0.45"/>
-  <ellipse cx="262" cy="202" rx="16" ry="10" fill="#ffbcae" opacity="0.45"/>
-  <path d="M148 128 Q172 120 192 130" stroke="#3a2510" stroke-width="7" stroke-linecap="round" fill="none"/>
-  <path d="M208 130 Q228 120 252 128" stroke="#3a2510" stroke-width="7" stroke-linecap="round" fill="none"/>
-  <ellipse cx="172" cy="166" rx="18" ry="24" fill="#3a2510"/>
-  <ellipse cx="228" cy="166" rx="18" ry="24" fill="#3a2510"/>
-  <ellipse cx="178" cy="158" rx="6" ry="9" fill="#ffffff"/>
-  <ellipse cx="234" cy="158" rx="6" ry="9" fill="#ffffff"/>
-  <circle  cx="168" cy="176" r="2.5" fill="#ffffff" opacity="0.85"/>
-  <circle  cx="224" cy="176" r="2.5" fill="#ffffff" opacity="0.85"/>
-  <path d="M196 214 L200 222 L204 214" stroke="#d99088" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M188 242 Q200 246 212 242" stroke="#7a4030" stroke-width="3" fill="none" stroke-linecap="round"/>
-`;
+const BASE_IMAGE_HREF = "/assets/img/character-base.jpeg";
 
 function outfitLayer(item) {
-  if (!item?.slug) return BASE_BODY_SVG;
-  return `<image href="/assets/img/items/outfit/${item.slug}.jpeg" x="0" y="0" width="400" height="600" preserveAspectRatio="xMidYMid meet"/>`;
+  const href = item?.slug
+    ? `/assets/img/items/outfit/${item.slug}.jpeg`
+    : BASE_IMAGE_HREF;
+  return `<image href="${href}" x="0" y="0" width="400" height="600" preserveAspectRatio="xMidYMid meet"/>`;
+}
+
+function hairLayer(item) {
+  if (!item?.slug) return "";
+  // 윗부분(머리 + 약간의 얼굴) 만 보이게 잘라내고, 흰 배경은 multiply 로 통과.
+  return `<image href="/assets/img/items/hair/${item.slug}.jpeg"
+                 x="0" y="0" width="400" height="600"
+                 preserveAspectRatio="xMidYMid meet"
+                 style="clip-path: inset(0 0 60% 0); mix-blend-mode: multiply"/>`;
 }
 
 /**
@@ -60,10 +44,10 @@ function outfitLayer(item) {
  */
 export function buildMascotSvg({ equipped = {}, items = [], size = 360, withWrapper = true } = {}) {
   const itemsById = new Map((items || []).map((it) => [Number(it.id), it]));
-  const outfitId = equipped.outfit;
-  const outfitItem = outfitId ? itemsById.get(Number(outfitId)) : null;
-  const body = outfitLayer(outfitItem);
+  const outfitItem = equipped.outfit ? itemsById.get(Number(equipped.outfit)) : null;
+  const hairItem   = equipped.hair   ? itemsById.get(Number(equipped.hair))   : null;
 
+  const body = outfitLayer(outfitItem) + hairLayer(hairItem);
   if (!withWrapper) return body;
 
   return `
