@@ -1,48 +1,23 @@
 -- =============================================================
--- FinEdu — 휴머노이드 아바타 아이템 시드 (메타데이터만)
+-- FinEdu — 아바타 아이템 시드 (메타데이터만)
 --
---   슬롯: hair · face · top · bottom · shoes · accessory
---   SVG fragment 는 /assets/img/items/{slot}/{slug}.svg 에 별도 파일로 둔다.
---   이 시드는 슬러그/이름/가격/희귀도/정렬만 채운다.
+--   슬롯: outfit · accessory
+--   outfit : 풀세트 painterly JPEG → /assets/img/items/outfit/{slug}.jpeg
+--   accessory : SVG overlay → /assets/img/items/accessory/{slug}.svg
 --
---   sort_order = 0 = "비어 있는" 시드 (예: hair-bald) → 자동 장착 제외
+--   sort_order = 0 = "비어 있는" 시드 (자동 장착 제외용 sentinel)
 -- =============================================================
 
 SET NAMES utf8mb4;
 
--- ----- HAIR ---------------------------------------------------
+-- ----- OUTFIT (full set) ---------------------------------------
 INSERT INTO items (slug, name, description, slot, price, rarity, sort_order) VALUES
-  ('hair-bald',        '대머리',     '깔끔한 민머리.',           'hair',   0, 'starter', 0),
-  ('hair-black-bob',   '검은 단발',   '클래식한 검정 단발 머리.', 'hair',   0, 'starter', 1),
-  ('hair-brown-bob',   '갈색 단발',   '따뜻한 갈색 단발 머리.',   'hair',   0, 'starter', 2),
-  ('hair-blonde-pixy', '노란 픽시',   '발랄한 노랑 픽시컷.',       'hair',  30, 'common',  3),
-  ('hair-pink-twin',   '분홍 양갈래', '귀여운 분홍 양갈래.',       'hair',  60, 'rare',    4),
-  ('hair-white-long',  '백발 장발',   '신비로운 백발 장발.',       'hair', 120, 'epic',    5);
-
--- ----- TOP ----------------------------------------------------
-INSERT INTO items (slug, name, description, slot, price, rarity, sort_order) VALUES
-  ('top-white-tank',    '흰 탱크탑',    '기본 흰 탱크탑.',           'top',   0, 'starter', 1),
-  ('top-gray-tee',      '회색 티셔츠',  '편한 회색 반팔.',           'top',   0, 'starter', 2),
-  ('top-black-hoodie',  '검은 후디',    '쿨한 검정 후디.',           'top',  50, 'common',  3),
-  ('top-red-shirt',     '빨간 셔츠',    '쨍한 빨간 셔츠.',           'top',  40, 'common',  4),
-  ('top-beige-jacket',  '베이지 자켓',  '단정한 베이지 자켓.',       'top',  80, 'rare',    5),
-  ('top-gr-hoodie',     '로고 후디',    '큰 GR 로고가 새겨진 후디.', 'top', 100, 'rare',    6);
-
--- ----- BOTTOM -------------------------------------------------
-INSERT INTO items (slug, name, description, slot, price, rarity, sort_order) VALUES
-  ('bottom-white-shorts', '흰 반바지',     '기본 흰 반바지.',          'bottom',  0, 'starter', 1),
-  ('bottom-blue-jeans',   '청바지',        '편한 데님 청바지.',        'bottom',  0, 'starter', 2),
-  ('bottom-cargo',        '카고 팬츠',     '주머니 많은 카고 팬츠.',   'bottom', 40, 'common',  3),
-  ('bottom-red-trunks',   '빨간 트렁크',   '해변 분위기 빨간 트렁크.', 'bottom', 30, 'common',  4),
-  ('bottom-black-jeans',  '검정 슬림진',   '슬림한 검정 진.',          'bottom', 60, 'rare',    5);
-
--- ----- SHOES --------------------------------------------------
-INSERT INTO items (slug, name, description, slot, price, rarity, sort_order) VALUES
-  ('shoes-white-sneakers',   '흰 운동화',     '기본 흰 운동화.',                'shoes',  0, 'starter', 1),
-  ('shoes-black-sneakers',   '검정 운동화',   '깔끔한 검정 운동화.',            'shoes', 30, 'common',  2),
-  ('shoes-checker-slipon',   '체커 슬립온',   '클래식 체커보드 슬립온.',        'shoes', 60, 'common',  3),
-  ('shoes-rainbow-runners',  '무지개 런너',   '에어 쿠션이 빛나는 런닝화.',     'shoes', 90, 'rare',    4),
-  ('shoes-boots',            '워커 부츠',     '단단한 가죽 부츠.',              'shoes', 70, 'rare',    5);
+  ('outfit-cream-tee',        '로고 티 세트',   '아이보리 로고 티에 흰 반바지.',         'outfit',   0, 'starter', 1),
+  ('outfit-tank-sweats',      '탱크 + 스웻',    '흰 탱크탑에 그레이 스웻팬츠.',          'outfit',   0, 'starter', 2),
+  ('outfit-blue-shirt',       '하늘 셔츠',      '오버핏 라이트 블루 셔츠 + 흰 반바지.',  'outfit',  50, 'common',  3),
+  ('outfit-black-pants',      '블랙 슬랙스',    '흰 탱크탑에 깔끔한 블랙 팬츠.',         'outfit',  60, 'common',  4),
+  ('outfit-gray-hoodie',      '그레이 후디',    '집업 후디 + 흰 반바지의 댄디 룩.',      'outfit', 100, 'rare',    5),
+  ('outfit-blue-jeans',       '데님 룩',        '흰 탱크탑 + 워싱 청바지.',              'outfit',  80, 'rare',    6);
 
 -- ----- ACCESSORY ----------------------------------------------
 INSERT INTO items (slug, name, description, slot, price, rarity, sort_order) VALUES

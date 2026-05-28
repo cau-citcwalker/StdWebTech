@@ -16,12 +16,14 @@ let loaded = false;
 
 /**
  * @param {Array<{slug:string, slot:string}>} items
+ *
+ *   outfit 슬롯은 JPEG 라서 fetch 안 하고 mascot.js 가 <image href> 로 직접 참조.
+ *   accessory 슬롯만 .svg fragment 를 미리 메모리에 캐싱한다.
  */
 export async function loadItemAssets(items) {
   if (loaded) return;
   const targets = (items || [])
-    .filter((it) => it && it.slug && it.slot)
-    .map((it) => ({ slug: it.slug, slot: it.slot }));
+    .filter((it) => it && it.slug && it.slot === "accessory");
 
   await Promise.all(targets.map(async ({ slug, slot }) => {
     if (cache.has(slug)) return;
