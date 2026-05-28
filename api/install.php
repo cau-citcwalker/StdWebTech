@@ -144,11 +144,13 @@ try {
     // 이미 없는 경우가 정상 (force 재설치 또는 신규 설치)
 }
 
-// 2.55) 마이그레이션 — 슬롯 시스템 단순화: hair/top/bottom/shoes/face 전부 outfit 한 슬롯으로 흡수.
-//       기존 그 슬롯들의 아이템과 연관 행 정리.
-//       (force 모드면 items 테이블 자체가 drop 된 상태라 try 가 NOP 으로 끝남.)
+// 2.55) 마이그레이션 — 슬롯 시스템 outfit 단일로 축소.
+//       hair/top/bottom/shoes/face 는 이전 PR 에서 outfit 으로 흡수됐고, accessory 도
+//       이번에 제거되어 SVG overlay 자체를 더 이상 사용하지 않음.
+//       이 슬롯들에 매여 있던 items / user_equipment / user_items 전부 정리.
+//       (force 모드면 items 테이블이 drop 된 상태라 try 가 NOP 으로 끝남.)
 try {
-    $deadSlots = "'face','hair','top','bottom','shoes'";
+    $deadSlots = "'face','hair','top','bottom','shoes','accessory'";
     $oldIds = $pdo->query("SELECT id FROM items WHERE slot IN ($deadSlots)")->fetchAll(PDO::FETCH_COLUMN);
     if ($oldIds) {
         $in = implode(',', array_map('intval', $oldIds));

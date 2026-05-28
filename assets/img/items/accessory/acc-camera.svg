@@ -1,8 +1,0 @@
-<g>
-  <line x1="180" y1="270" x2="166" y2="350" stroke="#5a3a1a" stroke-width="3"/>
-  <line x1="220" y1="270" x2="234" y2="350" stroke="#5a3a1a" stroke-width="3"/>
-  <rect x="160" y="340" width="80" height="54" rx="8" fill="#1f1f1f" stroke="#000" stroke-width="3"/>
-  <circle cx="200" cy="368" r="18" fill="#444" stroke="#000" stroke-width="3"/>
-  <circle cx="200" cy="368" r="10" fill="#222"/>
-  <rect x="222" y="346" width="10" height="6" rx="1" fill="#666"/>
-</g>
