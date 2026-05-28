@@ -63,7 +63,7 @@
   aspect-ratio: 2 / 3;
 }
 .auth-illustration svg,
-.auth-illustration img { width: 100%; height: 100%; animation: bob-soft 5s ease-in-out infinite; }
+.auth-illustration img { width: 100%; height: 100%; object-fit: contain; animation: bob-soft 5s ease-in-out infinite; }
 @keyframes bob-soft {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-10px); }
