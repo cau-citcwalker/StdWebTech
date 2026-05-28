@@ -56,15 +56,15 @@
 
 (async function syncHeaderAuth() {
   /**
-   * 로그인된 사용자가 비-보호 페이지(예: 메인) 헤더에 와도
-   * 여전히 "로그인 / 무료 시작" 이 뜨는 문제 해결.
-   * actions 안에 /login.html 링크가 있으면 (= 로그아웃 상태 헤더로 판정)
-   * me.php 결과에 따라 actions 를 교체.
+   * 헤더의 .site-nav__actions 를 로그인 상태에 맞춰 동기화.
+   *   - 로그인 상태:  "학습 계속 / 로그아웃" 으로 무조건 교체
+   *                  (메인엔 로그인/회원가입 링크가 있고, 옷장·마켓·프로필
+   *                   같은 보호 페이지엔 빈 div 만 있어서 그동안 로그아웃
+   *                   버튼이 거기엔 안 떴음.)
+   *   - 로그아웃 상태: 손대지 않음 (메인에 있던 로그인/회원가입 그대로)
    */
   const actions = document.querySelector(".site-header__inner .site-nav__actions");
   if (!actions) return;
-  const loginLink = actions.querySelector('a[href="/login.html"]');
-  if (!loginLink) return;
 
   let me;
   try {
@@ -81,7 +81,7 @@
   `;
   actions.querySelector("#header-logout").addEventListener("click", async () => {
     await fetch("/api/auth/logout.php", { method: "POST", credentials: "same-origin" });
-    location.reload();
+    location.href = "/";
   });
 })();
 
