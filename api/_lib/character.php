@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-const ITEM_SLOTS = ['outfit'];
+const ITEM_SLOTS = ['outfit', 'hair'];
 
 function list_items(): array
 {

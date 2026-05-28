@@ -150,13 +150,29 @@ try {
 //       이 슬롯들에 매여 있던 items / user_equipment / user_items 전부 정리.
 //       (force 모드면 items 테이블이 drop 된 상태라 try 가 NOP 으로 끝남.)
 try {
-    $deadSlots = "'face','hair','top','bottom','shoes','accessory'";
-    $oldIds = $pdo->query("SELECT id FROM items WHERE slot IN ($deadSlots)")->fetchAll(PDO::FETCH_COLUMN);
+    // 옛 SVG 기반 슬롯 (face/top/bottom/shoes/accessory) 와 옛 SVG hair 아이템 정리.
+    // hair 슬롯은 이번 PR 에서 JPEG 로 재도입되었지만 슬러그가 새 것 (예: hair-black-bowl)
+    // 이라 옛 hair-* (예: hair-pink-twin) 슬러그는 신규 시드에 없어 그대로 둬도 무해.
+    // 그래도 확실하게 옛 SVG-스타일 hair 들 (가격/이름 호환 안 됨) 도 같이 청소.
+    $deadSlots = "'face','top','bottom','shoes','accessory'";
+    $oldIds = $pdo->query(
+        "SELECT id FROM items
+         WHERE slot IN ($deadSlots)
+            OR (slot = 'hair' AND slug NOT IN (
+                'hair-bald','hair-black-bowl','hair-brown-sidepart','hair-black-messy',
+                'hair-brown-swept','hair-black-spiky','hair-black-flat',
+                'hair-brown-shaggy','hair-brown-long'
+            ))"
+    )->fetchAll(PDO::FETCH_COLUMN);
     if ($oldIds) {
         $in = implode(',', array_map('intval', $oldIds));
-        $pdo->exec("DELETE FROM user_equipment WHERE slot IN ($deadSlots)");
+        $pdo->exec("DELETE FROM user_equipment WHERE item_id IN ($in)");
         $pdo->exec("DELETE FROM user_items WHERE item_id IN ($in)");
-        $pdo->exec("DELETE FROM items WHERE slot IN ($deadSlots)");
+        $pdo->exec("DELETE FROM items WHERE id IN ($in)");
+    }
+    // 죽은 슬롯에 매여 있던 잔여 장착 행도 확실히 제거
+    $pdo->exec("DELETE FROM user_equipment WHERE slot IN ($deadSlots)");
+    if ($oldIds) {
         step('마이그레이션 — 옛 슬롯 정리', true, count($oldIds) . '개 아이템 + 관계 행 삭제');
     }
 } catch (Throwable $e) {

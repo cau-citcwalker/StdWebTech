@@ -13,6 +13,7 @@ import { buildMascotSvg, renderMascotInto } from "./mascot.js";
 
 const SLOTS = [
   { key: "outfit", label: "옷차림" },
+  { key: "hair",   label: "머리" },
 ];
 
 const state = {
