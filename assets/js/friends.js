@@ -5,6 +5,7 @@
 import { api } from "./api.js";
 import { sfx } from "./sfx.js";
 import { buildMascotSvg } from "./mascot.js";
+import { loadItemAssets } from "./item-assets.js";
 
 const TABS = [
   { key: "friends",  label: "내 친구" },
@@ -36,7 +37,10 @@ async function load() {
   // 카탈로그가 없으면 한 번만 받아옴 (마스코트 합성용)
   if (state.catalog.length === 0) {
     const c = await api.get("/character/state.php");
-    if (c.ok) state.catalog = c.data.items;
+    if (c.ok) {
+      state.catalog = c.data.items;
+      await loadItemAssets(state.catalog);
+    }
   }
   renderTabs();
   renderList();

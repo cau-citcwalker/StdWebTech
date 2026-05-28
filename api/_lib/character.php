@@ -16,7 +16,7 @@ const ITEM_SLOTS = ['hair', 'face', 'top', 'bottom', 'shoes', 'accessory'];
 function list_items(): array
 {
     $rows = db()->query(
-        'SELECT id, slug, name, description, slot, svg_markup, price, rarity, sort_order
+        'SELECT id, slug, name, description, slot, price, rarity, sort_order
          FROM items
          ORDER BY slot, sort_order, id'
     )->fetchAll();
@@ -59,7 +59,7 @@ function ensure_starter_items(int $userId): void
     )->execute([':u' => $userId]);
 
     // 2) 각 슬롯에 아직 아무것도 장착돼있지 않으면, 그 슬롯의 starter 첫 번째를 자동 장착.
-    //    의도적으로 빈 마크업인 starter (예: '대머리') 는 제외해서 처음부터 옷이 입혀진 상태로.
+    //    sort_order = 0 은 "비어있는" 시드 (예: hair-bald) 라서 제외 — 처음부터 옷 입은 상태로.
     foreach (ITEM_SLOTS as $slot) {
         $hasEq = db()->prepare(
             "SELECT 1 FROM user_equipment WHERE user_id = :u AND slot = :s LIMIT 1"
@@ -69,7 +69,7 @@ function ensure_starter_items(int $userId): void
 
         $pick = db()->prepare(
             "SELECT id FROM items
-             WHERE rarity = 'starter' AND slot = :s AND svg_markup <> ''
+             WHERE rarity = 'starter' AND slot = :s AND sort_order > 0
              ORDER BY sort_order ASC, id ASC
              LIMIT 1"
         );

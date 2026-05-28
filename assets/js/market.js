@@ -9,6 +9,7 @@
 import { api } from "./api.js";
 import { sfx } from "./sfx.js";
 import { buildMascotSvg } from "./mascot.js";
+import { loadItemAssets } from "./item-assets.js";
 
 const SLOTS = [
   { key: "all",       label: "전체" },
@@ -170,6 +171,8 @@ async function init() {
   state.owned = new Set(res.data.owned);
   setCoins(res.data.coins ?? 0);
   state.user  = res.data.user;
+
+  await loadItemAssets(state.items);
 
   renderTabs();
   renderGrid();

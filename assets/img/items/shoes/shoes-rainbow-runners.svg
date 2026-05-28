@@ -1,0 +1,8 @@
+<g>
+  <ellipse cx="184" cy="568" rx="28" ry="14" fill="#1f1f1f" stroke="#000" stroke-width="3"/>
+  <ellipse cx="216" cy="568" rx="28" ry="14" fill="#1f1f1f" stroke="#000" stroke-width="3"/>
+  <path d="M158 572 q12 8 26 0" stroke="#58cc02" stroke-width="3" fill="none"/>
+  <path d="M190 572 q12 8 26 0" stroke="#58cc02" stroke-width="3" fill="none"/>
+  <path d="M160 566 q12 -4 24 0" stroke="#ff4b4b" stroke-width="2" fill="none"/>
+  <path d="M192 566 q12 -4 24 0" stroke="#1cb0f6" stroke-width="2" fill="none"/>
+</g>

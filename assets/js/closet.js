@@ -10,6 +10,7 @@
 import { api } from "./api.js";
 import { sfx } from "./sfx.js";
 import { buildMascotSvg, renderMascotInto } from "./mascot.js";
+import { loadItemAssets } from "./item-assets.js";
 
 const SLOTS = [
   { key: "hair",      label: "머리" },
@@ -154,6 +155,8 @@ async function init() {
   state.equipped = res.data.equipped || {};
   state.coins    = res.data.coins ?? 0;
   state.user     = res.data.user;
+
+  await loadItemAssets(state.items);
 
   if (nameEl)  nameEl.textContent = state.user?.display_name ?? "내 캐릭터";
   if (coinsEl) coinsEl.textContent = state.coins.toLocaleString("ko-KR");
