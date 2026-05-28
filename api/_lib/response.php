@@ -43,7 +43,40 @@ function read_json_body(): array
 
 function current_user_id(): ?int
 {
-    return isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
+    static $verified = false;
+    static $resolved = null;
+    if ($verified) return $resolved;
+    $verified = true;
+
+    if (!isset($_SESSION['user_id'], $_SESSION['session_token'])) {
+        return $resolved = null;
+    }
+
+    $uid   = (int)$_SESSION['user_id'];
+    $token = (string)$_SESSION['session_token'];
+
+    // 세션의 user_id 가 가리키는 계정이 아직 DB 에 있고, 그 계정의 session_token 이
+    // 세션이 기억하는 토큰과 일치할 때만 인증 통과. 한쪽이라도 어긋나면 phantom-session
+    // (예: DB 재설치 후 같은 user_id 재발급) 으로 보고 즉시 무효화한다.
+    $stmt = db()->prepare('SELECT session_token FROM users WHERE id = :id LIMIT 1');
+    $stmt->execute([':id' => $uid]);
+    $dbToken = $stmt->fetchColumn();
+
+    if ($dbToken === false || !hash_equals((string)$dbToken, $token)) {
+        $_SESSION = [];
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(), '', time() - 42000,
+                $params['path'], $params['domain'] ?? '',
+                $params['secure'], $params['httponly']
+            );
+        }
+        @session_destroy();
+        return $resolved = null;
+    }
+
+    return $resolved = $uid;
 }
 
 function require_login(): int
