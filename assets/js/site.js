@@ -85,51 +85,6 @@
   });
 })();
 
-(function initSfxToggle() {
-  /**
-   * 사운드 토글 버튼을 헤더에 자동 주입. `localStorage.finedu.sound` 와 동기화.
-   * (실제 효과음 합성은 sfx.js 가 같은 키를 읽어서 처리)
-   */
-  const LS_KEY = "finedu.sound";
-  const header = document.querySelector(".site-header__inner, .auth-header__inner, .lesson-top__inner");
-  if (!header) return;
-  if (header.querySelector(".sfx-toggle")) return;
-
-  let on = (() => {
-    const v = localStorage.getItem(LS_KEY);
-    return v === null ? true : v === "true";
-  })();
-
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "sfx-toggle";
-  btn.setAttribute("aria-pressed", on ? "true" : "false");
-  btn.setAttribute("aria-label", "효과음 켜기/끄기");
-
-  const ICON_ON  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4a1 1 0 0 0 1 1h3l4 4V5L7 9H4a1 1 0 0 0-1 1Z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M19 6a8 8 0 0 1 0 12"/></svg>`;
-  const ICON_OFF = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4a1 1 0 0 0 1 1h3l4 4V5L7 9H4a1 1 0 0 0-1 1Z"/><line x1="17" y1="9" x2="23" y2="15"/><line x1="23" y1="9" x2="17" y2="15"/></svg>`;
-  const render = () => {
-    btn.innerHTML = on ? ICON_ON : ICON_OFF;
-    btn.setAttribute("aria-pressed", on ? "true" : "false");
-  };
-  render();
-
-  btn.addEventListener("click", () => {
-    on = !on;
-    localStorage.setItem(LS_KEY, on ? "true" : "false");
-    render();
-    if (window.toast) window.toast(on ? "효과음 켰어요" : "효과음 껐어요");
-  });
-
-  // 헤더 우측에 자리 잡기
-  const actions = header.querySelector(".site-nav__actions");
-  if (actions) {
-    actions.insertBefore(btn, actions.firstChild);
-  } else {
-    header.appendChild(btn);
-  }
-})();
-
 (function initNotifBell() {
   /**
    * 헤더에 알림 벨 자동 주입.

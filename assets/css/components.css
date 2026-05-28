@@ -484,23 +484,6 @@
 }
 
 /* -------------------------------------------------------------
- * 사운드 토글 (헤더 우상단)
- * ------------------------------------------------------------- */
-.sfx-toggle {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  background: var(--color-bg-soft);
-  color: var(--color-text-soft);
-  transition: background var(--dur-fast) var(--ease-out-soft), color var(--dur-fast) var(--ease-out-soft);
-}
-.sfx-toggle:hover { background: var(--color-bg-muted); color: var(--color-text); }
-.sfx-toggle svg { width: 18px; height: 18px; }
-.sfx-toggle[aria-pressed="false"] { color: var(--color-text-muted); }
-
-/* -------------------------------------------------------------
  * 알림 벨 + 드롭다운
  * ------------------------------------------------------------- */
 .notif-host { position: relative; display: inline-block; }
