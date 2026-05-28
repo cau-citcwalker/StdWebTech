@@ -23,19 +23,19 @@ INSERT INTO items (slug, name, description, slot, svg_markup, price, rarity, sor
   ('hair-bald',  '대머리',     '깔끔한 민머리.',           'hair', '', 0, 'starter', 0),
 
   ('hair-black-bob', '검은 단발', '클래식한 검정 단발 머리.', 'hair',
-   '<path d="M92 158 A108 108 0 0 1 308 158 Q300 178 282 172 Q254 146 222 144 Q200 148 178 144 Q146 146 118 172 Q100 178 92 158 Z" fill="#1f1f1f"/>',
+   '<path d="M92 158 A108 108 0 0 1 308 158 Q304 174 296 180 Q260 146 200 150 Q140 146 104 180 Q96 174 92 158 Z" fill="#1f1f1f"/>',
    0, 'starter', 1),
 
   ('hair-brown-bob', '갈색 단발', '따뜻한 갈색 단발 머리.', 'hair',
-   '<path d="M92 158 A108 108 0 0 1 308 158 Q300 178 282 172 Q254 146 222 144 Q200 148 178 144 Q146 146 118 172 Q100 178 92 158 Z" fill="#7a4a1a"/>',
+   '<path d="M92 158 A108 108 0 0 1 308 158 Q304 174 296 180 Q260 146 200 150 Q140 146 104 180 Q96 174 92 158 Z" fill="#7a4a1a"/>',
    0, 'starter', 2),
 
   ('hair-blonde-pixy', '노란 픽시', '발랄한 노랑 픽시컷.', 'hair',
-   '<path d="M92 158 A108 108 0 0 1 308 158 Q296 170 278 164 Q252 142 222 142 Q200 146 178 142 Q148 142 122 164 Q104 170 92 158 Z" fill="#ffd14d"/>',
+   '<path d="M92 158 A108 108 0 0 1 308 158 Q300 170 286 172 Q252 140 200 144 Q148 140 114 172 Q100 170 92 158 Z" fill="#ffd14d"/>',
    30, 'common', 3),
 
   ('hair-pink-twin', '분홍 양갈래', '귀여운 분홍 양갈래.', 'hair',
-   '<g><path d="M92 158 A108 108 0 0 1 308 158 Q300 178 282 172 Q254 146 222 144 Q200 148 178 144 Q146 146 118 172 Q100 178 92 158 Z" fill="#ff86d0"/><ellipse cx="80" cy="232" rx="22" ry="44" fill="#ff86d0" stroke="#c43a73" stroke-width="3"/><ellipse cx="320" cy="232" rx="22" ry="44" fill="#ff86d0" stroke="#c43a73" stroke-width="3"/></g>',
+   '<g><path d="M92 158 A108 108 0 0 1 308 158 Q304 174 296 180 Q260 146 200 150 Q140 146 104 180 Q96 174 92 158 Z" fill="#ff86d0"/><ellipse cx="80" cy="232" rx="22" ry="44" fill="#ff86d0" stroke="#c43a73" stroke-width="3"/><ellipse cx="320" cy="232" rx="22" ry="44" fill="#ff86d0" stroke="#c43a73" stroke-width="3"/></g>',
    60, 'rare', 4),
 
   ('hair-white-long', '백발 장발', '신비로운 백발 장발.', 'hair',
