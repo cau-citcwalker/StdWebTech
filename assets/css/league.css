@@ -145,7 +145,7 @@ body { background: var(--color-bg-soft); }
   text-align: center;
   color: var(--color-text-soft);
 }
-.lb-empty img { width: 120px; height: 180px; margin: 0 auto var(--space-3); }
+.lb-empty img { width: 120px; height: 180px; margin: 0 auto var(--space-3); object-fit: contain; }
 
 @media (max-width: 720px) {
   .my-league {

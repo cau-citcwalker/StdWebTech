@@ -224,7 +224,7 @@ body { background: var(--color-bg-soft); }
   text-align: center;
   animation: q-in 480ms var(--ease-out-bounce) both;
 }
-.done-card__mascot { width: 150px; height: 225px; margin: 0 auto; }
+.done-card__mascot { width: 150px; height: 225px; margin: 0 auto; object-fit: contain; }
 .done-card__title  { margin-top: var(--space-4); font-size: var(--fs-30); }
 .done-card__sub    { margin-top: var(--space-3); color: var(--color-text-soft); }
 

@@ -64,6 +64,7 @@
 .learn-hello__mascot {
   width: 110px;
   height: 165px;
+  object-fit: contain;
   animation: bob-soft 5s ease-in-out infinite;
 }
 @media (max-width: 720px) {
@@ -231,7 +232,7 @@
   place-items: center;
   gap: var(--space-3);
 }
-.learn-empty img { width: 140px; height: 140px; }
+.learn-empty img { width: 140px; height: 140px; object-fit: contain; }
 .learn-empty h2 { font-size: var(--fs-24); }
 .learn-empty p { color: var(--color-text-soft); }
 
