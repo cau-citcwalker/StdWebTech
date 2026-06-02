@@ -8,11 +8,11 @@
 
 const CATEGORIES = [
   { key: "all",    label: "전체" },
-  { key: "stock",  label: "주식" },
+  { key: "stock",  label: "경제" },
   { key: "market", label: "시장" },
   { key: "basic",  label: "기초" },
   { key: "macro",  label: "거시" },
-  { key: "asset",  label: "자산" },
+  { key: "asset",  label: "금융" },
   { key: "tax",    label: "세금·연금" },
 ];
 
