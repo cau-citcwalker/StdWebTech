@@ -71,7 +71,6 @@ function renderGrid() {
           ${previewFor(it)}
         </div>
         <h3 class="market-card__title">${it.name}</h3>
-        <p class="market-card__desc">${it.description ?? ""}</p>
         ${isFree ? "" : `
           <div class="market-card__price">
             <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9" fill="#ffd14d"/><text x="12" y="16" font-size="11" font-weight="800" text-anchor="middle" fill="#7a5300">₩</text></svg>

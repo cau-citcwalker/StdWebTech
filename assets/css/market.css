@@ -43,7 +43,6 @@ body { background: var(--color-bg-soft); }
   .market-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-3); }
   .market-card { padding: var(--space-3); }
   .market-card__title { font-size: var(--fs-14); }
-  .market-card__desc { font-size: var(--fs-12); min-height: 28px; }
   .market-tabs { gap: 6px; }
   .market-tab { padding: 8px 12px; font-size: var(--fs-13); }
   .modal { padding: var(--space-6); }
@@ -117,7 +116,6 @@ body { background: var(--color-bg-soft); }
 .market-card__rarity--epic    { color: #5b1a8a; }
 
 .market-card__title { margin-top: var(--space-3); font-size: var(--fs-16); font-weight: var(--fw-black); }
-.market-card__desc  { margin-top: 4px; color: var(--color-text-soft); font-size: var(--fs-13); min-height: 32px; }
 
 .market-card__price {
   margin-top: var(--space-3);
