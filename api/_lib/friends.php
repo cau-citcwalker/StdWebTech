@@ -39,6 +39,5 @@ function friend_summary_row(array $u): array
         'display_name' => $u['display_name'],
         'xp'           => (int)$u['xp'],
         'streak_days'  => (int)$u['streak_days'],
-        'outfit_slug'  => $u['outfit_slug'] ?? null,
     ];
 }

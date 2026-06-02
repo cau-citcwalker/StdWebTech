@@ -53,11 +53,11 @@ function renderTabs() {
   });
 }
 
-function avatarFor(user) {
-  // list.php 가 친구별 outfit slug 를 같이 내려주므로 그 JPEG 를 바로 <img> 로 박는다.
-  // 옷차림이 비어 있으면 기본 cream-tee 로 fallback.
-  const slug = user?.outfit_slug || "outfit-cream-tee";
-  return `<img src="/assets/img/items/outfit/${slug}.png" alt="">`;
+function avatarFor(_user) {
+  // 슬롯이 hair/top/bottom 으로 분리된 이후로 친구 카드에는 합성을 안 하고
+  // 모두 기본 캐릭터 그림으로 통일. (필요해지면 list.php 에서 3개 슬러그를
+  // 같이 내려보내고 buildMascotSvg 로 합성하면 됨.)
+  return `<img src="/assets/img/character-base.png" alt="">`;
 }
 
 function friendCard(user, actionsHtml, opts = {}) {
