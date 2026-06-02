@@ -60,6 +60,8 @@ function renderTabs() {
 
 function rowHtml(row, idx) {
   const isMe = row.user_id === state.myId;
+  // 이번 주 순위는 텍스트만 — 티어 뱃지는 명예의 전당 (hall) 에서만 노출.
+  const showTier = state.tab === "hall";
   return `
     <div class="lb-row ${isMe ? "is-me" : ""}">
       <div class="lb-rank">${idx + 1}</div>
@@ -67,7 +69,9 @@ function rowHtml(row, idx) {
         <div class="lb-info__name">${row.display_name}${isMe ? " (나)" : ""}</div>
         <div class="lb-info__handle">@${row.username}</div>
       </div>
-      <span class="lb-tier" style="background: ${row.tier.color};">${tierEmoji(row.tier.key)} ${row.tier.name}</span>
+      ${showTier
+        ? `<span class="lb-tier" style="background: ${row.tier.color};">${tierEmoji(row.tier.key)} ${row.tier.name}</span>`
+        : ""}
       <div class="lb-xp">
         ${(row.weekly_xp ?? row.total_xp).toLocaleString("ko-KR")}<small>XP</small>
       </div>
