@@ -119,40 +119,42 @@
 }
 
 /* -------------------------------------------------------------
- * 카드 그리드
+ * 용어 목록 (세로 리스트)
  * ------------------------------------------------------------- */
 .terms-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 880px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .term-card {
   background: var(--color-bg-card);
   border: 2px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  transition: transform var(--dur-base) var(--ease-out-soft), box-shadow var(--dur-base) var(--ease-out-soft), border-color var(--dur-base) var(--ease-out-soft);
+  transition: border-color var(--dur-fast) var(--ease-out-soft), background var(--dur-fast) var(--ease-out-soft);
 }
 .term-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
   border-color: var(--color-border-strong);
+  background: var(--color-bg-soft);
 }
 
 .term-card__head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--space-2);
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 .term-card__name {
   margin: 0;
-  font-size: var(--fs-20);
+  font-size: var(--fs-18);
   font-weight: var(--fw-extrabold);
   letter-spacing: -0.01em;
 }
@@ -180,7 +182,7 @@
 
 .term-card__def {
   color: var(--color-text);
-  font-size: var(--fs-15);
+  font-size: var(--fs-14);
   line-height: 1.55;
   margin: 0;
 }
@@ -204,7 +206,6 @@
  * 빈 상태
  * ------------------------------------------------------------- */
 .terms-empty {
-  grid-column: 1 / -1;
   text-align: center;
   padding: var(--space-12) 0;
   color: var(--color-text-soft);
@@ -219,6 +220,6 @@
  * ------------------------------------------------------------- */
 @media (max-width: 720px) {
   .terms-shell { padding: var(--space-6) 0 var(--space-12); }
-  .terms-grid  { grid-template-columns: 1fr; }
+  .term-card   { padding: var(--space-3) var(--space-4); }
   .terms-head__title { font-size: var(--fs-24); }
 }
