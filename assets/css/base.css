@@ -152,6 +152,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* 한국어 어절(공백 기준 단어) 단위로 줄바꿈. 음절 중간에서 끊겨 "학|습" 같이
+     어색해지는 걸 방지. 컨테이너보다 긴 단일 단어는 fallback 으로 분절 가능. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 img, svg, video {
