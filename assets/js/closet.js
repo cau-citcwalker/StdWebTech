@@ -54,9 +54,11 @@ function renderTabs() {
 }
 
 function previewSvgFor(item) {
-  // 미니 미리보기: base 마스코트 + 이 아이템만 (현재 장착 무시)
+  // 미니 미리보기: 현재 장착 상태에서 이 슬롯만 후보 아이템으로 교체해서 합성.
+  // (combo-lookup 구조라 단일 슬롯만 넘기면 hair2/3 처럼 hair만 있는 경우 base 로
+  //  떨어져 미리보기 의미가 없어진다.)
   return buildMascotSvg({
-    equipped: { [item.slot]: item.id },
+    equipped: { ...state.equipped, [item.slot]: item.id },
     items: state.items,
     size: 160,
   });
