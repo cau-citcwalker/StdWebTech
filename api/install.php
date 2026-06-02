@@ -150,13 +150,11 @@ try {
 //       또 그 이전(예: face/shoes/accessory) 죽은 슬롯도 함께 청소 (idempotent).
 //       (force 모드면 items 테이블이 drop 된 상태라 try 가 NOP 으로 끝남.)
 try {
-    // 살아있는 hair 슬러그 화이트리스트 — 다른 슬러그면 옛 SVG/풀세트 잔재로 보고 제거.
-    $liveHair = "'hair-bald','hair-black-bowl','hair-brown-sidepart','hair-black-messy',"
-              . "'hair-brown-swept','hair-black-spiky','hair-black-flat',"
-              . "'hair-brown-shaggy','hair-brown-long'";
-    // 살아있는 top / bottom 슬러그 화이트리스트 — 새 시드 기준.
-    $liveTop    = "'top-cream-tee','top-tank','top-blue-shirt','top-gray-hoodie'";
-    $liveBottom = "'bottom-shorts','bottom-sweats','bottom-black-pants','bottom-blue-jeans'";
+    // 현재 살아있는 슬러그 화이트리스트 — 그 외엔 옛 잔재로 보고 제거.
+    // combo-lookup 구조로 단순화: hair/top/bottom 각 3개씩.
+    $liveHair   = "'hair-1','hair-2','hair-3'";
+    $liveTop    = "'top-1','top-2','top-3'";
+    $liveBottom = "'bottom-1','bottom-2','bottom-3'";
 
     $deadSlots = "'outfit','face','shoes','accessory'";
     $oldIds = $pdo->query(
