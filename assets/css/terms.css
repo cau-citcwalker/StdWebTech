@@ -1,0 +1,224 @@
+/* =============================================================
+ * FinEdu — 경제용어사전 (/terms.html)
+ * ============================================================= */
+
+.terms-shell {
+  padding: var(--space-10) 0 var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* -------------------------------------------------------------
+ * 헤드
+ * ------------------------------------------------------------- */
+.terms-head { text-align: center; }
+.terms-head__eyebrow {
+  display: inline-block;
+  padding: 4px 14px;
+  background: var(--color-brand-bg);
+  color: var(--color-brand-dark);
+  border-radius: var(--radius-pill);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-13);
+}
+.terms-head__title {
+  margin-top: var(--space-3);
+  font-size: clamp(var(--fs-30), 4vw, var(--fs-36));
+  letter-spacing: -0.02em;
+}
+.terms-head__title em {
+  background: linear-gradient(90deg, var(--color-brand) 0%, var(--color-accent-purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-style: normal;
+}
+.terms-head__sub {
+  margin-top: var(--space-2);
+  color: var(--color-text-soft);
+  font-size: var(--fs-15);
+}
+
+/* -------------------------------------------------------------
+ * 툴바 (검색 + 탭)
+ * ------------------------------------------------------------- */
+.terms-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: stretch;
+}
+
+.terms-search {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.terms-search svg {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+.terms-search input {
+  width: 100%;
+  padding: 14px 16px 14px 44px;
+  font-size: var(--fs-16);
+  background: var(--color-bg-soft);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  transition: border-color var(--dur-fast) var(--ease-out-soft), background var(--dur-fast) var(--ease-out-soft);
+}
+.terms-search input:hover  { border-color: var(--color-border-strong); }
+.terms-search input:focus  { outline: none; border-color: var(--color-brand); background: var(--color-bg); }
+
+.terms-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+.terms-tab {
+  padding: 8px 16px;
+  background: var(--color-bg-soft);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-14);
+  color: var(--color-text-soft);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out-soft);
+}
+.terms-tab:hover { background: var(--color-bg); border-color: var(--color-border-strong); }
+.terms-tab.is-active {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+  color: #fff;
+}
+.terms-tab__count {
+  margin-left: 6px;
+  font-weight: var(--fw-medium);
+  opacity: 0.7;
+}
+
+/* -------------------------------------------------------------
+ * 결과 카운트
+ * ------------------------------------------------------------- */
+.terms-count {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  font-weight: var(--fw-bold);
+  margin: 0;
+}
+
+/* -------------------------------------------------------------
+ * 카드 그리드
+ * ------------------------------------------------------------- */
+.terms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.term-card {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  transition: transform var(--dur-base) var(--ease-out-soft), box-shadow var(--dur-base) var(--ease-out-soft), border-color var(--dur-base) var(--ease-out-soft);
+}
+.term-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-strong);
+}
+
+.term-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.term-card__name {
+  margin: 0;
+  font-size: var(--fs-20);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -0.01em;
+}
+.term-card__name-en {
+  color: var(--color-text-soft);
+  font-size: var(--fs-13);
+  font-weight: var(--fw-medium);
+  margin-left: 6px;
+}
+
+.term-card__badge {
+  font-size: var(--fs-11);
+  font-weight: var(--fw-extrabold);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.term-card__badge--stock  { background: #ffe2ec; color: #b1325f; }
+.term-card__badge--market { background: #ddeefe; color: #1d68a8; }
+.term-card__badge--basic  { background: #fff3d1; color: #8a6315; }
+.term-card__badge--macro  { background: #e5dcff; color: #563bb7; }
+.term-card__badge--asset  { background: #d6f4dc; color: #1d6a3a; }
+.term-card__badge--tax    { background: #ffe1cf; color: #a0440a; }
+
+.term-card__def {
+  color: var(--color-text);
+  font-size: var(--fs-15);
+  line-height: 1.55;
+  margin: 0;
+}
+.term-card__example {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-soft);
+  border-left: 3px solid var(--color-brand);
+  border-radius: 8px;
+  color: var(--color-text-soft);
+  font-size: var(--fs-13);
+  line-height: 1.5;
+}
+.term-card__example::before {
+  content: "예) ";
+  font-weight: var(--fw-extrabold);
+  color: var(--color-brand-dark);
+}
+
+/* -------------------------------------------------------------
+ * 빈 상태
+ * ------------------------------------------------------------- */
+.terms-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-12) 0;
+  color: var(--color-text-soft);
+}
+.terms-empty h3 {
+  margin: var(--space-2) 0;
+  font-size: var(--fs-20);
+}
+
+/* -------------------------------------------------------------
+ * 반응형
+ * ------------------------------------------------------------- */
+@media (max-width: 720px) {
+  .terms-shell { padding: var(--space-6) 0 var(--space-12); }
+  .terms-grid  { grid-template-columns: 1fr; }
+  .terms-head__title { font-size: var(--fs-24); }
+}
