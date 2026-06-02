@@ -81,10 +81,11 @@
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-4) var(--space-6);
-  background: var(--unit-color, var(--color-brand));
+  /* DB 의 unit.color 값과 무관하게 사이트 톤(브랜드 블루 그라데이션)으로 통일 */
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-brand-darker) 100%);
   color: white;
   border-radius: var(--radius-xl);
-  box-shadow: 0 6px 0 0 color-mix(in srgb, var(--unit-color, var(--color-brand)) 70%, black 0%);
+  box-shadow: 0 6px 0 0 var(--color-brand-darker);
   margin-bottom: var(--space-8);
 }
 .unit-section__title { font-size: var(--fs-24); color: white; }
