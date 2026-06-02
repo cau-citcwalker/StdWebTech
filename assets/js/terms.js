@@ -70,7 +70,7 @@ function termMatchesQuery(t, q) {
 function termCard(t) {
   const badgeClass = `term-card__badge--${t.category}`;
   return `
-    <article class="term-card">
+    <article class="term-card" data-cat="${esc(t.category)}">
       <header class="term-card__head">
         <h2 class="term-card__name">${esc(t.term)}<span class="term-card__name-en">${esc(t.term_en || "")}</span></h2>
         <span class="term-card__badge ${badgeClass}">${esc(categoryLabel(t.category))}</span>
