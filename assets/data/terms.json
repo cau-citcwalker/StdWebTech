@@ -1,0 +1,217 @@
+[
+  {
+    "term": "주식",
+    "term_en": "Stock",
+    "category": "stock",
+    "definition": "회사의 소유권 일부를 나타내는 증권. 보유하면 의결권과 배당받을 권리가 생긴다.",
+    "example": "삼성전자 주식 1주는 삼성전자 지분의 약 60억분의 1을 보유한다는 뜻이다."
+  },
+  {
+    "term": "배당",
+    "term_en": "Dividend",
+    "category": "stock",
+    "definition": "회사가 번 이익의 일부를 주주들에게 나눠 주는 것. 보통 분기 또는 연 단위로 지급된다.",
+    "example": "현금배당 1,000원짜리 주식을 10주 가지고 있다면 1만 원의 배당금을 받는다."
+  },
+  {
+    "term": "시가총액",
+    "term_en": "Market Cap",
+    "category": "stock",
+    "definition": "회사의 주가 × 발행 주식 수. 시장에서 평가받는 회사의 전체 가치다.",
+    "example": "주가 8만 원 × 60억 주 = 시가총액 약 480조 원."
+  },
+  {
+    "term": "PER",
+    "term_en": "Price-to-Earnings Ratio",
+    "category": "stock",
+    "definition": "주가를 주당순이익(EPS)으로 나눈 값. 1원 벌 때 몇 원에 거래되는지를 본다 — 낮을수록 저평가 가능성.",
+    "example": "EPS 1만 원에 주가 15만 원이면 PER 15배."
+  },
+  {
+    "term": "EPS",
+    "term_en": "Earnings Per Share",
+    "category": "stock",
+    "definition": "회사의 순이익을 발행주식수로 나눈 값. 한 주가 일 년에 얼마를 벌어들이는지 보여 준다.",
+    "example": "순이익 1조 원 / 1억 주 = EPS 1만 원."
+  },
+  {
+    "term": "공매도",
+    "term_en": "Short Selling",
+    "category": "stock",
+    "definition": "주식을 빌려서 먼저 팔고, 가격이 내려가면 싸게 사서 갚는 거래. 하락에 베팅하는 셈.",
+    "example": "10만 원에 빌려 팔고 8만 원에 다시 사면 2만 원의 차익."
+  },
+
+  {
+    "term": "코스피",
+    "term_en": "KOSPI",
+    "category": "market",
+    "definition": "한국거래소 유가증권시장의 대표 지수. 대형 우량주 위주로 구성된다.",
+    "example": "코스피 2,600 = 1980년 1월 4일 100을 기준으로 지수 26배라는 뜻."
+  },
+  {
+    "term": "코스닥",
+    "term_en": "KOSDAQ",
+    "category": "market",
+    "definition": "기술·중소·벤처 기업 중심의 한국 주식 시장. 코스피보다 변동성이 큰 편.",
+    "example": "바이오·반도체·게임 회사들이 다수 코스닥에 상장돼 있다."
+  },
+  {
+    "term": "ETF",
+    "term_en": "Exchange-Traded Fund",
+    "category": "market",
+    "definition": "여러 주식·채권을 묶어 지수를 추종하도록 만든 펀드를 주식처럼 거래할 수 있게 만든 상품.",
+    "example": "KODEX 200 한 주를 사면 코스피200 종목 200개를 비례로 보유하는 효과."
+  },
+  {
+    "term": "지수",
+    "term_en": "Index",
+    "category": "market",
+    "definition": "특정 종목 집단의 가격 흐름을 한 숫자로 요약한 지표. 시장 전체의 분위기를 본다.",
+    "example": "S&P 500, 코스피, 다우존스, MSCI World 등."
+  },
+  {
+    "term": "변동성",
+    "term_en": "Volatility",
+    "category": "market",
+    "definition": "가격이 위·아래로 흔들리는 폭. 크면 수익도 손실도 커진다.",
+    "example": "코스닥은 코스피보다 변동성이 높아 단기 수익·손실 폭이 크다."
+  },
+  {
+    "term": "선물",
+    "term_en": "Futures",
+    "category": "market",
+    "definition": "미래 특정 시점에 정해진 가격으로 자산을 사고팔기로 약속하는 계약.",
+    "example": "코스피200 선물로 지수 하락에 미리 헤지(위험 분산)할 수 있다."
+  },
+  {
+    "term": "옵션",
+    "term_en": "Options",
+    "category": "market",
+    "definition": "미래 특정 시점에 정해진 가격으로 살(콜) / 팔(풋) '권리'를 사고파는 계약. 의무는 아니다.",
+    "example": "행사가 100원짜리 콜옵션은 주가가 100원 이상으로 가야 이익이 난다."
+  },
+
+  {
+    "term": "원금",
+    "term_en": "Principal",
+    "category": "basic",
+    "definition": "투자·예금·대출에서 처음 넣거나 빌린 금액. 이자의 기준이 된다.",
+    "example": "1년 만기 예금 100만 원의 '원금'은 그대로 100만 원."
+  },
+  {
+    "term": "이자",
+    "term_en": "Interest",
+    "category": "basic",
+    "definition": "돈을 빌려준(빌린) 대가로 주고받는 금액. 기간과 금리에 따라 결정된다.",
+    "example": "원금 100만 원, 연 3% 이자율이면 1년 후 이자 3만 원."
+  },
+  {
+    "term": "복리",
+    "term_en": "Compound Interest",
+    "category": "basic",
+    "definition": "이자에 다시 이자가 붙는 방식. 시간이 갈수록 기하급수적으로 불어난다.",
+    "example": "연 7% 복리로 10년 두면 원금은 약 2배."
+  },
+  {
+    "term": "물가",
+    "term_en": "Price Level",
+    "category": "basic",
+    "definition": "상품·서비스의 평균 가격 수준. 오르면 같은 돈으로 살 수 있는 게 줄어든다.",
+    "example": "라면 값이 800원에서 1,200원으로 오르는 것도 물가 상승의 한 예."
+  },
+
+  {
+    "term": "인플레이션",
+    "term_en": "Inflation",
+    "category": "macro",
+    "definition": "전반적인 물가가 지속적으로 오르는 현상. 화폐 가치가 떨어진다.",
+    "example": "연 인플레이션 3%면 1년 뒤 1만 원의 실질 구매력은 9,700원 수준."
+  },
+  {
+    "term": "디플레이션",
+    "term_en": "Deflation",
+    "category": "macro",
+    "definition": "물가가 지속적으로 내리는 현상. 소비·투자가 위축돼 경기 침체를 부를 수 있다.",
+    "example": "1990년대 일본의 장기 디플레이션이 대표 사례."
+  },
+  {
+    "term": "기준금리",
+    "term_en": "Base Rate",
+    "category": "macro",
+    "definition": "중앙은행이 정하는 정책 금리. 시중 금리 전체의 기준이 된다.",
+    "example": "한국은행 기준금리가 오르면 예금·대출 금리도 따라 오른다."
+  },
+  {
+    "term": "환율",
+    "term_en": "Exchange Rate",
+    "category": "macro",
+    "definition": "다른 통화와 자국 통화 사이의 교환 비율. 보통 1달러당 원화로 표시한다.",
+    "example": "USD/KRW = 1,350 — 1달러를 사려면 1,350원이 필요하다."
+  },
+  {
+    "term": "GDP",
+    "term_en": "Gross Domestic Product",
+    "category": "macro",
+    "definition": "한 나라 안에서 일정 기간 동안 생산된 모든 재화·서비스의 가치 합계. 경제 규모를 본다.",
+    "example": "한국 GDP는 2024년 기준 약 2.4조 달러."
+  },
+  {
+    "term": "양적완화",
+    "term_en": "Quantitative Easing (QE)",
+    "category": "macro",
+    "definition": "중앙은행이 채권 등 자산을 대량 매입해 시중에 돈을 푸는 정책. 경기 부양이 목적.",
+    "example": "2008 금융위기 / 코로나19 때 미 연준이 대규모 QE 실시."
+  },
+
+  {
+    "term": "자산배분",
+    "term_en": "Asset Allocation",
+    "category": "asset",
+    "definition": "주식·채권·현금·부동산 등 자산군의 비중을 어떻게 나눌지 정하는 일. 수익률의 90% 가까이를 결정한다고 알려져 있다.",
+    "example": "주식 60% / 채권 40% 같은 전통적 '6:4 포트폴리오'."
+  },
+  {
+    "term": "포트폴리오",
+    "term_en": "Portfolio",
+    "category": "asset",
+    "definition": "한 투자자가 보유한 자산들의 모음. 분산하면 위험은 줄고 안정성은 올라간다.",
+    "example": "삼성전자 + 미국 ETF + 채권 ETF + 금 — 4가지로 분산된 포트폴리오."
+  },
+  {
+    "term": "채권",
+    "term_en": "Bond",
+    "category": "asset",
+    "definition": "정부·기업이 발행하는 빚 증서. 정해진 기간 동안 이자를 받고 만기에 원금을 돌려받는다.",
+    "example": "10년 만기 국고채는 한국 정부가 발행하는 가장 안전한 채권 중 하나."
+  },
+  {
+    "term": "리스크",
+    "term_en": "Risk",
+    "category": "asset",
+    "definition": "기대한 수익에서 벗어날 가능성. 일반적으로 변동성·손실 가능성 양쪽을 포함한다.",
+    "example": "고수익을 노리면 그만큼 리스크도 커진다 — 'high risk, high return'."
+  },
+
+  {
+    "term": "ISA",
+    "term_en": "Individual Savings Account",
+    "category": "tax",
+    "definition": "여러 금융상품(주식·펀드·예금 등)을 한 계좌에 담아 운용하는 절세 계좌. 일정 한도까지 비과세·분리과세 혜택.",
+    "example": "ISA 일반형은 200만 원까지 비과세, 초과분은 9.9% 분리과세."
+  },
+  {
+    "term": "양도소득세",
+    "term_en": "Capital Gains Tax",
+    "category": "tax",
+    "definition": "자산을 사고팔아 얻은 차익에 매기는 세금. 국내 상장주식은 대주주만 과세, 해외주식은 22% 분리과세.",
+    "example": "해외주식 250만 원 초과 차익은 22% 양도세를 신고·납부한다."
+  },
+  {
+    "term": "연금저축",
+    "term_en": "Pension Savings",
+    "category": "tax",
+    "definition": "장기 노후 자금 마련용 절세 상품. 연간 납입한도 안에서 세액공제를 받을 수 있다.",
+    "example": "연금저축 + IRP 합산 900만 원까지 세액공제(13.2~16.5%) 가능."
+  }
+]
