@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-const ITEM_SLOTS = ['outfit', 'hair'];
+const ITEM_SLOTS = ['hair', 'top', 'bottom'];
 
 function list_items(): array
 {
@@ -52,36 +52,13 @@ function user_equipment(int $userId): array
 
 function ensure_starter_items(int $userId): void
 {
-    // 1) 인벤토리에 starter 전부 추가 (이미 있으면 IGNORE)
+    // starter 아이템을 인벤토리에 추가만 함 — 자동 장착은 안 함.
+    // 사용자가 처음 옷장에 들어오면 "기본 캐릭터(대머리 + 맨몸)" 상태로 시작.
+    // 옷차림은 본인이 옷장에서 직접 선택.
     db()->prepare(
         "INSERT IGNORE INTO user_items (user_id, item_id)
          SELECT :u, id FROM items WHERE rarity = 'starter'"
     )->execute([':u' => $userId]);
-
-    // 2) 각 슬롯에 아직 아무것도 장착돼있지 않으면, 그 슬롯의 starter 첫 번째를 자동 장착.
-    //    sort_order = 0 은 "비어있는" 시드 (예: hair-bald) 라서 제외 — 처음부터 옷 입은 상태로.
-    foreach (ITEM_SLOTS as $slot) {
-        $hasEq = db()->prepare(
-            "SELECT 1 FROM user_equipment WHERE user_id = :u AND slot = :s LIMIT 1"
-        );
-        $hasEq->execute([':u' => $userId, ':s' => $slot]);
-        if ($hasEq->fetchColumn() !== false) continue;
-
-        $pick = db()->prepare(
-            "SELECT id FROM items
-             WHERE rarity = 'starter' AND slot = :s AND sort_order > 0
-             ORDER BY sort_order ASC, id ASC
-             LIMIT 1"
-        );
-        $pick->execute([':s' => $slot]);
-        $itemId = $pick->fetchColumn();
-        if ($itemId) {
-            db()->prepare(
-                "INSERT IGNORE INTO user_equipment (user_id, slot, item_id)
-                 VALUES (:u, :s, :i)"
-            )->execute([':u' => $userId, ':s' => $slot, ':i' => (int)$itemId]);
-        }
-    }
 }
 
 function equip_item(int $userId, string $slot, ?int $itemId): void

@@ -144,25 +144,27 @@ try {
     // 이미 없는 경우가 정상 (force 재설치 또는 신규 설치)
 }
 
-// 2.55) 마이그레이션 — 슬롯 시스템 outfit 단일로 축소.
-//       hair/top/bottom/shoes/face 는 이전 PR 에서 outfit 으로 흡수됐고, accessory 도
-//       이번에 제거되어 SVG overlay 자체를 더 이상 사용하지 않음.
-//       이 슬롯들에 매여 있던 items / user_equipment / user_items 전부 정리.
+// 2.55) 마이그레이션 — 슬롯 시스템: hair / top / bottom 으로 분리.
+//       이전엔 outfit 단일 풀바디 슬롯이었으나, 상의·하의 따로 갈아입기를 위해 분해됨.
+//       옛 outfit 아이템들과 outfit 슬롯의 user_equipment 행 정리.
+//       또 그 이전(예: face/shoes/accessory) 죽은 슬롯도 함께 청소 (idempotent).
 //       (force 모드면 items 테이블이 drop 된 상태라 try 가 NOP 으로 끝남.)
 try {
-    // 옛 SVG 기반 슬롯 (face/top/bottom/shoes/accessory) 와 옛 SVG hair 아이템 정리.
-    // hair 슬롯은 이번 PR 에서 JPEG 로 재도입되었지만 슬러그가 새 것 (예: hair-black-bowl)
-    // 이라 옛 hair-* (예: hair-pink-twin) 슬러그는 신규 시드에 없어 그대로 둬도 무해.
-    // 그래도 확실하게 옛 SVG-스타일 hair 들 (가격/이름 호환 안 됨) 도 같이 청소.
-    $deadSlots = "'face','top','bottom','shoes','accessory'";
+    // 살아있는 hair 슬러그 화이트리스트 — 다른 슬러그면 옛 SVG/풀세트 잔재로 보고 제거.
+    $liveHair = "'hair-bald','hair-black-bowl','hair-brown-sidepart','hair-black-messy',"
+              . "'hair-brown-swept','hair-black-spiky','hair-black-flat',"
+              . "'hair-brown-shaggy','hair-brown-long'";
+    // 살아있는 top / bottom 슬러그 화이트리스트 — 새 시드 기준.
+    $liveTop    = "'top-cream-tee','top-tank','top-blue-shirt','top-gray-hoodie'";
+    $liveBottom = "'bottom-shorts','bottom-sweats','bottom-black-pants','bottom-blue-jeans'";
+
+    $deadSlots = "'outfit','face','shoes','accessory'";
     $oldIds = $pdo->query(
         "SELECT id FROM items
          WHERE slot IN ($deadSlots)
-            OR (slot = 'hair' AND slug NOT IN (
-                'hair-bald','hair-black-bowl','hair-brown-sidepart','hair-black-messy',
-                'hair-brown-swept','hair-black-spiky','hair-black-flat',
-                'hair-brown-shaggy','hair-brown-long'
-            ))"
+            OR (slot = 'hair'   AND slug NOT IN ($liveHair))
+            OR (slot = 'top'    AND slug NOT IN ($liveTop))
+            OR (slot = 'bottom' AND slug NOT IN ($liveBottom))"
     )->fetchAll(PDO::FETCH_COLUMN);
     if ($oldIds) {
         $in = implode(',', array_map('intval', $oldIds));

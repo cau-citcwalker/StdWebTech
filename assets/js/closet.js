@@ -12,8 +12,9 @@ import { sfx } from "./sfx.js";
 import { buildMascotSvg, renderMascotInto } from "./mascot.js";
 
 const SLOTS = [
-  { key: "outfit", label: "옷차림" },
-  { key: "hair",   label: "머리" },
+  { key: "hair",   label: "헤어" },
+  { key: "top",    label: "상의" },
+  { key: "bottom", label: "하의" },
 ];
 
 const state = {
@@ -22,7 +23,7 @@ const state = {
   owned: new Set(),
   equipped: {},
   coins: 0,
-  activeSlot: "hat",
+  activeSlot: "hair",
   user: null,
 };
 

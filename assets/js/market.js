@@ -12,8 +12,9 @@ import { buildMascotSvg } from "./mascot.js";
 
 const SLOTS = [
   { key: "all",    label: "전체" },
-  { key: "outfit", label: "옷차림" },
-  { key: "hair",   label: "머리" },
+  { key: "hair",   label: "헤어" },
+  { key: "top",    label: "상의" },
+  { key: "bottom", label: "하의" },
 ];
 
 const state = {
