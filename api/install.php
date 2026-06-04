@@ -281,6 +281,20 @@ try {
     step('마이그레이션 — qna_posts + qna_replies', true, 'Q&A 게시판 준비 완료');
 } catch (Throwable $e) {}
 
+// 2.92) 마이그레이션 — qna_replies.parent_reply_id (중첩 답글) + FK
+try {
+    $pdo->exec("ALTER TABLE qna_replies ADD COLUMN parent_reply_id INT UNSIGNED NULL");
+    $pdo->exec("ALTER TABLE qna_replies ADD KEY idx_replies_parent (parent_reply_id)");
+    $pdo->exec("
+        ALTER TABLE qna_replies
+        ADD CONSTRAINT fk_qna_reply_parent FOREIGN KEY (parent_reply_id)
+            REFERENCES qna_replies(id) ON DELETE CASCADE
+    ");
+    step('마이그레이션 — qna_replies.parent_reply_id', true, '중첩 답글 지원');
+} catch (Throwable $e) {
+    // 이미 있으면 무해
+}
+
 // 2.95) 마이그레이션 — 학습 캘린더 이벤트
 try {
     $pdo->exec("
