@@ -334,6 +334,64 @@
   margin-left: var(--space-3);
 }
 
+/* -------------------------------------------------------------
+ * "더보기" 드롭다운 메뉴 (비주류 링크 통합)
+ * ------------------------------------------------------------- */
+.site-nav__more { position: relative; display: inline-block; }
+.site-nav__more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-15);
+  color: var(--color-text-soft);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out-soft), color var(--dur-fast) var(--ease-out-soft);
+}
+.site-nav__more-btn:hover { background: var(--color-bg-soft); color: var(--color-text); }
+.site-nav__more-btn[aria-expanded="true"] {
+  background: var(--color-brand-bg);
+  color: var(--color-brand-dark);
+}
+.site-nav__more-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: var(--z-overlay);
+}
+.site-nav__more-menu[hidden] { display: none; }
+.site-nav__more-menu a {
+  padding: 10px 14px;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-14);
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site-nav__more-menu a:hover { background: var(--color-bg-soft); color: var(--color-brand); }
+.site-nav__more-menu hr {
+  margin: 4px 8px;
+  border: 0;
+  border-top: 1px solid var(--color-divider);
+}
+
 /* 모바일 햄버거 */
 .site-nav__toggle {
   display: none;
@@ -378,6 +436,23 @@
     gap: var(--space-2);
   }
   .site-nav__toggle { display: inline-flex; }
+
+  /* 모바일에선 "더보기" 버튼 숨기고 메뉴 펼쳐 노출 */
+  .site-nav__more { display: contents; }
+  .site-nav__more-btn { display: none; }
+  .site-nav__more-menu {
+    position: static;
+    box-shadow: none;
+    border: 0;
+    border-top: 1px solid var(--color-divider);
+    border-radius: 0;
+    padding: var(--space-2) 0 0;
+    margin-top: var(--space-2);
+    min-width: 0;
+    background: transparent;
+  }
+  .site-nav__more-menu[hidden] { display: flex; }  /* 모바일은 항상 노출 */
+  .site-nav__more-menu a { padding: 14px 14px; font-size: var(--fs-16); }
 
   /* 사용자 stats 칩 — 모바일에선 한 줄로 wrap */
   .user-stats { flex-wrap: wrap; gap: 6px; }
