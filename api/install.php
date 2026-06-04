@@ -197,6 +197,30 @@ try {
     // 이미 있는 경우가 정상 (force 재설치 또는 두 번째 실행)
 }
 
+// 2.7) 마이그레이션 — 즐겨찾기 (scrap / bookmark) 테이블
+//      학습 레슨 / 용어사전 항목을 사용자가 저장.
+//      target_type: 'lesson' | 'term'
+//      target_key:  lesson id (정수 문자열) 또는 term slug (소문자 한글/영문)
+try {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS user_scraps (
+            id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+            user_id      INT UNSIGNED       NOT NULL,
+            target_type  VARCHAR(20)        NOT NULL,
+            target_key   VARCHAR(120)       NOT NULL,
+            scraped_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            UNIQUE KEY uniq_user_scrap (user_id, target_type, target_key),
+            KEY idx_scraps_user (user_id),
+            CONSTRAINT fk_scraps_user FOREIGN KEY (user_id)
+                REFERENCES users(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    ");
+    step('마이그레이션 — user_scraps 테이블', true, '즐겨찾기 시스템 준비 완료');
+} catch (Throwable $e) {
+    // 이미 있으면 무해
+}
+
 // 3) seed_avatar.sql
 $res = run_sql_file($pdo, __DIR__ . '/_init/seed_avatar.sql');
 step('seed_avatar.sql — 아바타 아이템 시드', $res['ok'], $res['detail']);

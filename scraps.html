@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#4154f1" />
+  <title>즐겨찾기 · FinEdu</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="alternate icon" href="assets/img/favicon.ico" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+
+  <script>(function(){try{var t=localStorage.getItem("finedu-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);else if(matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.setAttribute("data-theme","dark");}catch(_){}})();</script>
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/scraps.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-logo" href="/"><span>FinEdu</span></a>
+      <button class="site-nav__toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primary-nav">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <line x1="3" y1="7"  x2="21" y2="7"  />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="17" x2="21" y2="17" />
+        </svg>
+      </button>
+      <nav id="primary-nav" class="site-nav" aria-label="주요 메뉴">
+        <a class="site-nav__link" href="/">홈</a>
+        <a class="site-nav__link" href="/learn.html">학습</a>
+        <a class="site-nav__link" href="/closet.html">옷장</a>
+        <a class="site-nav__link" href="/market.html">마켓</a>
+        <a class="site-nav__link" href="/friends.html">친구</a>
+        <a class="site-nav__link is-active" href="/profile.html">프로필</a>
+        <a class="site-nav__link" href="/league.html">리그</a>
+        <a class="site-nav__link" href="/terms.html">용어사전</a>
+        <div class="site-nav__actions"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container scraps-shell">
+    <header class="scraps-head">
+      <a class="scraps-back" href="/profile.html">← 프로필로 돌아가기</a>
+      <h1>⭐ 즐겨찾기</h1>
+      <p class="scraps-sub">중요한 레슨 · 용어를 모아 다시 보세요.</p>
+    </header>
+
+    <div class="scraps-tabs" role="tablist">
+      <button class="scraps-tab is-active" data-tab="lessons" type="button" role="tab">
+        학습 <span class="scraps-tab__count" id="count-lessons">0</span>
+      </button>
+      <button class="scraps-tab" data-tab="terms" type="button" role="tab">
+        용어 <span class="scraps-tab__count" id="count-terms">0</span>
+      </button>
+    </div>
+
+    <section id="scraps-list" class="scraps-list" aria-live="polite"></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <a class="site-logo" href="/"><span>FinEdu</span></a>
+      <p>경제와 금융을 게임처럼 배우는 곳.</p>
+      <nav class="site-footer__links" aria-label="페이지 메뉴">
+        <a href="/about.html">소개</a>
+        <a href="/how-it-works.html">진행 방식</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/terms.html">용어사전</a>
+      </nav>
+      <p class="site-footer__credit">© 2026 FinEdu</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/scraps.js"></script>
+</body>
+</html>
