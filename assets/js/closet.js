@@ -54,11 +54,10 @@ function renderTabs() {
 }
 
 function previewSvgFor(item) {
-  // 미니 미리보기: 현재 장착 상태에서 이 슬롯만 후보 아이템으로 교체해서 합성.
-  // (combo-lookup 구조라 단일 슬롯만 넘기면 hair2/3 처럼 hair만 있는 경우 base 로
-  //  떨어져 미리보기 의미가 없어진다.)
+  // 미니 미리보기: 현재 장착 상태와 무관하게 "이 아이템만 입은" 모습으로 단독 렌더.
+  // (54-PNG 풀세트라 single 슬롯도 정확한 PNG 가 존재 — hair2.png · top1.png 등)
   return buildMascotSvg({
-    equipped: { ...state.equipped, [item.slot]: item.id },
+    equipped: { [item.slot]: item.id },
     items: state.items,
     size: 160,
   });
@@ -117,6 +116,28 @@ async function doEquip(slot, itemId) {
   sfx.correct();
 }
 
+async function resetEquipment() {
+  // 세 슬롯을 순차 해제 (equip.php 는 item_id=null 이면 DELETE FROM user_equipment).
+  // 빈 슬롯도 그냥 한 번씩 호출 — 멱등.
+  const btn = document.getElementById("closet-reset");
+  if (btn) btn.disabled = true;
+  let last;
+  for (const s of SLOTS) {
+    last = await api.post("/character/equip.php", { slot: s.key, item_id: null });
+    if (!last.ok) {
+      if (window.toast) window.toast(last.error || "초기화 실패", { variant: "danger" });
+      if (btn) btn.disabled = false;
+      return;
+    }
+  }
+  state.equipped = last.data.equipped || {};
+  refreshMascot();
+  renderGrid();
+  sfx.correct();
+  if (window.toast) window.toast("기본 캐릭터로 돌아갔어요.");
+  if (btn) btn.disabled = false;
+}
+
 async function init() {
   const me = await api.get("/auth/me.php");
   if (!me.ok || !me.data?.user) {
@@ -146,6 +167,8 @@ async function init() {
   renderTabs();
   renderGrid();
   refreshMascot();
+
+  document.getElementById("closet-reset")?.addEventListener("click", resetEquipment);
 }
 
 init();
