@@ -303,3 +303,19 @@ body { background: var(--color-bg-soft); }
   0%   { transform: translateY(0) rotate(0deg); }
   100% { transform: translateY(110vh) rotate(720deg); }
 }
+
+/* 레슨 즐겨찾기 버튼 (top header) */
+.lesson-top__scrap {
+  background: transparent;
+  border: 0;
+  color: var(--color-text-muted);
+  font-size: var(--fs-24);
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out-soft), background var(--dur-fast) var(--ease-out-soft);
+}
+.lesson-top__scrap:hover  { background: var(--color-bg-soft); color: var(--color-accent-yellow-dark); }
+.lesson-top__scrap.is-on  { color: var(--color-accent-yellow); }
+.lesson-top__scrap:disabled { opacity: 0.4; cursor: not-allowed; }

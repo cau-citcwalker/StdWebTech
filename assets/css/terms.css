@@ -346,3 +346,27 @@ body { background: var(--color-bg-soft); }
 
   .terms-tab { padding: 8px 14px; font-size: var(--fs-13); }
 }
+
+/* -------------------------------------------------------------
+ * 즐겨찾기 버튼 (term card 우측)
+ * ------------------------------------------------------------- */
+.term-card__head-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+.term-card__scrap {
+  background: transparent;
+  border: 0;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: var(--fs-20);
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: var(--radius-md);
+  transition: color var(--dur-fast) var(--ease-out-soft), background var(--dur-fast) var(--ease-out-soft);
+}
+.term-card__scrap:hover { background: var(--color-bg-soft); color: var(--color-accent-yellow-dark); }
+.term-card__scrap.is-on  { color: var(--color-accent-yellow); }
+.term-card__scrap:disabled { opacity: 0.5; cursor: not-allowed; }

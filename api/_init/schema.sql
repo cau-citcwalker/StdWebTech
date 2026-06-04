@@ -197,3 +197,20 @@ CREATE TABLE IF NOT EXISTS notifications (
     KEY idx_notif_user_read (user_id, is_read, created_at),
     CONSTRAINT fk_notif_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- 즐겨찾기 (학습 / 용어)
+--   target_type: 'lesson' (target_key = lessons.id 문자열) 또는 'term' (term slug)
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS user_scraps (
+    id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+    user_id      INT UNSIGNED       NOT NULL,
+    target_type  VARCHAR(20)        NOT NULL,
+    target_key   VARCHAR(120)       NOT NULL,
+    scraped_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uniq_user_scrap (user_id, target_type, target_key),
+    KEY idx_scraps_user (user_id),
+    CONSTRAINT fk_scraps_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -322,6 +322,49 @@ async function init() {
   }
   updateProgress();
   renderQuestion();
+  initScrapButton();
+}
+
+/* -------------------------------------------------------------
+ * 즐겨찾기 토글 (헤더의 ☆ 버튼) — 이 레슨 자체를 스크랩
+ * ------------------------------------------------------------- */
+async function initScrapButton() {
+  const btn = document.getElementById("lesson-scrap");
+  if (!btn) return;
+
+  // 현재 즐겨찾기 상태 조회 (실패 시 그냥 ☆ 로 시작)
+  let on = false;
+  try {
+    const sc = await api.get("/scraps/list.php");
+    if (sc.ok) {
+      on = (sc.data.lessons || []).some((l) => Number(l.id) === lessonId);
+    }
+  } catch (_) {}
+
+  const sync = () => {
+    btn.textContent = on ? "★" : "☆";
+    btn.classList.toggle("is-on", on);
+    btn.title = on ? "즐겨찾기 해제" : "즐겨찾기에 추가";
+    btn.setAttribute("aria-label", btn.title);
+  };
+  sync();
+  btn.hidden = false;
+
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    const res = await api.post("/scraps/toggle.php", {
+      target_type: "lesson",
+      target_key: String(lessonId),
+    });
+    btn.disabled = false;
+    if (!res.ok) {
+      if (window.toast) window.toast(res.error || "저장 실패", { variant: "danger" });
+      return;
+    }
+    on = !!res.data?.scraped;
+    sync();
+    if (window.toast) window.toast(on ? "⭐ 즐겨찾기에 추가" : "즐겨찾기에서 빼냈어요");
+  });
 }
 
 init();

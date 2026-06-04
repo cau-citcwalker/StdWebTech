@@ -1,0 +1,172 @@
+/* =============================================================
+ * FinEdu — 즐겨찾기 (/scraps.html)
+ * ============================================================= */
+
+body { background: var(--color-bg-soft); }
+
+.scraps-shell {
+  padding: var(--space-8) 0 var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.scraps-head { text-align: center; }
+.scraps-back {
+  color: var(--color-text-soft);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-13);
+  text-decoration: none;
+}
+.scraps-back:hover { color: var(--color-brand); }
+.scraps-head h1 {
+  font-size: clamp(var(--fs-24), 4vw, var(--fs-36));
+  font-weight: var(--fw-black);
+  margin: var(--space-2) 0;
+}
+.scraps-sub { color: var(--color-text-soft); margin: 0; }
+
+.scraps-tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  flex-wrap: wrap;
+}
+.scraps-tab {
+  padding: 10px 18px;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-14);
+  color: var(--color-text-soft);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.scraps-tab.is-active {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+  color: #fff;
+  box-shadow: 0 3px 0 0 var(--color-brand-dark);
+}
+.scraps-tab__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-muted);
+  color: var(--color-text-soft);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-black);
+}
+.scraps-tab.is-active .scraps-tab__count {
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+}
+
+.scraps-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-4);
+  max-width: 1080px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.scrap-card {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: border-color var(--dur-fast) var(--ease-out-soft);
+}
+.scrap-card:hover { border-color: var(--color-border-strong); }
+.scrap-card--missing { opacity: 0.6; }
+
+.scrap-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.scrap-card__unit {
+  font-size: var(--fs-11);
+  font-weight: var(--fw-black);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-brand-darker);
+  background: var(--color-brand-bg);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+.scrap-card__remove {
+  background: transparent;
+  border: 0;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: var(--fs-18);
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: var(--radius-md);
+}
+.scrap-card__remove:hover { background: var(--color-bg-muted); color: var(--color-accent-red); }
+.scrap-card__remove:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.scrap-card__title {
+  margin: 0;
+  font-size: var(--fs-18);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.scrap-card__title a { color: inherit; text-decoration: none; }
+.scrap-card__title a:hover { color: var(--color-brand); }
+.scrap-card__title-en {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  font-weight: var(--fw-medium);
+  margin-left: 6px;
+}
+.scrap-card__summary {
+  margin: 0;
+  color: var(--color-text-soft);
+  font-size: var(--fs-14);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.scrap-card__foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--fs-12);
+}
+.scrap-card__time { color: var(--color-text-muted); font-weight: var(--fw-bold); }
+
+.scraps-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-16) var(--space-6);
+  background: var(--color-bg-card);
+  border: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius-2xl);
+}
+.scraps-empty h3 { margin: 0 0 var(--space-2); font-size: var(--fs-20); }
+.scraps-empty p  { color: var(--color-text-soft); margin: 0 0 var(--space-4); }
+
+@media (max-width: 720px) {
+  .scraps-shell { padding: var(--space-5) 0 var(--space-12); }
+  .scraps-list  { grid-template-columns: 1fr; }
+}

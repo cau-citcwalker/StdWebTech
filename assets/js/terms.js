@@ -3,8 +3,11 @@
  *
  *   - assets/data/terms.json 에서 용어 목록 fetch
  *   - 카테고리 탭으로 필터, 검색창으로 substring 매칭
- *   - 결과는 5개씩 페이지네이션 (한 페이지에 너무 많은 행 쌓이지 않게)
+ *   - 결과는 5개씩 페이지네이션
+ *   - 로그인 시 각 용어 옆에 ⭐ 즐겨찾기 토글 (POST /api/scraps/toggle.php)
  * ============================================================= */
+
+import { api } from "./api.js";
 
 const CATEGORIES = [
   { key: "all",    label: "전체" },
@@ -25,6 +28,8 @@ const state = {
   category: "all",
   query: "",
   page: 1,
+  scraps: new Set(),  // 내가 저장한 term slug (Korean)
+  loggedIn: false,
 };
 
 const tabsEl   = $("#terms-tabs");
@@ -72,18 +77,56 @@ function termMatchesQuery(t, q) {
   return hay.includes(q);
 }
 
+function scrapButton(t) {
+  if (!state.loggedIn) return "";
+  const on = state.scraps.has(t.term);
+  return `<button class="term-card__scrap ${on ? "is-on" : ""}"
+                  type="button"
+                  data-term="${esc(t.term)}"
+                  aria-label="${on ? "즐겨찾기 해제" : "즐겨찾기에 추가"}"
+                  title="${on ? "즐겨찾기 해제" : "즐겨찾기 추가"}">
+    ${on ? "★" : "☆"}
+  </button>`;
+}
+
 function termCard(t) {
   const badgeClass = `term-card__badge--${t.category}`;
   return `
     <article class="term-card" data-cat="${esc(t.category)}">
       <header class="term-card__head">
         <h2 class="term-card__name">${esc(t.term)}<span class="term-card__name-en">${esc(t.term_en || "")}</span></h2>
-        <span class="term-card__badge ${badgeClass}">${esc(categoryLabel(t.category))}</span>
+        <div class="term-card__head-right">
+          ${scrapButton(t)}
+          <span class="term-card__badge ${badgeClass}">${esc(categoryLabel(t.category))}</span>
+        </div>
       </header>
       <p class="term-card__def">${esc(t.definition)}</p>
       ${t.example ? `<p class="term-card__example">${esc(t.example)}</p>` : ""}
     </article>
   `;
+}
+
+async function toggleScrap(term, btn) {
+  btn.disabled = true;
+  const res = await api.post("/scraps/toggle.php", { target_type: "term", target_key: term });
+  btn.disabled = false;
+  if (!res.ok) {
+    if (window.toast) window.toast(res.error || "저장 실패", { variant: "danger" });
+    return;
+  }
+  if (res.data?.scraped) {
+    state.scraps.add(term);
+    if (window.toast) window.toast("⭐ 즐겨찾기에 추가했어요.");
+  } else {
+    state.scraps.delete(term);
+    if (window.toast) window.toast("즐겨찾기에서 뺐어요.");
+  }
+  // 버튼만 토글 (전체 re-render 안 함 — 깜빡임 방지)
+  const on = state.scraps.has(term);
+  btn.classList.toggle("is-on", on);
+  btn.textContent = on ? "★" : "☆";
+  btn.title = on ? "즐겨찾기 해제" : "즐겨찾기 추가";
+  btn.setAttribute("aria-label", btn.title);
 }
 
 function paginationButtons(current, total) {
@@ -148,6 +191,10 @@ function renderGrid() {
 
   countEl.textContent = `${filtered.length}개 중 ${start + 1}–${end}`;
   gridEl.innerHTML = slice.map(termCard).join("");
+  // 즐겨찾기 버튼 핸들러 (로그인 시에만 존재)
+  gridEl.querySelectorAll(".term-card__scrap").forEach((b) => {
+    b.addEventListener("click", () => toggleScrap(b.dataset.term, b));
+  });
 
   pagerEl.innerHTML = paginationButtons(state.page, totalPages);
   pagerEl.querySelectorAll(".terms-page:not(.terms-page--ellipsis)").forEach((btn) => {
@@ -176,6 +223,18 @@ async function init() {
   }
   // 가나다 → 사전 순으로 정렬
   state.terms.sort((a, b) => a.term.localeCompare(b.term, "ko"));
+
+  // 로그인 시 즐겨찾기 상태 미리 로드 (실패해도 그냥 logged-out 처럼 동작)
+  try {
+    const me = await api.get("/auth/me.php");
+    if (me.ok && me.data?.user) {
+      state.loggedIn = true;
+      const sc = await api.get("/scraps/list.php");
+      if (sc.ok) {
+        (sc.data.terms || []).forEach((s) => state.scraps.add(s.term_slug));
+      }
+    }
+  } catch (_) { /* 비로그인 — 그대로 진행 */ }
 
   renderTabs();
   renderGrid();
