@@ -432,3 +432,98 @@
 [data-anim-delay="2"] { transition-delay: 200ms; }
 [data-anim-delay="3"] { transition-delay: 300ms; }
 [data-anim-delay="4"] { transition-delay: 400ms; }
+
+/* -------------------------------------------------------------
+ * 페이지 hero (about / how-it-works 처럼 sub-페이지의 짧은 head)
+ * ------------------------------------------------------------- */
+.page-hero {
+  padding: var(--space-12) 0 var(--space-8);
+  background:
+    radial-gradient(80% 60% at 100% 0%, #ecf0ff 0%, transparent 60%),
+    radial-gradient(80% 70% at 0% 100%, #e6e1ff 0%, transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  text-align: center;
+}
+.page-hero__eyebrow {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--color-brand-bg);
+  color: var(--color-brand-darker);
+  border-radius: var(--radius-pill);
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-13);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.page-hero__title {
+  margin-top: var(--space-4);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: var(--fw-black);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.page-hero__title em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-accent-purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.page-hero__sub {
+  margin: var(--space-4) auto 0;
+  max-width: 52ch;
+  color: var(--color-text-soft);
+  font-size: var(--fs-16);
+  line-height: var(--lh-relaxed);
+}
+[data-theme="dark"] .page-hero {
+  background:
+    radial-gradient(80% 60% at 100% 0%, #1a2040 0%, transparent 60%),
+    radial-gradient(80% 70% at 0% 100%, #1f1a30 0%, transparent 60%),
+    linear-gradient(180deg, #14161a 0%, #16181c 100%);
+}
+
+/* -------------------------------------------------------------
+ * 학습 흐름 행 (how-it-works.html — 단원/레슨/문제)
+ * ------------------------------------------------------------- */
+.how-flow {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.how-flow__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+.how-flow__num {
+  font-size: 36px;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  background: var(--color-brand-bg);
+  border-radius: 50%;
+}
+.how-flow__title {
+  margin: 0;
+  font-size: var(--fs-18);
+  font-weight: var(--fw-extrabold);
+}
+.how-flow__desc {
+  margin: 4px 0 0;
+  color: var(--color-text-soft);
+  font-size: var(--fs-14);
+  line-height: 1.5;
+}
+@media (max-width: 720px) {
+  .how-flow__row { padding: var(--space-4); gap: var(--space-3); }
+  .how-flow__num { font-size: 28px; width: 48px; height: 48px; }
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#4154f1" />
+  <title>FinEdu 소개 · FinEdu</title>
+  <meta name="description" content="FinEdu 가 왜 만들어졌고, 어떤 학습 경험을 주는지 — 짧고 굵게 소개합니다." />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="alternate icon" href="assets/img/favicon.ico" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+
+  <script>(function(){try{var t=localStorage.getItem("finedu-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);else if(matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.setAttribute("data-theme","dark");}catch(_){}})();</script>
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/home.css" />
+</head>
+<body>
+
+  <header class="site-header" role="banner">
+    <div class="container site-header__inner">
+      <a class="site-logo" href="/"><span>FinEdu</span></a>
+      <button class="site-nav__toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primary-nav">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <line x1="3" y1="7"  x2="21" y2="7"  />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="17" x2="21" y2="17" />
+        </svg>
+      </button>
+      <nav id="primary-nav" class="site-nav" aria-label="주요 메뉴">
+        <a class="site-nav__link" href="/">홈</a>
+        <a class="site-nav__link" href="/learn.html">학습</a>
+        <a class="site-nav__link" href="/terms.html">용어사전</a>
+        <a class="site-nav__link is-active" href="/about.html">소개</a>
+        <a class="site-nav__link" href="/how-it-works.html">진행 방식</a>
+        <a class="site-nav__link" href="/faq.html">FAQ</a>
+        <div class="site-nav__actions">
+          <a class="btn btn--secondary btn--sm" href="/login.html">로그인</a>
+          <a class="btn btn--sm" href="/signup.html">무료 시작</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero" data-anim>
+      <div class="container">
+        <span class="page-hero__eyebrow">FinEdu 소개</span>
+        <h1 class="page-hero__title">금융이 어렵다는 편견은 <em>잊어버려요.</em></h1>
+        <p class="page-hero__sub">
+          FinEdu 는 경제와 금융을 한 입에 쏙 들어가는 작은 레슨으로 만들어 드려요.<br/>
+          매일 5분, 게임처럼 풀다 보면 어느새 시장의 언어가 익숙해져요.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section--soft">
+      <div class="container">
+        <header class="section__head" data-anim>
+          <span class="section__eyebrow">왜 FinEdu</span>
+          <h2 class="section__title">세 가지 약속</h2>
+        </header>
+        <div class="features">
+          <article class="card card--interactive feature" data-anim data-anim-delay="1">
+            <div class="feature__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <circle cx="12" cy="12" r="5"/>
+                <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3 class="feature__title">짧고 굵게, 5분</h3>
+            <p class="feature__desc">한 레슨은 5분이면 끝. 출근길, 점심시간, 잠들기 전 — 일상 어디에든 끼워 넣을 수 있어요.</p>
+          </article>
+
+          <article class="card card--interactive feature feature--yellow" data-anim data-anim-delay="2">
+            <div class="feature__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3 c0 4 -5 5 -5 10 a5 5 0 0 0 10 0 c0 -2 -2 -3 -3 -5 c0 3 -2 4 -2 4 z"/>
+              </svg>
+            </div>
+            <h3 class="feature__title">매일 습관, 스트릭</h3>
+            <p class="feature__desc">연속 학습 일수가 쌓이는 재미.<br />작은 보상이 자연스럽게 매일 들어오게 만들어요.</p>
+          </article>
+
+          <article class="card card--interactive feature feature--blue" data-anim data-anim-delay="3">
+            <div class="feature__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 4 h8 v3 a5 5 0 0 1 -10 0 z" />
+                <path d="M5 6 H3 v2 a4 4 0 0 0 4 4" />
+                <path d="M19 6 h2 v2 a4 4 0 0 1 -4 4" />
+                <path d="M9 14 h6 l-1 5 h-4 z"/>
+                <rect x="8" y="19" width="8" height="2" rx="1"/>
+              </svg>
+            </div>
+            <h3 class="feature__title">진짜 게임처럼</h3>
+            <p class="feature__desc">XP, 레벨, 리그.<br />성장이 눈에 보여요.<br />친구와 경쟁하고 함께 올라가는 재미까지.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <header class="section__head" data-anim>
+          <span class="section__eyebrow">우리가 다루는 것</span>
+          <h2 class="section__title">기초부터 거시까지, 차근차근.</h2>
+          <p class="section__sub">단원은 작은 노드로 이어진 길. 풀면서 다음 노드가 열려요.</p>
+        </header>
+        <div class="features">
+          <article class="card feature" data-anim>
+            <h3 class="feature__title">📈 시장과 가격</h3>
+            <p class="feature__desc">수요·공급, 변동성, 주문 종류 — 시장이 어떻게 움직이는지.</p>
+          </article>
+          <article class="card feature" data-anim data-anim-delay="1">
+            <h3 class="feature__title">💼 자산 배분</h3>
+            <p class="feature__desc">한 바구니에 담지 않기. 위험과 수익의 균형 찾기.</p>
+          </article>
+          <article class="card feature" data-anim data-anim-delay="2">
+            <h3 class="feature__title">🌍 거시 흐름</h3>
+            <p class="feature__desc">금리·물가·환율이 자산에 어떻게 영향을 주는지.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--soft">
+      <div class="container">
+        <div class="stats" data-anim>
+          <div class="stat">
+            <div class="stat__num"><span data-count="5231">0</span><small> 명</small></div>
+            <div class="stat__label">함께 배우는 학습자</div>
+          </div>
+          <div class="stat">
+            <div class="stat__num"><span data-count="18420">0</span><small> 시간</small></div>
+            <div class="stat__label">누적 레슨 시간</div>
+          </div>
+          <div class="stat">
+            <div class="stat__num"><span data-count="87">0</span><small> %</small></div>
+            <div class="stat__label">평균 출석률</div>
+          </div>
+          <div class="stat">
+            <div class="stat__num"><span data-count="96">0</span><small> 점</small></div>
+            <div class="stat__label">학습 만족도</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta" data-anim>
+          <div>
+            <h2 class="cta__title">5분으로 충분해요.</h2>
+            <p class="cta__sub">처음 한 레슨은 정말 부담 없어요. 시작이 절반.</p>
+          </div>
+          <div class="cta__actions">
+            <a class="btn btn--secondary btn--lg" href="/signup.html">가입하기</a>
+            <a class="btn btn--ghost btn--sm" href="/how-it-works.html" style="color: rgba(255,255,255,0.9);">진행 방식 보기</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container site-footer__inner">
+      <a class="site-logo" href="/"><span>FinEdu</span></a>
+      <p>경제와 금융을 게임처럼 배우는 곳.</p>
+      <nav class="site-footer__links" aria-label="페이지 메뉴">
+        <a href="/about.html">소개</a>
+        <a href="/how-it-works.html">진행 방식</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/terms.html">용어사전</a>
+      </nav>
+      <p class="site-footer__credit">© 2026 FinEdu</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/home.js"></script>
+</body>
+</html>

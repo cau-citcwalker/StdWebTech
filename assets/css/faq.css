@@ -1,0 +1,149 @@
+/* =============================================================
+ * FinEdu — FAQ 페이지
+ * ============================================================= */
+
+body { background: var(--color-bg-soft); }
+
+.faq-shell {
+  padding: var(--space-10) 0 var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.faq-head {
+  text-align: center;
+  padding: var(--space-8) var(--space-6);
+  background: linear-gradient(135deg, var(--color-brand-bg) 0%, #fffadc 100%);
+  border: 2px solid var(--color-brand-soft);
+  border-radius: var(--radius-2xl);
+}
+.faq-head__eyebrow {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--color-bg);
+  color: var(--color-brand-darker);
+  border: 1px solid var(--color-brand-soft);
+  border-radius: var(--radius-pill);
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-13);
+}
+.faq-head__title {
+  margin-top: var(--space-4);
+  font-size: clamp(var(--fs-30), 4vw, var(--fs-44));
+  font-weight: var(--fw-black);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.faq-head__title em {
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-accent-purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-style: normal;
+}
+.faq-head__sub {
+  margin: var(--space-3) auto 0;
+  max-width: 48ch;
+  color: var(--color-text-soft);
+  font-size: var(--fs-15);
+}
+
+.faq-list {
+  max-width: 880px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.faq-item {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  transition: border-color var(--dur-fast) var(--ease-out-soft);
+}
+.faq-item:hover { border-color: var(--color-border-strong); }
+.faq-item[open] {
+  border-color: var(--color-brand-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: var(--space-4) var(--space-5);
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-16);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+";
+  font-size: var(--fs-24);
+  font-weight: var(--fw-black);
+  color: var(--color-brand);
+  transition: transform var(--dur-fast) var(--ease-out-soft);
+  flex-shrink: 0;
+}
+.faq-item[open] summary::after {
+  content: "−";
+  transform: rotate(0deg);
+}
+
+.faq-item__body {
+  padding: 0 var(--space-5) var(--space-5);
+  color: var(--color-text-soft);
+  font-size: var(--fs-15);
+  line-height: 1.7;
+}
+.faq-item__body p { margin: 0; }
+.faq-item__body a {
+  color: var(--color-brand-dark);
+  font-weight: var(--fw-bold);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+.faq-cta {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--space-8) var(--space-6);
+  background: var(--color-bg-card);
+  border: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius-2xl);
+}
+.faq-cta h2 {
+  font-size: var(--fs-24);
+  margin: 0 0 var(--space-2);
+}
+.faq-cta p {
+  color: var(--color-text-soft);
+  margin: 0 0 var(--space-5);
+}
+.faq-cta__actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* 다크 모드 — 헤더 그라데이션 톤다운 */
+[data-theme="dark"] .faq-head {
+  background: linear-gradient(135deg, var(--color-brand-bg) 0%, #28241a 100%);
+  border-color: var(--color-border);
+}
+
+@media (max-width: 720px) {
+  .faq-shell { padding: var(--space-6) 0 var(--space-12); gap: var(--space-5); }
+  .faq-head  { padding: var(--space-6) var(--space-4); }
+  .faq-item summary { padding: var(--space-3) var(--space-4); font-size: var(--fs-15); }
+  .faq-item__body { padding: 0 var(--space-4) var(--space-4); font-size: var(--fs-14); }
+}
