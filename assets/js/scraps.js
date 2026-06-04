@@ -60,7 +60,7 @@ async function renderList() {
     if (state.lessons.length === 0) {
       host.innerHTML = `<div class="scraps-empty">
         <h3>아직 저장한 학습이 없어요</h3>
-        <p>레슨 풀다가 ⭐ 버튼을 누르면 여기에 모여요.</p>
+        <p>레슨 풀다가 즐겨찾기 버튼을 누르면 여기에 모여요.</p>
         <a class="btn btn--sm" href="/learn.html">학습 보러 가기</a>
       </div>`;
       return;
@@ -90,7 +90,7 @@ async function renderList() {
   if (state.terms.length === 0) {
     host.innerHTML = `<div class="scraps-empty">
       <h3>아직 저장한 용어가 없어요</h3>
-      <p>용어사전에서 ⭐ 버튼을 누르면 여기에 모여요.</p>
+      <p>용어사전에서 즐겨찾기 버튼을 누르면 여기에 모여요.</p>
       <a class="btn btn--sm" href="/terms.html">용어사전 가기</a>
     </div>`;
     return;

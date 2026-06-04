@@ -1,361 +1,93 @@
-# FinEdu — 금융·경제 학습 플랫폼
+# FinEdu
 
-> 주식, 자산 관리 등 금융·경제를 게이미피케이션 방식으로 배우는 학습 플랫폼.
-> ___ 스타일의 UX와 마스코트 캐릭터, 단계별 레슨으로 금융 리터러시를 키웁니다.
+경제·금융을 게임처럼 배우는 학습 웹사이트.
+하루 5분, 단원·레슨·문제로 풀어가는 한국어 학습 플랫폼.
 
-## 기술 스택
+## 스택
 
-- **Frontend**: 순수 HTML / CSS / JavaScript (프레임워크 없음)
-- **Backend**: PHP (InfinityFree 호환)
-- **DB**: MySQL (InfinityFree 제공)
-- **Hosting**: InfinityFree
-
-## 시작 출처
-
-이 프로젝트의 메인 페이지 메뉴바와 일부 베이스 스타일은
-[BootstrapMade 템플릿 14번 — FlexStart](https://bootstrapmade.com/flexstart-bootstrap-startup-template/)
-에서 영감을 얻어 다시 만들었습니다. 템플릿의 원본 파일은 모두 제거하고,
-구조와 네비게이션 패턴만 참고했습니다.
-
-## 진행 상황
-
-자세한 제작 과정은 각 PR과 아래 “제작 일지” 섹션을 참고하세요.
+- HTML / CSS / 바닐라 JavaScript (ES 모듈, 프레임워크 없음)
+- PHP 8 (PDO + MySQL)
+- InfinityFree 무료 호스팅에서 동작하도록 의존성 없이 작성
 
 ## 폴더 구조
 
 ```
 .
-├── api/                  PHP 백엔드 (InfinityFree 호환)
-│   ├── _init/
-│   │   └── schema.sql    InfinityFree phpMyAdmin 에 넣을 DB 스키마
-│   ├── _lib/
-│   │   ├── bootstrap.php 모든 엔드포인트의 첫 require
-│   │   ├── db.php        싱글톤 PDO
-│   │   └── response.php  JSON 응답 헬퍼
-│   ├── auth/             로그인 · 회원가입 · 로그아웃 (예정)
-│   ├── lessons/          레슨 목록 · 제출 (예정)
-│   ├── progress/         학습 진행도 (예정)
-│   ├── config.example.php  DB 설정 템플릿 (커밋됨)
-│   ├── config.php        실제 DB 설정 (.gitignore — 커밋되지 않음)
-│   └── ping.php          /api/ping.php — 서버 + DB 헬스 체크
+├── *.html                    21개 페이지 (메인/학습/옷장/마켓/친구/리그/프로필 등)
+├── api/
+│   ├── _init/                schema.sql · seed.sql · seed_avatar.sql
+│   ├── _lib/                 bootstrap / auth / db / response / character / coins / league / friends / notify
+│   ├── auth/                 signup · login · logout · me
+│   ├── account/              username · email · password · 회원 탈퇴
+│   ├── learn/                map · lesson · grade · submit
+│   ├── character/            state · equip
+│   ├── market/               buy
+│   ├── me/                   overview
+│   ├── friends/              list · request · accept · decline · remove · profile
+│   ├── league/               leaderboard
+│   ├── calendar/             month · event_create · event_update · event_delete · friends_month
+│   ├── qna/                  list · create · get · update · delete · reply · reply_update · reply_delete
+│   ├── reviews/              list · create · update · delete · like_toggle
+│   ├── scraps/               toggle · list
+│   ├── install.php           원샷 설치 (?force=1&confirm=RESET 으로 재설치)
+│   ├── ping.php              헬스 체크
+│   └── config.example.php    실 자격증명은 config.php (gitignore)
 ├── assets/
-│   ├── css/
-│   │   ├── base.css       디자인 토큰 · 리셋 · 타이포
-│   │   └── components.css 버튼 · 카드 · 입력 · 헤더 · 토스트
-│   ├── js/
-│   │   ├── api.js         JSON fetch 래퍼
-│   │   └── site.js        헤더 스크롤 · 모바일 네비 · 토스트
-│   └── img/
-├── .htaccess              URL 깔끔화 + 정적 캐싱 + 설정 파일 차단
-├── .gitignore
+│   ├── css/                  base · components + 페이지별
+│   ├── js/                   api · site · 페이지별 모듈
+│   └── img/                  파비콘 · character-base.png · items/combos/
+├── .htaccess                 URL rewrite + 정적 캐싱 + config.php 차단
 └── README.md
 ```
 
+## 페이지
+
+| 공개 | 로그인 필요 |
+|---|---|
+| `/` 메인 · `about` · `how-it-works` · `faq` · `terms` 용어사전 · `qna` Q&A · `reviews` 리뷰 · `login` · `signup` | `learn` 학습 · `lesson` 풀이 · `closet` 옷장 · `market` 마켓 · `friends` / `friend` · `league` · `profile` · `calendar` · `scraps` · `settings` |
+
+헤더 nav 는 로그인 상태에 따라 자동 숨김 (`<html data-auth="no">` + CSS).
+다크/라이트 + auth 상태는 `localStorage` + `storage`/`pageshow` 이벤트로 탭 간 동기화.
+
+## 캐릭터
+
+`hair`, `top`, `bottom` 세 슬롯, 각 3 종. 마켓에서 코인으로 구매.
+렌더는 미리 합성된 PNG 1 장: `assets/img/items/combos/hair{H}+top{T}+pants{P}.png`.
+부분 장착은 페어 PNG (`hair1+top1.png` / `hair1+pants1.png`) 로 폴백,
+hair 만 또는 미장착이면 `character-base.png`.
+
+## 게임 메커닉
+
+- **XP**: 첫 통과 정해진 양 + 재도전은 절반
+- **코인**: 첫 통과 10, 재도전 3, 스트릭 7 배수 보너스 50
+- **스트릭**: 하루 1 레슨 = 연속 일수 카운트 (어제 +1, 오늘 유지, 그 외 리셋)
+- **리그**: 누적 XP 기준 6 단계 티어 (브론즈 → 다이아). 이번 주 / 명예의 전당 두 탭
+
+## 학습 콘텐츠
+
+`api/_init/seed.sql` 에 단원 4 + 레슨 10 + 문제 ~20.
+용어사전은 동일 시드에서 30 종 (경제 / 시장 / 기초 / 거시 / 자산 / 세금 카테고리).
+
 ## 배포
 
-InfinityFree 의 `htdocs/` 에 저장소 내용을 그대로 업로드한다.
-`.git`, `.claude`, `ppt.md` 같은 운영에 필요 없는 파일은 제외.
+InfinityFree `htdocs/` 에 저장소 전체를 올린다. `.git`, `ppt.md` 같은 운영에
+필요 없는 파일은 제외.
 
-### 1) 파일 업로드
-FTP 클라이언트(또는 cPanel File Manager)로 `htdocs/` 아래에 업로드.
+1. **config**: `api/config.example.php` 를 참고해 `api/config.php` 생성. 자격증명은
+   서버에만 둔다 (gitignore 되어 있음).
+2. **설치**: `https://<도메인>/api/install.php` 한 번 접속. schema → seed → seed_avatar
+   순서로 실행. 재설치는 `?force=1&confirm=RESET`. 끝나면 **install.php 는 반드시
+   삭제**.
+3. **확인**: `/api/ping.php` 가 `{"data":{"db":"up", ...}}` 를 돌려주면 OK.
 
-### 2) 서버 전용 설정 파일
-`api/config.example.php` 를 참고해 `api/config.php` 를 만들어
-서버에만 올린다 (자격 증명이 포함되므로 git 에 커밋되지 않는다).
+수동 설치 (phpMyAdmin Import) 도 가능 — `_init/` 의 SQL 3 개를 순서대로 import.
 
-### 3) DB 설치 — 두 가지 방법 중 하나
+## 로컬에서 보기
 
-#### A. 원샷 설치 (권장)
-브라우저에서 한 번 접속하면 모든 SQL 이 실행됨:
-```
-https://<도메인>/api/install.php
-```
-- 이미 설치된 상태면 자동 거부 (덮어쓰기 방지)
-- 강제 재설치: `?force=1&confirm=RESET`
-- **설치 끝나면 `api/install.php` 파일을 서버에서 반드시 삭제**
+이 저장소에 PHP/DB 구동 환경이 따로 없으면, 정적 페이지만 보려면 그냥
+브라우저로 HTML 을 열어도 된다. 다만 인증·학습·DB 가 필요한 페이지는 로컬
+PHP + MySQL 또는 InfinityFree 에서 동작한다.
 
-#### B. 수동 — phpMyAdmin Import
-다음 3 파일을 순서대로 import:
-1. `api/_init/schema.sql` — 모든 테이블 생성
-2. `api/_init/seed.sql` — 학습 콘텐츠 (단원/레슨/문제)
-3. `api/_init/seed_avatar.sql` — 캐릭터 아이템 카탈로그
+## 라이선스
 
-### 4) 헬스 체크
-브라우저에서 `https://<도메인>/api/ping.php` 가
-`{"data":{"db":"up", ...}}` 를 돌려주면 백엔드 정상.
-
-## 제작 일지
-
-> 각 PR이 머지될 때마다 이 섹션이 갱신됩니다.
-
-### 0. 저장소 초기화 (main 첫 커밋)
-
-- `main` 트렁크 생성 (.gitignore, README)
-- 이후 모든 변경 사항은 feature 브랜치 → PR → squash merge (TBD)
-
-### 1. 프로젝트 scaffolding (`chore/scaffold` → PR)
-
-- 폴더 구조 결정: `api/` (백엔드), `assets/css|js|img/` (프론트), `.htaccess`
-- 디자인 토큰 정리 (`base.css`)
-  - Pretendard 글꼴, 4px 간격 스케일, 듀오링고 영감 컬러 (브랜드 그린 #58cc02 + 보조)
-  - `prefers-reduced-motion` 대응
-- 재사용 컴포넌트 (`components.css`)
-  - 듀오링고 “푸시 버튼” (아래쪽 그림자 → active 시 짓눌리는 효과)
-  - 입력 / 카드 / 진행바 / 뱃지 / 헤더 / 푸터 / 토스트
-- 프론트 헬퍼
-  - `api.js` — fetch 래퍼 (JSON, 세션 쿠키)
-  - `site.js` — 헤더 그림자 · 모바일 네비 · `window.toast` · `data-anim` 진입 애니메이션
-- PHP 백엔드 기반
-  - `bootstrap.php` 가 설정 로드 / 세션 시작 / JSON 헤더 / 공용 헬퍼 require
-  - `db.php` 싱글톤 PDO, `response.php` JSON 응답 / 메서드 가드 / 세션 헬퍼
-  - `ping.php` 헬스 체크
-- DB 스키마 (`api/_init/schema.sql`)
-  - `users` · `units` · `lessons` · `questions` · `user_lesson_progress`
-
-### 2. 메인 페이지 + 마스코트 (`feat/home` → PR)
-
-- 마스코트 캐릭터 “**도토리**” (다람쥐) 디자인
-  - 순수 SVG 로 그림. 그라데이션 털, 큰 눈, 분홍 볼터치, 도토리 들고 있는 손
-  - 인라인 SVG 라서 눈동자가 마우스를 따라 움직임 (`home.js`)
-  - 부드러운 상하 bobbing 애니메이션 (CSS keyframes)
-  - 사본은 `assets/img/mascot-dotori.svg` 로도 단독 보존
-- Hero 섹션
-  - 헤드라인에 그라데이션 텍스트, 듀오링고 “푸시 버튼” CTA
-  - 마스코트 주변에 떠다니는 칩 (`+12.4% / 코인 +5 / 환율 안정 / XP +20`) 으로
-    “주식 = 게임” 분위기
-  - 학습자 수 trust 뱃지
-- Features (3 카드) — 짧은 레슨 · 매일 습관 · 게이미피케이션
-- How-it-works (3 단계) — 점선으로 연결된 1→2→3 진행
-- Stats — 카운트업 애니메이션 (IntersectionObserver, 이징 적용)
-- Final CTA — 그린 그라데이션 박스
-- Footer — 템플릿 14번 영감 attribution
-- 진입 애니메이션 — `data-anim` 요소가 뷰포트에 들어올 때 페이드/슬라이드
-- 그리드 디버깅: `1.05fr 1fr` 가 stage 컬럼 폭을 못 잡아서 SVG 가 0×0
-  으로 렌더되던 이슈는 `minmax(0, …fr)` + `width: 100%` 로 해결
-
-### 3. 로그인 / 회원가입 + 인증 백엔드 (`feat/auth` → PR)
-
-- 새 페이지: `/signup`, `/login` — 좌측 폼 + 우측 마스코트 일러스트 split 레이아웃
-- 폼 UX
-  - 인풋별 inline 에러, 폼 상단 배너로 서버 일반 오류 표시
-  - 비밀번호 표시 토글 (눈 아이콘)
-  - 진입 시 페이드업 카드, 칩 떠다님
-- PHP 인증 백엔드 (`api/auth/*.php` + `_lib/auth.php`)
-  - `signup.php` — 검증 (아이디 영문/숫자/_ 3~40자 · 이메일 · 비밀번호 8자+)
-    → bcrypt 해시 → INSERT → 세션 시작
-  - `login.php` — 아이디 **또는** 이메일 식별자 + 비밀번호 → `password_verify`
-  - `logout.php` — 세션 + 쿠키 파기, 멱등
-  - `me.php` — 현재 로그인 사용자 조회 (게스트는 `user: null`)
-- 인증 헬퍼
-  - `validate_signup_input` · `create_user` · `verify_credentials`
-  - `login_user(user)` — `session_regenerate_id(true)` 로 fixation 방지,
-    `last_active_at` 갱신
-  - `public_user($row)` — 외부에 비밀번호 해시가 새지 않도록 안전 필드만 추림
-- 프론트
-  - `api.js` 에 `extra` 필드를 추가해 서버가 돌려준 필드별 에러 (`fields`) 를
-    클라이언트로 전달
-  - `auth.js` 가 `me.php` 로 페이지 진입 시 세션 체크 → 이미 로그인이면 `/learn` 으로 이동
-- 동시성/에러
-  - MySQL 1062 (UNIQUE 충돌) 를 이메일/아이디로 구분해 친근한 메시지로 응답
-
-### 4. 학습공간 (`feat/learn` → PR)
-
-- 새 페이지
-  - `/learn` — 단원 카드 + 지그재그 레슨 노드 맵
-  - `/lesson?id=N` — 문제 풀이 (4지선다 · O/X · 빈칸)
-- 백엔드
-  - `api/learn/map.php` — 단원/레슨 전체 + 현재 사용자 진행도 + 잠금 해제 상태 (`available / locked / completed`)
-  - `api/learn/lesson.php?id=N` — 레슨 메타 + 문제 (정답/해설은 응답에서 제외, 클라이언트가 답을 미리 알 수 없게)
-  - `api/learn/submit.php` — 답 일괄 채점, 정답률 80% 이상이면 통과
-    - XP 지급 (`xp_reward`), 재도전은 절반
-    - 스트릭 계산: 직전 “완료일” 기준 (어제 +1, 오늘 유지, 그 외 1 로 리셋)
-- 시드 데이터 (`api/_init/seed.sql`)
-  - 단원 4 개: `basics · market · alloc · macro`
-  - 레슨 10 개 (각 단원 2~4 개), 문제 ~20 개
-- 학습 맵 UX
-  - 노드 상태별 색: 가능(그린, 펄스) · 완료(노랑 + 체크) · 잠금(회색)
-  - 단원별 진행도 바, 단원마다 다른 색 토큰 (`--unit-color`)
-- 레슨 풀이 UX
-  - 상단 sticky 진행바, 종료(X) 버튼
-  - 문제 카드가 슬라이드인, 보기 선택 시 컴포넌트가 “눌리는” 푸시 효과
-  - 마지막 문제 후 채점 → 완료 카드 (도토리 + 점수/XP/스트릭) + 컨페티
-- 클라이언트가 정답을 모르도록 채점은 서버에서만 수행
-
-### 5. 폴리시 — 즉시 피드백 / 사운드 / 마스코트 깜빡임 (`feat/polish` → PR)
-
-- **즉시 피드백** — 한 문제 풀 때마다 결과가 슬라이드업으로
-  - `api/learn/grade.php` 신설 — 한 문제 채점 (진행도 갱신은 없음)
-  - 정답: 그린 패널 + 해설, 오답: 레드 패널 + 정답 + 해설
-  - “계속 →” 버튼으로 다음 문제. 마지막엔 `submit.php` 일괄 호출로 진행도 기록
-- **효과음** (`assets/js/sfx.js`)
-  - Web Audio API 로 즉석 합성 (오디오 파일 번들 없음)
-  - `sfx.correct() · wrong() · tap() · win() · tick()`
-  - `localStorage.finedu.sound` 키로 on/off
-  - 헤더 우상단 토글 버튼은 `site.js` 가 모든 페이지 헤더에 자동 주입
-- **마스코트 깜빡임** — 인라인 SVG 의 `[data-eye]` 그룹에 CSS `transform: scaleY` 키프레임 (5.2s 주기 자연스러운 깜빡임)
-- **CTA 인터랙션 연결** — 히어로 CTA 영역 hover 시 마스코트가 살짝 빨라지고 후광이 펄스
-- **빈 상태 / 에러 상태**
-  - 학습공간에 아직 단원이 없을 때 도토리 + 안내 문구
-  - 잘못된 레슨 주소 / 빈 문제 등 친근한 메시지로 안내
-- 미세 버그 수정: 답 기록 시점을 “계속” 시점으로 단일화, 다음 문제 진입 시 하단 바 복귀
-
-### 6. 통화 시스템 — 코인 (`feat/currency` → PR)
-
-- DB 변경 (`api/_init/migrations/0001_coins.sql`)
-  - `users.coins` 컬럼 추가
-  - `coin_ledger` 테이블 신설 (감사용 — 모든 코인 변동을 한 줄씩 기록)
-  - 이미 설치된 DB 는 이 마이그레이션만 phpMyAdmin 에서 실행하면 됨
-  - 새 설치는 `schema.sql` 최신본이 이미 포함
-- 백엔드
-  - `api/_lib/coins.php` — `award_coins($uid, $delta, $reason, ...)` 트랜잭션 + 음수 잔액 방지
-  - `submit.php` 통과 시 코인 지급
-    - 첫 통과: **+10 코인**, 재도전: **+3 코인**
-    - 스트릭 7 의 배수 (D-7 / D-14 ...) 신규 도달 시 **+50 코인 보너스**
-  - `me.php` · `map.php` 응답에 `coins` 추가
-- 프론트
-  - 학습공간 헤더에 코인 stat 칩 (XP/스트릭 옆) — 추후 마켓 링크
-  - 레슨 완료 카드에 “+N 코인” 보상 표시 (`rewards.coins_awarded` 필드)
-
-### 7. 캐릭터 커스텀 — 옷장 (`feat/character` → PR)
-
-- DB (`api/_init/migrations/0002_items.sql`)
-  - `items` 카탈로그 (slug · name · slot · svg_markup · price · rarity)
-  - `user_items` 인벤토리
-  - `user_equipment` 슬롯당 1 개 (`hat` · `glasses` · `scarf` · `background`)
-- 시드 (`api/_init/seed_items.sql`)
-  - 무료 starter: 노란 빵모자 / 둥근 안경 / 빨간 스카프 (가입 시 자동 지급)
-  - 유료: 학사모 · 산타모 · 왕관 · 선글라스 · 하트 안경 · 줄무늬 머플러 · 별빛 배경 · 무지개 배경 등
-- 백엔드
-  - `_lib/character.php` — `list_items` · `user_owned_items` · `user_equipment`
-    · `ensure_starter_items` (멱등) · `equip_item` (보유/슬롯 일치 검증)
-  - `api/character/state.php` — 옷장 한 번에 (catalog + owned + equipped + coins)
-  - `api/character/equip.php` — 슬롯에 장착 또는 해제
-- 마스코트 컴포저 (`assets/js/mascot.js`)
-  - 기본 도토리 SVG + 장착 아이템 SVG 조각을 합성
-  - 레이어 순서: `background → base → scarf → glasses → hat`
-  - 카탈로그 미리보기에도 재사용
-- 페이지 `/closet`
-  - 좌측 sticky 마스코트 미리보기 + 코인 잔액
-  - 우측 슬롯 탭 (모자/안경/스카프/배경) + 아이템 그리드
-  - 미보유 아이템은 잠금 표시 (마켓 안내) — 실제 구매는 PR #9 마켓 에서
-
-### 8. 스킨 마켓 (`feat/market` → PR)
-
-- 페이지 `/market`
-  - 슬롯 탭 (전체 · 모자 · 안경 · 스카프 · 배경)
-  - 아이템 카드 그리드 (마스코트 미니 미리보기 + 가격 + rarity)
-  - 보유중인 아이템은 “보유중” 비활성 버튼
-- 구매 흐름
-  - 카드 “구매” → 컨펌 모달 (가격 + 잔액) → POST `/api/market/buy.php`
-  - 구매 후 옷장에 자동 추가, 잔액 갱신, 토스트 + 성공 효과음
-- 백엔드 `api/market/buy.php`
-  - 트랜잭션으로 코인 차감 + 인벤토리 INSERT + 원장 기록
-  - 이미 보유: 409 / 코인 부족: 402 / 비유효 아이템: 404 — 친근한 메시지로 응답
-  - 코인 차감은 `award_coins()` 의 `SELECT ... FOR UPDATE` 로 동시 구매 방지
-
-### 9. 친구 시스템 (`feat/friends` → PR)
-
-- DB (`migrations/0003_friends.sql`)
-  - `friendships(requester_id, addressee_id, status='pending'|'accepted'|'declined', ...)`
-  - 한 쌍에 한 행만 (UNIQUE)
-- 백엔드 `api/friends/*`
-  - `list.php` — 친구 / 받은 신청 / 보낸 신청 한 번에
-  - `request.php` — 아이디 또는 이메일로 신청
-    - 본인 신청 금지, 이미 친구 / 이미 신청 / 거절된 이력 분기
-    - 반대 방향에 들어와 있는 pending 이 있으면 **자동 수락**
-  - `accept.php` · `decline.php` · `remove.php`
-  - `profile.php?id=N` — 친구 (또는 본인) 의 공개 프로필 + 장착 아이템 + 카탈로그
-- 페이지
-  - `/friends` — 신청 검색 + 3 탭(친구/받은/보낸) + 카드 그리드 (미니 마스코트 아바타)
-  - `/friend?id=N` — 친구 프로필 (큰 마스코트 + XP/스트릭/가입일 + 친구 끊기)
-- 보안
-  - 친구가 아닌 사람의 `profile.php` 호출은 403
-  - 마스코트 합성은 `items` 카탈로그를 그대로 노출 (공개 정보)
-- UX
-  - 친구 카드 아바타가 친구의 장착 그대로 보이려면 별도 호출이 필요해서 본 PR 에서는 단순 베이스 마스코트로. (향후 list.php 응답에 `equipped` 묶어 보내는 최적화 여지)
-
-### 10. 마스코트 휴머노이드 아바타 전환 (`feat/avatar-redesign` → PR)
-
-기존 다람쥐 “도토리”를 **휴머노이드 chibi 캐릭터** 로 전환. 슬롯 체계도 새로 정리.
-
-- 슬롯 변경
-  - 이전: `hat` · `glasses` · `scarf` · `background`
-  - 신규: `hair` · `face` · `top` · `bottom` · `shoes` · `accessory`
-- DB
-  - `migrations/0004_avatar.sql` — 기존 `items`/`user_items`/`user_equipment` TRUNCATE (외래키 cascade 로 자동 정리)
-  - `seed_avatar.sql` — 새 슬롯 기준 아이템 시드
-    - 초기 starter 풍부히: 머리 3종(대머리/검정/갈색), 표정 3종(기본/웃음/윙크), 상의 2종, 하의 2종, 신발 1종
-    - 유료: 픽시컷·양갈래·백발 / 졸음·화남·반짝 / 후디·로고티·셔츠·재킷 / 카고·트렁크·슬림진 / 검정/체커/런너/부츠 / 캡·비니·둥근안경·선글라스·하트안경·카메라·왕관
-- 베이스 캐릭터
-  - viewBox `0 0 400 600` 휴머노이드 chibi (피부, 머리, 몸통, 팔다리, 볼터치)
-  - `mascot.js` BASE_BODY 재작성 + 레이어 순서: `BASE → bottom → top → shoes → face → hair → accessory`
-  - `mascot-dotori.svg` 정적 파일도 휴머노이드 + 기본 아웃핏으로 교체 (auth/learn 페이지의 `<img>` 자동 갱신)
-  - index.html 인라인 마스코트도 동일하게 교체 (`data-eye`/`data-pupil="true"` 로 strict XML 호환, 눈동자 추적 유지)
-- CSS 비율 보정
-  - hero stage, closet stage, 아이템 카드, friend 프로필, lesson 완료 카드 등 모든 마스코트 컨테이너의 aspect-ratio 를 `1:1` → `2:3` 으로
-  - 친구 목록 아바타는 원형 → 둥근 직사각형 (64×96) 으로 변경해 휴머노이드를 자연스럽게 담음
-- 정리
-  - 기존 다람쥐용 `seed_items.sql` 제거
-- 호환성
-  - 모든 backend API 시그니처 그대로. PHP `ITEM_SLOTS` 만 새 슬롯 6 종으로 교체
-  - frontend `closet.js` / `market.js` 의 SLOTS 라벨만 한글로 갱신
-  - `buildMascotSvg` / `renderMascotInto` 동일 시그니처 → 호출부 (`closet/market/friend`) 코드 변경 없음
-
-### 11. 내 프로필 / 대시보드 (`feat/dashboard` → PR)
-
-- 페이지 `/profile`
-  - 좌측 sticky 아바타 (내 장착 그대로) + 닉네임 + 가입일
-  - 우측 통계 그리드 6 개: XP · 코인 · 스트릭 · 완료 레슨(N/총) · 친구 · 보유 아이템
-  - 주간 XP 차트 — 지난 7 일 (CSS bar chart, 오늘은 노랑으로 강조)
-  - 최근 활동 — 마지막 8 개 완료 레슨 (점수 + 상대 시간 “3 시간 전”)
-- 백엔드 `api/me/overview.php`
-  - 모든 집계를 한 번에 (서브쿼리로 묶음) — N+1 없이 4 개 쿼리
-  - 주간 XP 는 `user_lesson_progress.completed_at` 의 day group SUM
-- 모든 페이지 네비에 “프로필” 링크 추가
-
-### 12. 리그 — 주간 순위 + 6 단계 티어 (`feat/leagues` → PR)
-
-- 페이지 `/league`
-  - 상단 “내 카드” — 티어 컬러 그라데이션 박스, 이번 주 XP / 누적 XP / 누적 순위, 다음 티어까지 progress bar
-  - 탭 2 종: **이번 주 순위** · **명예의 전당** (누적 XP)
-  - 리스트 — 1·2·3 위 금/은/동 컬러, 본인 행은 그린 하이라이트로 표시
-- 티어 정의 (`_lib/league.php`)
-  - 🥉 브론즈(0+) · 🥈 실버(100+) · 🥇 골드(500+) · 💎 사파이어(2k+) · ♦️ 루비(5k+) · 👑 다이아(10k+)
-  - 누적 XP 기준 단일 진행 (경쟁 X) — 1인 사용자 환경에서도 의미가 있도록
-- 백엔드 `api/league/leaderboard.php`
-  - 이번 주 시작일을 월요일로 계산 (`week_start_date()`)
-  - `user_lesson_progress.completed_at >= weekStart` 의 lesson XP SUM 으로 이번 주 XP
-  - 본인 이번 주 / 누적 순위 계산, 다음 티어까지 to_go 안내
-- 모든 페이지 네비에 “리그” 링크 추가
-
-### 13. 알림 시스템 (`feat/notifications` → PR)
-
-- DB
-  - `notifications(user_id, type, title, body, link, is_read, created_at, read_at)`
-- 백엔드
-  - `_lib/notify.php` — `notify()` / `list_notifications()` / `mark_notification_read()` / `unread_count()`
-  - `api/notifications/list.php` · `read.php`
-- 자동 생성 트리거
-  - 회원가입 → `system` 환영 알림
-  - 친구 신청 받음 → `friend_request` 알림
-  - 친구 신청 수락(편의 자동 수락 포함) → 양쪽에 `friend_accepted`
-- 프런트
-  - `site.js` 가 모든 보호 페이지 헤더에 벨 아이콘 + 드롭다운 자동 주입
-  - 미읽음 카운트 뱃지, 클릭 시 자동 읽음 처리
-  - 페이지 진입 시 미읽음만 가벼운 1건 fetch, 드롭다운 열면 전체 30건 fetch
-
-### 14. 블루 테마 + 메인 페이지 일러스트 (`chore/visual-overhaul` → PR)
-
-- **컬러 테마 전환**: 듀오링고 그린 (#58cc02) → 베이스 템플릿(FlexStart) 시그니처 블루 (#4154f1)
-  - `--color-brand` 토큰 일괄 변경, hero / stats / auth / learn-hello 등 그라데이션 블루-퍼플 톤으로
-  - hero 제목 그라데이션: 브랜드-블루 → 액센트-퍼플
-  - 알림 카드의 unread 배경, theme-color 메타도 블루로
-- **메인 페이지 hero 일러스트 교체**
-  - 마스코트 제거 → **자체 제작 추상 SVG 일러스트** (대시보드 카드 + 막대/라인 차트 + 떠다니는 코인/+24.6% 칩/별/알림 카드)
-  - 떠다니는 요소는 외부 `<g>` 로 위치 + 내부 `<g class="hero-float">` 로 CSS 애니메이션 → SVG `transform` 속성이 CSS `transform` 에 덮어쓰기 되던 버그 해결
-  - 라인 차트는 각 막대 꼭짓점에 정확히 정렬
-  - +24.6% 칩은 박스 폭 확대 + text-anchor middle 로 텍스트 잘림 해소
-- **로고 단순화**
-  - "코인 + 잎새" SVG 아이콘 제거 → **글자만** 큰 "FinEdu" 로고 (fs-30, letter-spacing 조이기)
-- **파비콘 색**도 블루 외곽으로 통일
-- **ppt.md** 16 슬라이드 전체 최신 상태로 업데이트 (페이지 11 개 · 모든 PR 완료 마일스톤)
+코드는 학습용 개인 프로젝트.

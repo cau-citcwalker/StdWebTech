@@ -11,7 +11,7 @@
   <link rel="alternate icon" href="assets/img/favicon.ico" />
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
 
-  <script>(function(){try{var t=localStorage.getItem("finedu-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);else if(matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.setAttribute("data-theme","dark");}catch(_){}})();</script>
+  <script>(function(){try{var t=localStorage.getItem("finedu-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);else if(matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.setAttribute("data-theme","dark");var a=localStorage.getItem("finedu-auth");if(a==="yes"||a==="no")document.documentElement.setAttribute("data-auth",a);}catch(_){}})();</script>
   <link rel="stylesheet" href="assets/css/base.css" />
   <link rel="stylesheet" href="assets/css/components.css" />
   <link rel="stylesheet" href="assets/css/home.css" />
@@ -30,20 +30,20 @@
       </button>
       <nav id="primary-nav" class="site-nav" aria-label="주요 메뉴">
         <a class="site-nav__link" href="/">홈</a>
-        <a class="site-nav__link" href="/learn.html">학습</a>
-        <a class="site-nav__link" href="/closet.html">옷장</a>
-        <a class="site-nav__link" href="/market.html">마켓</a>
-        <a class="site-nav__link" href="/friends.html">친구</a>
-        <a class="site-nav__link" href="/league.html">리그</a>
-        <a class="site-nav__link" href="/profile.html">프로필</a>
+        <a class="site-nav__link" href="/learn.html" data-auth-required>학습</a>
+        <a class="site-nav__link" href="/closet.html" data-auth-required>옷장</a>
+        <a class="site-nav__link" href="/market.html" data-auth-required>마켓</a>
+        <a class="site-nav__link" href="/friends.html" data-auth-required>친구</a>
+        <a class="site-nav__link" href="/league.html" data-auth-required>리그</a>
+        <a class="site-nav__link" href="/profile.html" data-auth-required>프로필</a>
         <div class="site-nav__more">
           <button class="site-nav__more-btn" type="button" aria-haspopup="true" aria-expanded="false">더보기 ▾</button>
           <div class="site-nav__more-menu" role="menu" hidden>
-            <a href="/calendar.html" role="menuitem">📅 캘린더</a>
-            <a href="/scraps.html" role="menuitem">⭐ 즐겨찾기</a>
-            <a href="/terms.html" role="menuitem">📖 용어사전</a>
-            <a href="/qna.html" role="menuitem">💬 Q&amp;A 게시판</a>
-            <a href="/reviews.html" role="menuitem">📝 사용자 리뷰</a>
+            <a href="/calendar.html" role="menuitem" data-auth-required>캘린더</a>
+            <a href="/scraps.html" role="menuitem" data-auth-required>즐겨찾기</a>
+            <a href="/terms.html" role="menuitem">용어사전</a>
+            <a href="/qna.html" role="menuitem">Q&amp;A 게시판</a>
+            <a href="/reviews.html" role="menuitem">사용자 리뷰</a>
             <hr/>
             <a href="/about.html" role="menuitem">소개</a>
             <a href="/how-it-works.html" role="menuitem">진행 방식</a>
@@ -125,40 +125,17 @@
         </header>
         <div class="features">
           <article class="card feature" data-anim>
-            <h3 class="feature__title">📈 시장과 가격</h3>
+            <h3 class="feature__title">시장과 가격</h3>
             <p class="feature__desc">수요·공급, 변동성, 주문 종류 — 시장이 어떻게 움직이는지.</p>
           </article>
           <article class="card feature" data-anim data-anim-delay="1">
-            <h3 class="feature__title">💼 자산 배분</h3>
+            <h3 class="feature__title">자산 배분</h3>
             <p class="feature__desc">한 바구니에 담지 않기. 위험과 수익의 균형 찾기.</p>
           </article>
           <article class="card feature" data-anim data-anim-delay="2">
-            <h3 class="feature__title">🌍 거시 흐름</h3>
+            <h3 class="feature__title">거시 흐름</h3>
             <p class="feature__desc">금리·물가·환율이 자산에 어떻게 영향을 주는지.</p>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--soft">
-      <div class="container">
-        <div class="stats" data-anim>
-          <div class="stat">
-            <div class="stat__num"><span data-count="5231">0</span><small> 명</small></div>
-            <div class="stat__label">함께 배우는 학습자</div>
-          </div>
-          <div class="stat">
-            <div class="stat__num"><span data-count="18420">0</span><small> 시간</small></div>
-            <div class="stat__label">누적 레슨 시간</div>
-          </div>
-          <div class="stat">
-            <div class="stat__num"><span data-count="87">0</span><small> %</small></div>
-            <div class="stat__label">평균 출석률</div>
-          </div>
-          <div class="stat">
-            <div class="stat__num"><span data-count="96">0</span><small> 점</small></div>
-            <div class="stat__label">학습 만족도</div>
-          </div>
         </div>
       </div>
     </section>

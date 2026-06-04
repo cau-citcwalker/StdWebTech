@@ -151,6 +151,14 @@
   --color-brand-soft:   #2a3270;
   --color-brand-bg:     #1a2040;
 
+  /* 다크 배경 위에서는 진한 네이비 (#2e3fc7 / #1f2d99) 가
+   * 거의 안 보임 (특히 .btn--secondary 텍스트, .site-logo,
+   * 사전/마켓/리뷰의 강조 텍스트 등). 같은 hue 의 밝은 톤으로
+   * 오버라이드해서 텍스트 가독성 확보. 버튼 press-shadow 도
+   * 살짝 밝아지지만 그래도 잘 보임. */
+  --color-brand-dark:   #8a98ff;
+  --color-brand-darker: #b0baff;
+
   /* 그림자도 톤다운 (어두운 배경엔 진한 black-shadow) */
   --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.5);
@@ -192,14 +200,16 @@
 [data-theme="dark"] .market-card__preview {
   background: linear-gradient(180deg, var(--color-bg-card) 0%, var(--color-bg-soft) 100%);
 }
-[data-theme="dark"] .market-card__rarity {
-  background: rgba(20, 22, 26, 0.85);
-}
 [data-theme="dark"] .lesson-skeleton__row {
   background: linear-gradient(90deg, var(--color-bg-muted) 0%, var(--color-bg-soft) 50%, var(--color-bg-muted) 100%);
 }
 /* site-header 가 rgba(255,255,255,0.92) hardcoded — 다크에선 어두운 반투명 */
 [data-theme="dark"] .site-header {
+  background: rgba(20, 22, 26, 0.85);
+  border-bottom-color: var(--color-divider);
+}
+/* 로그인/회원가입 페이지의 auth-header 도 같은 처리 (rgba 흰색 hardcoded) */
+[data-theme="dark"] .auth-header {
   background: rgba(20, 22, 26, 0.85);
   border-bottom-color: var(--color-divider);
 }
@@ -219,6 +229,15 @@
 [data-theme="dark"] .stat-chip--streak,
 [data-theme="dark"] .stat-chip--coin { background: #3a2d10; color: #f0c060; }
 [data-theme="dark"] .stat-chip--xp   { background: var(--color-brand-bg); color: #a3b1ff; }
+
+/* -------------------------------------------------------------
+ * 로그인 필요 nav — 로그아웃 상태에서 숨김
+ *
+ * <html data-auth="no"> 일 때 [data-auth-required] 요소를 모두 숨긴다.
+ * data-auth 값은 head 의 inline script 가 localStorage 'finedu-auth' 를
+ * 읽어 즉시 셋팅 (FOUC 방지). me.php 응답 후 site.js 가 캐시 갱신.
+ * ------------------------------------------------------------- */
+:root[data-auth="no"] [data-auth-required] { display: none !important; }
 
 /* -------------------------------------------------------------
  * 리셋 / 기본

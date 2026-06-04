@@ -30,7 +30,7 @@ function esc(s) {
 }
 function escMultiline(s) {
   return esc(s)
-    .replace(/\bhttps?:\/\/[^\s<]+/g, (u) => `<a href="${u}" target="_blank" rel="noopener noreferrer">🔗 ${u}</a>`)
+    .replace(/\bhttps?:\/\/[^\s<]+/g, (u) => `<a href="${u}" target="_blank" rel="noopener noreferrer">${u}</a>`)
     .replace(/@([A-Za-z0-9_]{3,40})/g, (m, u) => `<a class="qna-mention" href="/qna.html?q=${encodeURIComponent('@' + u)}" data-mention="${u}">@${u}</a>`)
     .replace(/\n/g, "<br>");
 }
@@ -196,7 +196,7 @@ function renderReplyForm() {
   }
   host.innerHTML = `
     <form id="reply-form" class="reply-form">
-      <textarea id="reply-body" class="textarea" rows="3" maxlength="5000" placeholder="답글을 입력하세요... (이모지·URL 가능 😊)" required></textarea>
+      <textarea id="reply-body" class="textarea" rows="3" maxlength="5000" placeholder="답글을 입력하세요..." required></textarea>
       <div class="reply-form__actions">
         <button class="btn btn--sm" type="submit">답글 등록</button>
       </div>

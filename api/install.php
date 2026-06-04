@@ -26,7 +26,7 @@ $cfg = require $configPath;
 
 // HTML 출력 헬퍼
 function step(string $label, bool $ok, string $detail = ''): void {
-    $icon = $ok ? '✅' : '❌';
+    $icon = $ok ? 'OK' : 'FAIL';
     $color = $ok ? '#1f7a00' : '#a01f1f';
     echo "<div style='padding:8px 12px;border-left:4px solid $color;background:#fff;margin:6px 0;'>";
     echo "<strong>$icon $label</strong>";
@@ -60,7 +60,7 @@ try {
     $count = (int)$pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
     if ($count > 0 && !$force) {
         echo "<div class='banner banner--bad'>";
-        echo "<strong>⚠️ 이미 설치돼 있어요</strong><br>";
+        echo "<strong>이미 설치돼 있어요</strong><br>";
         echo "users 테이블에 <strong>$count 명</strong>이 등록돼 있어 자동 거부했어요.<br><br>";
         echo "정말 모두 지우고 재설치하려면:<br>";
         echo "<code>install.php?force=1&confirm=RESET</code>";
@@ -343,7 +343,7 @@ step('seed_avatar.sql — 아바타 아이템 시드', $res['ok'], $res['detail'
 
 // 결과 요약
 echo "<div class='banner banner--ok'>";
-echo "<strong>🎉 설치 완료</strong><br><br>";
+echo "<strong>설치 완료</strong><br><br>";
 $counts = [
     'users'    => '사용자',
     'units'    => '단원',

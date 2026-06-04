@@ -81,7 +81,6 @@ $recent = array_map(function ($r) {
     ];
 }, $recentStmt->fetchAll());
 
-ensure_starter_items($uid);
 $equipped = user_equipment($uid);
 
 json_ok([

@@ -4,7 +4,7 @@
  *   - assets/data/terms.json 에서 용어 목록 fetch
  *   - 카테고리 탭으로 필터, 검색창으로 substring 매칭
  *   - 결과는 5개씩 페이지네이션
- *   - 로그인 시 각 용어 옆에 ⭐ 즐겨찾기 토글 (POST /api/scraps/toggle.php)
+ *   - 로그인 시 각 용어 옆에 즐겨찾기 토글 (POST /api/scraps/toggle.php)
  * ============================================================= */
 
 import { api } from "./api.js";
@@ -116,7 +116,7 @@ async function toggleScrap(term, btn) {
   }
   if (res.data?.scraped) {
     state.scraps.add(term);
-    if (window.toast) window.toast("⭐ 즐겨찾기에 추가했어요.");
+    if (window.toast) window.toast("즐겨찾기에 추가했어요.");
   } else {
     state.scraps.delete(term);
     if (window.toast) window.toast("즐겨찾기에서 뺐어요.");

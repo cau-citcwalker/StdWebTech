@@ -134,18 +134,16 @@ function renderDetail(iso) {
   const dayLabel = new Date(iso).toLocaleDateString("ko-KR", { weekday: "short" });
   titleEl.textContent = `${y}년 ${m}월 ${d}일 (${dayLabel})`;
 
-  const completed = (state.data?.completed_dates ?? []).includes(iso);
   const events = (state.data?.events ?? []).filter((e) => e.event_date === iso);
 
   let html = "";
-  if (completed) html += `<div class="cal-flag cal-flag--done">✅ 이 날 레슨을 풀었어요!</div>`;
 
   // 친구 학습 (오버레이 ON 일 때만)
   const friendsHere = (state.showFriends && state.friendsData?.friends_completed_by_date?.[iso]) || [];
   if (friendsHere.length) {
     html += `<div>
       <div style="font-weight: var(--fw-bold); color: var(--color-text-soft); font-size: var(--fs-13);">
-        💜 친구 ${friendsHere.length}명도 이 날 학습했어요
+        친구 ${friendsHere.length}명도 이 날 학습했어요
       </div>
       <ul class="cal-friends-list">
         ${friendsHere.map((f) => `<li>
@@ -308,6 +306,69 @@ $("#cal-detail-close").addEventListener("click", () => {
   state.selected = null;
   renderGrid();
 });
+
+/* "+ 일정 추가" — 날짜 선택 + 제목 + 메모 모달 */
+$("#cal-add").addEventListener("click", () => openAddModal());
+
+function openAddModal(presetIso) {
+  const iso = presetIso || state.selected || todayStr();
+  const host = document.createElement("div");
+  host.className = "modal-host";
+  host.innerHTML = `
+    <div class="modal" role="dialog" aria-modal="true" aria-label="일정 추가">
+      <h2 class="modal__title">+ 새 일정</h2>
+      <form id="cal-add-form" class="cal-event-form" style="margin-top: var(--space-4);">
+        <div class="field">
+          <label class="field__label" for="cam-date">날짜</label>
+          <input id="cam-date" class="input" type="date" required value="${iso}" />
+        </div>
+        <div class="field">
+          <label class="field__label" for="cam-title">제목</label>
+          <input id="cam-title" class="input" type="text" maxlength="120" required placeholder="예) 시장과 가격 단원 끝내기" />
+        </div>
+        <div class="field">
+          <label class="field__label" for="cam-note">메모 (선택)</label>
+          <textarea id="cam-note" class="textarea" rows="3" maxlength="500" placeholder="..."></textarea>
+        </div>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--secondary" data-action="cancel">취소</button>
+          <button type="submit" class="btn">추가</button>
+        </div>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(host);
+  const close = () => host.remove();
+  host.querySelector("[data-action=cancel]").addEventListener("click", close);
+  host.addEventListener("click", (e) => { if (e.target === host) close(); });
+  setTimeout(() => host.querySelector("#cam-title")?.focus(), 50);
+
+  host.querySelector("#cal-add-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const date  = host.querySelector("#cam-date").value;
+    const title = host.querySelector("#cam-title").value.trim();
+    const note  = host.querySelector("#cam-note").value.trim();
+    if (!date)        { window.toast?.("날짜를 선택해 주세요.", { variant: "danger" }); return; }
+    if (title.length < 1) { window.toast?.("제목을 입력해 주세요.", { variant: "danger" }); return; }
+    const submitBtn = e.target.querySelector("button[type=submit]");
+    submitBtn.disabled = true;
+    const res = await api.post("/calendar/event_create.php", {
+      event_date: date, title, note,
+    });
+    submitBtn.disabled = false;
+    if (!res.ok) { window.toast?.(res.error || "실패", { variant: "danger" }); return; }
+    window.toast?.("일정을 추가했어요.");
+    close();
+    // 선택된 달과 다르면 해당 달로 이동
+    const [yy, mm] = date.split("-").map(Number);
+    if (yy !== state.year || mm !== state.month) {
+      state.year = yy; state.month = mm;
+    }
+    state.selected = date;
+    await reload();
+    renderDetail(date);
+  });
+}
 
 // 친구 오버레이 토글
 const friendsToggle = document.getElementById("cal-show-friends");
