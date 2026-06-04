@@ -39,7 +39,7 @@ $post = [
 ];
 
 $rs = db()->prepare(
-    "SELECT r.id, r.body, r.created_at, r.updated_at,
+    "SELECT r.id, r.body, r.parent_reply_id, r.created_at, r.updated_at,
             u.id AS author_id, u.username AS author_username, u.display_name AS author_display_name
      FROM qna_replies r JOIN users u ON u.id = r.user_id
      WHERE r.post_id = :pid
@@ -48,11 +48,12 @@ $rs = db()->prepare(
 $rs->execute([':pid' => $id]);
 $replies = array_map(function($r) use ($uid) {
     return [
-        'id'         => (int)$r['id'],
-        'body'       => $r['body'],
-        'created_at' => $r['created_at'],
-        'updated_at' => $r['updated_at'],
-        'is_mine'    => $uid !== null && (int)$r['author_id'] === $uid,
+        'id'              => (int)$r['id'],
+        'parent_reply_id' => $r['parent_reply_id'] !== null ? (int)$r['parent_reply_id'] : null,
+        'body'            => $r['body'],
+        'created_at'      => $r['created_at'],
+        'updated_at'      => $r['updated_at'],
+        'is_mine'         => $uid !== null && (int)$r['author_id'] === $uid,
         'author' => [
             'id'           => (int)$r['author_id'],
             'username'     => $r['author_username'],

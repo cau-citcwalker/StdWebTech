@@ -257,18 +257,19 @@ CREATE TABLE IF NOT EXISTS qna_posts (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS qna_replies (
-    id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
-    post_id      INT UNSIGNED       NOT NULL,
-    user_id      INT UNSIGNED       NOT NULL,
-    body         TEXT               NOT NULL,
-    created_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at   DATETIME           NULL,
+    id              INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+    post_id         INT UNSIGNED       NOT NULL,
+    user_id         INT UNSIGNED       NOT NULL,
+    parent_reply_id INT UNSIGNED       NULL,
+    body            TEXT               NOT NULL,
+    created_at      DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      DATETIME           NULL,
     PRIMARY KEY (id),
-    KEY idx_replies_post (post_id, created_at),
-    CONSTRAINT fk_qna_reply_post FOREIGN KEY (post_id)
-        REFERENCES qna_posts(id) ON DELETE CASCADE,
-    CONSTRAINT fk_qna_reply_user FOREIGN KEY (user_id)
-        REFERENCES users(id) ON DELETE CASCADE
+    KEY idx_replies_post   (post_id, created_at),
+    KEY idx_replies_parent (parent_reply_id),
+    CONSTRAINT fk_qna_reply_post   FOREIGN KEY (post_id)         REFERENCES qna_posts(id)   ON DELETE CASCADE,
+    CONSTRAINT fk_qna_reply_user   FOREIGN KEY (user_id)         REFERENCES users(id)       ON DELETE CASCADE,
+    CONSTRAINT fk_qna_reply_parent FOREIGN KEY (parent_reply_id) REFERENCES qna_replies(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -------------------------------------------------------------

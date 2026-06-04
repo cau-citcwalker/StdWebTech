@@ -367,3 +367,40 @@ body { background: var(--color-bg-soft); }
   .qna-row__count { justify-self: end; }
   .qna-post { padding: var(--space-5) var(--space-4); }
 }
+
+/* -------------------------------------------------------------
+ * 중첩 답글 + @멘션
+ * ------------------------------------------------------------- */
+.reply-card__children {
+  margin-top: var(--space-3);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--color-divider);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.reply-card--depth-1 { background: color-mix(in srgb, var(--color-brand-bg) 30%, var(--color-bg-card)); }
+.reply-card--depth-2 { background: color-mix(in srgb, var(--color-brand-bg) 50%, var(--color-bg-card)); }
+
+.reply-card__inline-form { margin-top: var(--space-3); }
+.reply-form--inline {
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-soft);
+}
+
+.qna-mention {
+  display: inline-block;
+  padding: 1px 6px;
+  background: var(--color-brand-bg);
+  color: var(--color-brand-dark) !important;
+  border-radius: var(--radius-md);
+  font-weight: var(--fw-bold);
+  text-decoration: none !important;
+}
+.qna-mention:hover { background: var(--color-brand-soft); }
+
+@keyframes reply-flash {
+  0%   { background: var(--color-accent-yellow); }
+  100% { background: var(--color-bg-card); }
+}
+.reply-card--flash { animation: reply-flash 2s ease-out; }

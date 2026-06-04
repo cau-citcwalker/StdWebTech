@@ -31,6 +31,7 @@ function esc(s) {
 function escMultiline(s) {
   return esc(s)
     .replace(/\bhttps?:\/\/[^\s<]+/g, (u) => `<a href="${u}" target="_blank" rel="noopener noreferrer">🔗 ${u}</a>`)
+    .replace(/@([A-Za-z0-9_]{3,40})/g, (m, u) => `<a class="qna-mention" href="/qna.html?q=${encodeURIComponent('@' + u)}" data-mention="${u}">@${u}</a>`)
     .replace(/\n/g, "<br>");
 }
 function relDate(iso) {
@@ -84,37 +85,107 @@ function renderReplies(replies) {
   const host = $("#reply-list");
   if (replies.length === 0) {
     host.innerHTML = `<div class="qna-empty">아직 답글이 없어요. 첫 답글을 남겨주세요!</div>`;
-  } else {
-    host.innerHTML = replies.map((r) => `
-      <article class="reply-card ${r.is_mine ? "reply-card--mine" : ""}" data-id="${r.id}">
+    renderReplyForm();
+    return;
+  }
+
+  // 트리 구성: parent_reply_id 로 children 그룹화
+  const byParent = new Map();
+  for (const r of replies) {
+    const p = r.parent_reply_id ?? 0;
+    if (!byParent.has(p)) byParent.set(p, []);
+    byParent.get(p).push(r);
+  }
+
+  // 재귀 렌더 (depth 로 indent — 깊이 2 까지만 들여쓰기, 그 이상은 깊이 2 로 fix)
+  const renderNode = (r, depth) => {
+    const children = byParent.get(r.id) || [];
+    const safeDepth = Math.min(depth, 2);
+    return `
+      <article id="reply-${r.id}" class="reply-card reply-card--depth-${safeDepth} ${r.is_mine ? "reply-card--mine" : ""}" data-id="${r.id}">
         <div class="reply-card__head">
           <span class="reply-card__avatar">${esc(avatar(r.author.display_name))}</span>
           <div>
             <div class="reply-card__name">${esc(r.author.display_name)}${r.is_mine ? ` <span class="badge badge--brand">내 답글</span>` : ""}</div>
             <div class="reply-card__handle">@${esc(r.author.username)} · ${relDate(r.created_at)}${r.updated_at ? " · 수정됨" : ""}</div>
           </div>
-          ${r.is_mine ? `<div class="reply-card__actions">
-            <button class="btn btn--ghost btn--sm" data-action="edit" data-id="${r.id}">수정</button>
-            <button class="btn btn--ghost btn--sm" data-action="delete" data-id="${r.id}">삭제</button>
-          </div>` : ""}
+          <div class="reply-card__actions">
+            ${state.loggedIn ? `<button class="btn btn--ghost btn--sm" data-action="reply" data-id="${r.id}" data-username="${esc(r.author.username)}">↩ 답글</button>` : ""}
+            ${r.is_mine ? `
+              <button class="btn btn--ghost btn--sm" data-action="edit" data-id="${r.id}">수정</button>
+              <button class="btn btn--ghost btn--sm" data-action="delete" data-id="${r.id}">삭제</button>
+            ` : ""}
+          </div>
         </div>
         <div class="reply-card__body" data-bodyfor="${r.id}">${escMultiline(r.body)}</div>
+        <div class="reply-card__inline-form" data-inline-for="${r.id}" hidden></div>
+        ${children.length ? `<div class="reply-card__children">
+          ${children.map((c) => renderNode(c, depth + 1)).join("")}
+        </div>` : ""}
       </article>
-    `).join("");
+    `;
+  };
 
-    host.querySelectorAll("[data-action]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const id = Number(btn.dataset.id);
-        const r = state.replies.find((x) => x.id === id);
-        if (!r) return;
-        if (btn.dataset.action === "edit") replaceReplyWithEditor(r);
-        else handleReplyDelete(r);
-      });
+  const roots = byParent.get(0) || [];
+  host.innerHTML = roots.map((r) => renderNode(r, 0)).join("");
+
+  host.querySelectorAll("[data-action]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = Number(btn.dataset.id);
+      const r = state.replies.find((x) => x.id === id);
+      if (!r) return;
+      const action = btn.dataset.action;
+      if      (action === "edit")   replaceReplyWithEditor(r);
+      else if (action === "delete") handleReplyDelete(r);
+      else if (action === "reply")  openInlineReply(r, btn.dataset.username);
     });
-  }
+  });
 
-  // 답글 폼
   renderReplyForm();
+
+  // 해시 (#reply-N) 가 있으면 해당 답글로 스크롤
+  if (location.hash.startsWith("#reply-")) {
+    const target = document.getElementById(location.hash.slice(1));
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      target.classList.add("reply-card--flash");
+      setTimeout(() => target.classList.remove("reply-card--flash"), 2400);
+    }
+  }
+}
+
+function openInlineReply(parent, parentUsername) {
+  const host = document.querySelector(`[data-inline-for="${parent.id}"]`);
+  if (!host) return;
+  host.hidden = false;
+  host.innerHTML = `
+    <form class="reply-form reply-form--inline">
+      <textarea class="textarea" rows="3" maxlength="5000" placeholder="@${parentUsername} 에게 답글…">@${parentUsername} </textarea>
+      <div class="reply-form__actions">
+        <button type="button" class="btn btn--ghost btn--sm" data-cancel>취소</button>
+        <button type="submit" class="btn btn--sm">답글 등록</button>
+      </div>
+    </form>
+  `;
+  const form = host.querySelector("form");
+  const ta = form.querySelector("textarea");
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+  form.querySelector("[data-cancel]").addEventListener("click", () => { host.hidden = true; host.innerHTML = ""; });
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const body = ta.value.trim();
+    if (body.length < 2) { window.toast?.("2자 이상.", { variant: "danger" }); return; }
+    const submitBtn = form.querySelector("button[type=submit]");
+    submitBtn.disabled = true;
+    const res = await api.post("/qna/reply.php", {
+      post_id: postId, body, parent_reply_id: parent.id,
+    });
+    submitBtn.disabled = false;
+    if (!res.ok) { window.toast?.(res.error || "실패", { variant: "danger" }); return; }
+    window.toast?.("답글 등록 완료");
+    await reload();
+  });
 }
 
 function renderReplyForm() {
