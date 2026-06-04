@@ -209,3 +209,58 @@ body { background: var(--color-bg-soft); }
   .cal-cell  { min-height: 60px; padding: 4px 6px; font-size: var(--fs-13); }
   .cal-nav__label { min-width: 110px; font-size: var(--fs-15); }
 }
+
+/* -------------------------------------------------------------
+ * 친구 학습 오버레이
+ * ------------------------------------------------------------- */
+.cal-friends-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  margin-left: auto;
+  user-select: none;
+}
+.cal-friends-toggle input { margin: 0 4px 0 0; cursor: pointer; }
+
+.cal-dot--friends { background: var(--color-accent-purple); }
+
+.cal-cell__dot--friends {
+  position: absolute;
+  left: 36px;
+  bottom: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent-purple);
+  opacity: 0.85;
+}
+
+/* 친구 활동량을 셀 배경으로 시각화 (강도) */
+.cal-cell--friends-1 { background: color-mix(in srgb, var(--color-accent-purple) 6%,  var(--color-bg-card)); }
+.cal-cell--friends-2 { background: color-mix(in srgb, var(--color-accent-purple) 12%, var(--color-bg-card)); }
+.cal-cell--friends-3 { background: color-mix(in srgb, var(--color-accent-purple) 20%, var(--color-bg-card)); }
+.cal-cell--friends-4 { background: color-mix(in srgb, var(--color-accent-purple) 28%, var(--color-bg-card)); }
+
+.cal-friends-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-3) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.cal-friends-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 10px;
+  background: color-mix(in srgb, var(--color-accent-purple) 8%, var(--color-bg-soft));
+  border-radius: var(--radius-md);
+  font-size: var(--fs-13);
+}
+.cal-friends-list li a {
+  color: var(--color-brand-dark);
+  font-weight: var(--fw-bold);
+  text-decoration: none;
+}

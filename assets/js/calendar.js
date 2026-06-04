@@ -11,8 +11,15 @@ const state = {
   year: new Date().getFullYear(),
   month: new Date().getMonth() + 1,  // 1..12
   data: null,
-  selected: null,  // 'YYYY-MM-DD'
+  selected: null,            // 'YYYY-MM-DD'
+  showFriends: false,        // 친구 오버레이 토글 (localStorage 영속)
+  friendsData: null,         // { friends_completed_by_date, total_friends }
 };
+
+// localStorage 에서 친구 오버레이 토글 복원
+try {
+  state.showFriends = localStorage.getItem("finedu-cal-friends") === "1";
+} catch (_) {}
 
 function esc(s) {
   return String(s ?? "").replace(/[&<>"']/g, (c) => ({
@@ -47,6 +54,9 @@ function renderGrid() {
     (eventsByDate[e.event_date] ||= []).push(e);
   });
 
+  // 친구 활동 (오버레이 ON 일 때만)
+  const friendsByDate = (state.showFriends && state.friendsData?.friends_completed_by_date) || {};
+
   const cells = [];
 
   // 이전 달 마지막 며칠 (회색)
@@ -61,18 +71,27 @@ function renderGrid() {
     const isDone     = completed.has(iso);
     const hasEvent   = !!eventsByDate[iso];
     const isSelected = iso === state.selected;
+    const friendCount = (friendsByDate[iso] || []).length;
+    // 강도 1~4 (1=1명, 2=2-3명, 3=4-5명, 4=6+명)
+    let intensity = 0;
+    if (friendCount >= 1) intensity = 1;
+    if (friendCount >= 2) intensity = 2;
+    if (friendCount >= 4) intensity = 3;
+    if (friendCount >= 6) intensity = 4;
     const classes = [
       "cal-cell",
       isToday    ? "is-today"    : "",
       isDone     ? "is-done"     : "",
       hasEvent   ? "has-event"   : "",
       isSelected ? "is-selected" : "",
+      intensity > 0 ? `cal-cell--friends-${intensity}` : "",
     ].filter(Boolean).join(" ");
     cells.push(`
       <button class="${classes}" type="button" data-date="${iso}">
         <span class="cal-cell__num">${d}</span>
         ${isDone   ? '<span class="cal-cell__dot cal-cell__dot--done" aria-label="학습완료"></span>' : ""}
         ${hasEvent ? `<span class="cal-cell__dot cal-cell__dot--event" aria-label="이벤트 ${eventsByDate[iso].length}개"></span>` : ""}
+        ${friendCount > 0 ? `<span class="cal-cell__dot cal-cell__dot--friends" aria-label="친구 ${friendCount}명 학습"></span>` : ""}
       </button>
     `);
   }
@@ -120,6 +139,22 @@ function renderDetail(iso) {
 
   let html = "";
   if (completed) html += `<div class="cal-flag cal-flag--done">✅ 이 날 레슨을 풀었어요!</div>`;
+
+  // 친구 학습 (오버레이 ON 일 때만)
+  const friendsHere = (state.showFriends && state.friendsData?.friends_completed_by_date?.[iso]) || [];
+  if (friendsHere.length) {
+    html += `<div>
+      <div style="font-weight: var(--fw-bold); color: var(--color-text-soft); font-size: var(--fs-13);">
+        💜 친구 ${friendsHere.length}명도 이 날 학습했어요
+      </div>
+      <ul class="cal-friends-list">
+        ${friendsHere.map((f) => `<li>
+          <a href="/friend?id=${f.user_id}">${esc(f.display_name)}</a>
+          <span style="color: var(--color-text-muted);">@${esc(f.username)}</span>
+        </li>`).join("")}
+      </ul>
+    </div>`;
+  }
 
   if (events.length === 0) {
     html += `<p class="cal-detail__empty">아직 이 날 등록된 일정이 없어요.</p>`;
@@ -234,6 +269,13 @@ async function reload() {
     return;
   }
   state.data = res.data;
+  // 친구 데이터는 토글 ON 일 때만 fetch (캐싱 안 함 — 월 변할 때마다 새로)
+  if (state.showFriends) {
+    const fr = await api.get(`/calendar/friends_month.php?year=${state.year}&month=${state.month}`);
+    state.friendsData = fr.ok ? fr.data : null;
+  } else {
+    state.friendsData = null;
+  }
   renderHeader();
   renderGrid();
 }
@@ -266,6 +308,18 @@ $("#cal-detail-close").addEventListener("click", () => {
   state.selected = null;
   renderGrid();
 });
+
+// 친구 오버레이 토글
+const friendsToggle = document.getElementById("cal-show-friends");
+if (friendsToggle) {
+  friendsToggle.checked = state.showFriends;
+  friendsToggle.addEventListener("change", async (e) => {
+    state.showFriends = e.target.checked;
+    try { localStorage.setItem("finedu-cal-friends", state.showFriends ? "1" : "0"); } catch (_) {}
+    await reload();
+    if (state.selected) renderDetail(state.selected);
+  });
+}
 
 (async function init() {
   const me = await api.get("/auth/me.php");
