@@ -32,6 +32,7 @@ $sort = (string)($_GET['sort'] ?? 'recent');
 $orderBy = match ($sort) {
     'rating_high' => 'r.rating DESC, r.created_at DESC',
     'rating_low'  => 'r.rating ASC,  r.created_at DESC',
+    'helpful'     => 'like_count DESC, r.created_at DESC',
     default       => 'r.created_at DESC',
 };
 
@@ -67,18 +68,28 @@ $totalStmt->execute($params);
 $total = (int)$totalStmt->fetchColumn();
 $totalPages = max(1, (int)ceil($total / $pageSize));
 
-// 페이지 행
+// 페이지 행 — like_count + (로그인 시) i_liked 함께 가져옴
+$myJoin = $uid !== null
+    ? "LEFT JOIN review_likes my_like ON my_like.review_id = r.id AND my_like.user_id = :muid"
+    : "";
+$myCol = $uid !== null ? ", IF(my_like.review_id IS NULL, 0, 1) AS i_liked" : ", 0 AS i_liked";
 $sql = "
     SELECT r.id, r.rating, r.body, r.created_at, r.updated_at,
-           u.id AS author_id, u.username AS author_username, u.display_name AS author_display_name
+           u.id AS author_id, u.username AS author_username, u.display_name AS author_display_name,
+           COALESCE(lc.cnt, 0) AS like_count
+           $myCol
     FROM site_reviews r
     JOIN users u ON u.id = r.user_id
+    LEFT JOIN (SELECT review_id, COUNT(*) AS cnt FROM review_likes GROUP BY review_id) lc ON lc.review_id = r.id
+    $myJoin
     $where
     ORDER BY $orderBy
     LIMIT $pageSize OFFSET $offset
 ";
 $rowsStmt = db()->prepare($sql);
-$rowsStmt->execute($params);
+$execParams = $params;
+if ($uid !== null) $execParams[':muid'] = $uid;
+$rowsStmt->execute($execParams);
 $rows = $rowsStmt->fetchAll();
 
 $shape = function ($r) use ($uid) {
@@ -89,6 +100,8 @@ $shape = function ($r) use ($uid) {
         'created_at' => $r['created_at'],
         'updated_at' => $r['updated_at'],
         'is_mine'    => $uid !== null && (int)$r['author_id'] === $uid,
+        'like_count' => (int)($r['like_count'] ?? 0),
+        'i_liked'    => (bool)(int)($r['i_liked'] ?? 0),
         'author'     => [
             'id'           => (int)$r['author_id'],
             'username'     => $r['author_username'],
@@ -103,8 +116,12 @@ $my = null;
 if ($uid !== null) {
     $myStmt = db()->prepare(
         "SELECT r.id, r.rating, r.body, r.created_at, r.updated_at,
-                u.id AS author_id, u.username AS author_username, u.display_name AS author_display_name
-         FROM site_reviews r JOIN users u ON u.id = r.user_id
+                u.id AS author_id, u.username AS author_username, u.display_name AS author_display_name,
+                COALESCE(lc.cnt, 0) AS like_count,
+                0 AS i_liked
+         FROM site_reviews r
+         JOIN users u ON u.id = r.user_id
+         LEFT JOIN (SELECT review_id, COUNT(*) AS cnt FROM review_likes GROUP BY review_id) lc ON lc.review_id = r.id
          WHERE r.user_id = :u LIMIT 1"
     );
     $myStmt->execute([':u' => $uid]);

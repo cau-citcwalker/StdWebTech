@@ -289,3 +289,17 @@ CREATE TABLE IF NOT EXISTS study_events (
     CONSTRAINT fk_events_user FOREIGN KEY (user_id)
         REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- 리뷰 좋아요 (유용해요)
+--   한 사용자는 한 리뷰에 한 번만 좋아요. UNIQUE 로 제한.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS review_likes (
+    review_id    INT UNSIGNED       NOT NULL,
+    user_id      INT UNSIGNED       NOT NULL,
+    liked_at     DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (review_id, user_id),
+    KEY idx_likes_user (user_id),
+    CONSTRAINT fk_like_review FOREIGN KEY (review_id) REFERENCES site_reviews(id) ON DELETE CASCADE,
+    CONSTRAINT fk_like_user   FOREIGN KEY (user_id)   REFERENCES users(id)        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

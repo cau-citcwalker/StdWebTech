@@ -281,6 +281,22 @@ try {
     step('마이그레이션 — qna_posts + qna_replies', true, 'Q&A 게시판 준비 완료');
 } catch (Throwable $e) {}
 
+// 2.91) 마이그레이션 — 리뷰 좋아요 (review_likes) 테이블
+try {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS review_likes (
+            review_id INT UNSIGNED NOT NULL,
+            user_id   INT UNSIGNED NOT NULL,
+            liked_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (review_id, user_id),
+            KEY idx_likes_user (user_id),
+            CONSTRAINT fk_like_review FOREIGN KEY (review_id) REFERENCES site_reviews(id) ON DELETE CASCADE,
+            CONSTRAINT fk_like_user   FOREIGN KEY (user_id)   REFERENCES users(id)        ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    ");
+    step('마이그레이션 — review_likes 테이블', true, '리뷰 좋아요 준비 완료');
+} catch (Throwable $e) {}
+
 // 2.92) 마이그레이션 — qna_replies.parent_reply_id (중첩 답글) + FK
 try {
     $pdo->exec("ALTER TABLE qna_replies ADD COLUMN parent_reply_id INT UNSIGNED NULL");
