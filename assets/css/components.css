@@ -474,3 +474,32 @@
   96%           { transform: scaleY(1); }
 }
 
+
+/* -------------------------------------------------------------
+ * 다크/라이트 테마 토글 버튼 (site.js 가 헤더 .site-nav__actions 에 주입)
+ * ------------------------------------------------------------- */
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 10px;
+  background: var(--color-bg-soft);
+  color: var(--color-text-soft);
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease-out-soft),
+    color      var(--dur-fast) var(--ease-out-soft);
+}
+.theme-toggle:hover { background: var(--color-bg-muted); color: var(--color-text); }
+.theme-toggle:focus-visible {
+  outline: 3px solid var(--color-brand-soft);
+  outline-offset: 2px;
+}
+.theme-toggle svg { width: 20px; height: 20px; }
+/* light 모드에선 sun, dark 모드에선 moon 만 보임 */
+.theme-toggle__moon { display: none; }
+[data-theme="dark"] .theme-toggle__sun  { display: none; }
+[data-theme="dark"] .theme-toggle__moon { display: block; }
+

@@ -31,6 +31,40 @@
   });
 })();
 
+(function initThemeToggle() {
+  /**
+   * 헤더의 .site-nav__actions 에 다크/라이트 토글 버튼 주입.
+   * 초기 테마는 <head> 의 inline theme-init script 가 이미 셋팅함
+   * (localStorage 'finedu-theme' || prefers-color-scheme).
+   * 여기서는 토글 버튼 + 클릭 핸들러만 담당.
+   */
+  const actions = document.querySelector(".site-header__inner .site-nav__actions");
+  if (!actions || actions.querySelector(".theme-toggle")) return;
+
+  const sun = `<svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41 -1.41M17.66 6.34l1.41 -1.41"/>
+  </svg>`;
+  const moon = `<svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>`;
+
+  const btn = document.createElement("button");
+  btn.className = "theme-toggle";
+  btn.type = "button";
+  btn.setAttribute("aria-label", "테마 전환");
+  btn.innerHTML = sun + moon;
+  // actions 의 가장 앞에 놓아서 학습계속/로그인 버튼 왼쪽에 자리잡게.
+  actions.insertBefore(btn, actions.firstChild);
+
+  btn.addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme") || "light";
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("finedu-theme", next); } catch (_) {}
+  });
+})();
+
 (function initToast() {
   let host = document.querySelector(".toast-host");
   if (!host) {
