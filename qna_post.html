@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#4154f1" />
+  <title>질문 · FinEdu</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="alternate icon" href="assets/img/favicon.ico" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+
+  <script>(function(){try{var t=localStorage.getItem("finedu-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);else if(matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.setAttribute("data-theme","dark");}catch(_){}})();</script>
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/qna.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-logo" href="/"><span>FinEdu</span></a>
+      <button class="site-nav__toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primary-nav">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <line x1="3" y1="7"  x2="21" y2="7"  />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="17" x2="21" y2="17" />
+        </svg>
+      </button>
+      <nav id="primary-nav" class="site-nav" aria-label="주요 메뉴">
+        <a class="site-nav__link" href="/">홈</a>
+        <a class="site-nav__link" href="/learn.html">학습</a>
+        <a class="site-nav__link" href="/terms.html">용어사전</a>
+        <a class="site-nav__link" href="/about.html">소개</a>
+        <a class="site-nav__link is-active" href="/qna.html">Q&amp;A</a>
+        <a class="site-nav__link" href="/reviews.html">리뷰</a>
+        <div class="site-nav__actions"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container qna-shell">
+    <a class="qna-back" href="/qna.html">← 게시판으로</a>
+    <article id="qna-post" class="qna-post" aria-busy="true">불러오는 중…</article>
+
+    <section class="qna-replies">
+      <h2 class="qna-replies__title">답글 <span id="reply-count">0</span></h2>
+      <div id="reply-list" class="reply-list"></div>
+      <div id="reply-form-host"></div>
+    </section>
+  </main>
+
+  <div id="qna-modal-host"></div>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <a class="site-logo" href="/"><span>FinEdu</span></a>
+      <p>경제와 금융을 게임처럼 배우는 곳.</p>
+      <nav class="site-footer__links" aria-label="페이지 메뉴">
+        <a href="/about.html">소개</a>
+        <a href="/how-it-works.html">진행 방식</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/terms.html">용어사전</a>
+      </nav>
+      <p class="site-footer__credit">© 2026 FinEdu</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/qna_post.js"></script>
+</body>
+</html>
