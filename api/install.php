@@ -221,6 +221,27 @@ try {
     // 이미 있으면 무해
 }
 
+// 2.8) 마이그레이션 — 사이트 리뷰 테이블 (한 유저당 1개, 1-5점 + 본문)
+try {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS site_reviews (
+            id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+            user_id      INT UNSIGNED       NOT NULL,
+            rating       TINYINT UNSIGNED   NOT NULL,
+            body         TEXT               NOT NULL,
+            created_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at   DATETIME           NULL,
+            PRIMARY KEY (id),
+            UNIQUE KEY uniq_user_review (user_id),
+            KEY idx_review_recent (created_at),
+            KEY idx_review_rating (rating, created_at),
+            CONSTRAINT fk_review_user FOREIGN KEY (user_id)
+                REFERENCES users(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    ");
+    step('마이그레이션 — site_reviews 테이블', true, '리뷰 시스템 준비 완료');
+} catch (Throwable $e) {}
+
 // 3) seed_avatar.sql
 $res = run_sql_file($pdo, __DIR__ . '/_init/seed_avatar.sql');
 step('seed_avatar.sql — 아바타 아이템 시드', $res['ok'], $res['detail']);
