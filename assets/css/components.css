@@ -354,7 +354,8 @@
   transition: background var(--dur-fast) var(--ease-out-soft), color var(--dur-fast) var(--ease-out-soft);
 }
 .site-nav__more-btn:hover { background: var(--color-bg-soft); color: var(--color-text); }
-.site-nav__more-btn[aria-expanded="true"] {
+.site-nav__more-btn[aria-expanded="true"],
+.site-nav__more-btn.is-active {
   background: var(--color-brand-bg);
   color: var(--color-brand-dark);
 }
