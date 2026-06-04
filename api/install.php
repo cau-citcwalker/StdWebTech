@@ -242,6 +242,45 @@ try {
     step('마이그레이션 — site_reviews 테이블', true, '리뷰 시스템 준비 완료');
 } catch (Throwable $e) {}
 
+// 2.9) 마이그레이션 — Q&A 게시판 (qna_posts + qna_replies)
+try {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS qna_posts (
+            id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+            user_id      INT UNSIGNED       NOT NULL,
+            category     VARCHAR(20)        NOT NULL DEFAULT 'general',
+            title        VARCHAR(200)       NOT NULL,
+            body         TEXT               NOT NULL,
+            reply_count  INT UNSIGNED       NOT NULL DEFAULT 0,
+            created_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at   DATETIME           NULL,
+            PRIMARY KEY (id),
+            KEY idx_qna_recent  (created_at),
+            KEY idx_qna_cat     (category, created_at),
+            KEY idx_qna_replies (reply_count, created_at),
+            CONSTRAINT fk_qna_post_user FOREIGN KEY (user_id)
+                REFERENCES users(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    ");
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS qna_replies (
+            id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+            post_id      INT UNSIGNED       NOT NULL,
+            user_id      INT UNSIGNED       NOT NULL,
+            body         TEXT               NOT NULL,
+            created_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at   DATETIME           NULL,
+            PRIMARY KEY (id),
+            KEY idx_replies_post (post_id, created_at),
+            CONSTRAINT fk_qna_reply_post FOREIGN KEY (post_id)
+                REFERENCES qna_posts(id) ON DELETE CASCADE,
+            CONSTRAINT fk_qna_reply_user FOREIGN KEY (user_id)
+                REFERENCES users(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    ");
+    step('마이그레이션 — qna_posts + qna_replies', true, 'Q&A 게시판 준비 완료');
+} catch (Throwable $e) {}
+
 // 3) seed_avatar.sql
 $res = run_sql_file($pdo, __DIR__ . '/_init/seed_avatar.sql');
 step('seed_avatar.sql — 아바타 아이템 시드', $res['ok'], $res['detail']);

@@ -233,3 +233,40 @@ CREATE TABLE IF NOT EXISTS site_reviews (
     CONSTRAINT fk_review_user FOREIGN KEY (user_id)
         REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- Q&A 게시판 (학습 내용 질문)
+--   카테고리: 'general' | 'stock' | 'market' | 'basics' | 'macro' | 'asset' | 'tax'
+--   reply_count 는 denormalized (정렬용)
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS qna_posts (
+    id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+    user_id      INT UNSIGNED       NOT NULL,
+    category     VARCHAR(20)        NOT NULL DEFAULT 'general',
+    title        VARCHAR(200)       NOT NULL,
+    body         TEXT               NOT NULL,
+    reply_count  INT UNSIGNED       NOT NULL DEFAULT 0,
+    created_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   DATETIME           NULL,
+    PRIMARY KEY (id),
+    KEY idx_qna_recent  (created_at),
+    KEY idx_qna_cat     (category, created_at),
+    KEY idx_qna_replies (reply_count, created_at),
+    CONSTRAINT fk_qna_post_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS qna_replies (
+    id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+    post_id      INT UNSIGNED       NOT NULL,
+    user_id      INT UNSIGNED       NOT NULL,
+    body         TEXT               NOT NULL,
+    created_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   DATETIME           NULL,
+    PRIMARY KEY (id),
+    KEY idx_replies_post (post_id, created_at),
+    CONSTRAINT fk_qna_reply_post FOREIGN KEY (post_id)
+        REFERENCES qna_posts(id) ON DELETE CASCADE,
+    CONSTRAINT fk_qna_reply_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
