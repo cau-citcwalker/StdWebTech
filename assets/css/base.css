@@ -200,9 +200,6 @@
 [data-theme="dark"] .market-card__preview {
   background: linear-gradient(180deg, var(--color-bg-card) 0%, var(--color-bg-soft) 100%);
 }
-[data-theme="dark"] .market-card__rarity {
-  background: rgba(20, 22, 26, 0.85);
-}
 [data-theme="dark"] .lesson-skeleton__row {
   background: linear-gradient(90deg, var(--color-bg-muted) 0%, var(--color-bg-soft) 50%, var(--color-bg-muted) 100%);
 }

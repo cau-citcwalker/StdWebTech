@@ -57,7 +57,7 @@ function friendCard(user, actionsHtml, opts = {}) {
   // 친구 카드에서 캐릭터 아바타는 정보가 없을 때 기본 캐릭터로 떨어지므로
   // 노출하지 않음. 이름/핸들/스탯만 표시.
   return `
-    <article class="friend-card friend-card--no-avatar">
+    <article class="friend-card">
       <div class="friend-card__body">
         <a class="friend-card__name" href="/friend?id=${user.id}">${user.display_name}</a>
         <div class="friend-card__handle">@${user.username}</div>
