@@ -143,7 +143,7 @@ function renderDetail(iso) {
   if (friendsHere.length) {
     html += `<div>
       <div style="font-weight: var(--fw-bold); color: var(--color-text-soft); font-size: var(--fs-13);">
-        💜 친구 ${friendsHere.length}명도 이 날 학습했어요
+        친구 ${friendsHere.length}명도 이 날 학습했어요
       </div>
       <ul class="cal-friends-list">
         ${friendsHere.map((f) => `<li>

@@ -14,15 +14,11 @@ const state = {
   myId: null,
 };
 
-function tierEmoji(key) {
-  return ({ bronze: "🥉", silver: "🥈", gold: "🥇", sapphire: "💎", ruby: "♦️", diamond: "👑" })[key] ?? "🏅";
-}
-
 function renderMe(me) {
   state.myId = me.user.id;
   const tier = me.tier;
   $("#my-card").style.setProperty("--tier-color", tier.color);
-  $("#my-crest").textContent = tierEmoji(tier.key);
+  $("#my-crest").textContent = tier.name.slice(0, 1);
   $("#my-tier-name").textContent = tier.name;
   $("#my-rank").textContent = me.weekly_rank ? `이번 주 ${me.weekly_rank}위` : "이번 주 미참여";
   $("#my-weekly-xp").textContent = me.weekly_xp.toLocaleString("ko-KR");
@@ -33,7 +29,7 @@ function renderMe(me) {
   const next = me.next_tier;
   const nextBox = $("#next-tier");
   if (!next) {
-    nextBox.innerHTML = `<div class="next-tier__row"><span>최고 티어!</span><span>👑</span></div>`;
+    nextBox.innerHTML = `<div class="next-tier__row"><span>최고 티어!</span></div>`;
     return;
   }
   const prevMin = me.tier.min;
@@ -42,7 +38,7 @@ function renderMe(me) {
   const pct = Math.min(100, Math.round((got / span) * 100));
   nextBox.innerHTML = `
     <div class="next-tier__row">
-      <span>다음: ${tierEmoji(next.key)} ${next.name}</span>
+      <span>다음: ${next.name}</span>
       <span>${next.to_go.toLocaleString("ko-KR")} XP 남음</span>
     </div>
     <div class="progress" aria-hidden="true">
@@ -70,7 +66,7 @@ function rowHtml(row, idx) {
         <div class="lb-info__handle">@${row.username}</div>
       </div>
       ${showTier
-        ? `<span class="lb-tier" style="background: ${row.tier.color};">${tierEmoji(row.tier.key)} ${row.tier.name}</span>`
+        ? `<span class="lb-tier" style="background: ${row.tier.color};">${row.tier.name}</span>`
         : ""}
       <div class="lb-xp">
         ${(row.weekly_xp ?? row.total_xp).toLocaleString("ko-KR")}<small>XP</small>

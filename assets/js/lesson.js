@@ -363,7 +363,7 @@ async function initScrapButton() {
     }
     on = !!res.data?.scraped;
     sync();
-    if (window.toast) window.toast(on ? "⭐ 즐겨찾기에 추가" : "즐겨찾기에서 빼냈어요");
+    if (window.toast) window.toast(on ? "즐겨찾기에 추가" : "즐겨찾기에서 빼냈어요");
   });
 }
 

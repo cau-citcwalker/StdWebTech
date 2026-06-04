@@ -26,7 +26,7 @@ function escMultiline(s) {
   // URL 자동 링크 + 줄바꿈 보존. 이모지는 native 로 그대로 통과.
   const html = esc(s).replace(
     /\bhttps?:\/\/[^\s<]+/g,
-    (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">🔗 ${url}</a>`
+    (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
   );
   return html.replace(/\n/g, "<br>");
 }
@@ -181,7 +181,7 @@ function renderForm(editTarget /* my object or null = create */) {
         <span id="my-review-rating-label" class="my-review__rating-label">${editTarget?.rating ? editTarget.rating + "점" : "별점을 골라주세요"}</span>
       </div>
       <textarea id="my-review-body" class="textarea" rows="5"
-                placeholder="예) 5분이면 한 레슨이라 부담 없이 매일 들어와요. 캐릭터 꾸미는 재미도 있고요. 😊"
+                placeholder="예) 5분이면 한 레슨이라 부담 없이 매일 들어와요. 캐릭터 꾸미는 재미도 있고요."
                 maxlength="2000">${editTarget ? esc(editTarget.body) : ""}</textarea>
       <div class="my-review__actions">
         ${isEdit ? `<button type="button" class="btn btn--ghost btn--sm" id="my-cancel">취소</button>` : ""}
@@ -270,19 +270,18 @@ function renderList(items) {
 function renderLikeBtn(r) {
   // 본인 리뷰엔 좋아요 X. 비로그인은 count만 표시 (클릭 시 로그인 유도).
   if (r.is_mine) {
-    return `<span class="review-like review-like--readonly">👍 ${r.like_count}</span>`;
+    return `<span class="review-like review-like--readonly">유용해요 ${r.like_count}</span>`;
   }
   if (!state.loggedIn) {
-    return `<a class="review-like review-like--readonly" href="/login.html" title="로그인 후 좋아요">👍 ${r.like_count}</a>`;
+    return `<a class="review-like review-like--readonly" href="/login.html" title="로그인 후 유용해요">유용해요 ${r.like_count}</a>`;
   }
   return `<button type="button"
                   class="review-like ${r.i_liked ? "is-on" : ""}"
                   data-id="${r.id}"
                   data-liked="${r.i_liked ? "1" : "0"}"
                   aria-pressed="${r.i_liked ? "true" : "false"}">
-            <span class="review-like__icon">${r.i_liked ? "👍" : "👍🏻"}</span>
-            <span class="review-like__count">${r.like_count}</span>
             <span class="review-like__label">유용해요</span>
+            <span class="review-like__count">${r.like_count}</span>
           </button>`;
 }
 
@@ -297,7 +296,6 @@ async function toggleLike(btn) {
   btn.classList.toggle("is-on", liked);
   btn.setAttribute("aria-pressed", liked ? "true" : "false");
   btn.querySelector(".review-like__count").textContent = res.data.like_count;
-  btn.querySelector(".review-like__icon").textContent = liked ? "👍" : "👍🏻";
 }
 
 function renderPagination(page, totalPages) {

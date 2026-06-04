@@ -84,7 +84,7 @@ function renderList(items) {
           <span>${relDate(p.created_at)}</span>
         </div>
       </div>
-      <div class="qna-row__count" title="답글 수">💬 ${p.reply_count}</div>
+      <div class="qna-row__count" title="답글 수">${p.reply_count}</div>
     </article>
   `).join("");
 }
@@ -173,7 +173,7 @@ function openEditor({ id = null, category = "general", title = "", body = "" } =
           <div class="field">
             <label class="field__label" for="qf-body">본문</label>
             <textarea id="qf-body" class="textarea" rows="8" maxlength="10000" required>${esc(body)}</textarea>
-            <span class="field__hint">2~10,000자. 이모지·URL 가능 (URL은 자동으로 🔗 링크됨).</span>
+            <span class="field__hint">2~10,000자. URL은 자동으로 링크됩니다.</span>
           </div>
           <div class="qna-form__actions">
             <button type="button" class="btn btn--ghost btn--sm" id="qf-cancel">취소</button>
