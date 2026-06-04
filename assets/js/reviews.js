@@ -257,9 +257,47 @@ function renderList(items) {
       <p class="review-card__body">${escMultiline(r.body)}</p>
       <footer class="review-card__foot">
         <span class="review-card__time">${relDate(r.created_at)}${r.updated_at ? " · 수정됨" : ""}</span>
+        ${renderLikeBtn(r)}
       </footer>
     </article>
   `).join("");
+
+  host.querySelectorAll(".review-like").forEach((btn) => {
+    btn.addEventListener("click", () => toggleLike(btn));
+  });
+}
+
+function renderLikeBtn(r) {
+  // 본인 리뷰엔 좋아요 X. 비로그인은 count만 표시 (클릭 시 로그인 유도).
+  if (r.is_mine) {
+    return `<span class="review-like review-like--readonly">👍 ${r.like_count}</span>`;
+  }
+  if (!state.loggedIn) {
+    return `<a class="review-like review-like--readonly" href="/login.html" title="로그인 후 좋아요">👍 ${r.like_count}</a>`;
+  }
+  return `<button type="button"
+                  class="review-like ${r.i_liked ? "is-on" : ""}"
+                  data-id="${r.id}"
+                  data-liked="${r.i_liked ? "1" : "0"}"
+                  aria-pressed="${r.i_liked ? "true" : "false"}">
+            <span class="review-like__icon">${r.i_liked ? "👍" : "👍🏻"}</span>
+            <span class="review-like__count">${r.like_count}</span>
+            <span class="review-like__label">유용해요</span>
+          </button>`;
+}
+
+async function toggleLike(btn) {
+  const id = Number(btn.dataset.id);
+  btn.disabled = true;
+  const res = await api.post("/reviews/like_toggle.php", { id });
+  btn.disabled = false;
+  if (!res.ok) { window.toast?.(res.error || "실패", { variant: "danger" }); return; }
+  const liked = !!res.data?.liked;
+  btn.dataset.liked = liked ? "1" : "0";
+  btn.classList.toggle("is-on", liked);
+  btn.setAttribute("aria-pressed", liked ? "true" : "false");
+  btn.querySelector(".review-like__count").textContent = res.data.like_count;
+  btn.querySelector(".review-like__icon").textContent = liked ? "👍" : "👍🏻";
 }
 
 function renderPagination(page, totalPages) {

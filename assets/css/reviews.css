@@ -322,3 +322,39 @@ body { background: var(--color-bg-soft); }
 @media (max-width: 720px) {
   .reviews-shell { padding: var(--space-5) 0 var(--space-12); }
 }
+
+/* -------------------------------------------------------------
+ * 좋아요 (유용해요) 버튼
+ * ------------------------------------------------------------- */
+.review-like {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  color: var(--color-text-soft);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-13);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--dur-fast) var(--ease-out-soft);
+  font-family: inherit;
+}
+.review-like:hover:not(:disabled):not(.review-like--readonly) {
+  border-color: var(--color-brand-soft);
+  color: var(--color-brand-dark);
+}
+.review-like.is-on {
+  background: var(--color-brand-bg);
+  border-color: var(--color-brand);
+  color: var(--color-brand-dark);
+}
+.review-like:disabled { opacity: 0.6; cursor: not-allowed; }
+.review-like--readonly { cursor: default; }
+.review-like__count { font-weight: var(--fw-black); }
+.review-like__label { font-size: var(--fs-12); opacity: 0.85; }
+@media (max-width: 480px) {
+  .review-like__label { display: none; }
+}
