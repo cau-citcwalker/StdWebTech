@@ -55,9 +55,6 @@ $events = array_map(function($r){
 
 // 통계
 $user = load_user_by_id($uid);
-$totalDone = (int)db()->prepare(
-    'SELECT COUNT(*) FROM user_lesson_progress WHERE user_id = :u'
-);
 $tDoneStmt = db()->prepare('SELECT COUNT(*) FROM user_lesson_progress WHERE user_id = :u');
 $tDoneStmt->execute([':u' => $uid]);
 

@@ -40,14 +40,20 @@
 (function initNavActive() {
   /**
    * 헤더 nav 의 link 중 현재 경로와 일치하는 항목에 .is-active 자동 부여.
-   * (HTML 에서 미리 박는 대신 JS 로 통일 — 페이지마다 따로 표시할 필요 없음.)
+   * 추가로, 매치된 링크가 "더보기" 드롭다운 안에 있다면 드롭다운 버튼 자체에도
+   * .is-active 를 줘서 사용자가 어디 속한 페이지인지 알게 함.
    */
   const path = location.pathname.replace(/\/$/, "") || "/";
   const norm = (p) => (p || "").replace(/\/$/, "") || "/";
+  const moreBtn = document.querySelector(".site-nav__more-btn");
+  let dropdownActive = false;
   document.querySelectorAll(".site-nav a[href]").forEach((a) => {
     const href = norm(new URL(a.getAttribute("href"), location.origin).pathname);
-    a.classList.toggle("is-active", href === path);
+    const isActive = href === path;
+    a.classList.toggle("is-active", isActive);
+    if (isActive && a.closest(".site-nav__more-menu")) dropdownActive = true;
   });
+  if (moreBtn) moreBtn.classList.toggle("is-active", dropdownActive);
 })();
 
 (function initNavToggle() {

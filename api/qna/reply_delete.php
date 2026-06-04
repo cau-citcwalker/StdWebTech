@@ -23,9 +23,24 @@ if ((int)$r['user_id'] !== $uid) json_error('내 답글만 삭제할 수 있어�
 
 $pid = (int)$r['post_id'];
 
+// FK CASCADE 로 children (그리고 그 아래 grand-children) 까지 함께 삭제되므로,
+// reply_count 도 그만큼 차감해야 desync 안 됨.
+// DELETE 전후의 같은 post 의 reply 개수 차이를 측정해서 그만큼 감산.
+$beforeStmt = db()->prepare('SELECT COUNT(*) FROM qna_replies WHERE post_id = :pid');
+$beforeStmt->execute([':pid' => $pid]);
+$before = (int)$beforeStmt->fetchColumn();
+
 db()->prepare('DELETE FROM qna_replies WHERE id = :id')->execute([':id' => $id]);
-db()->prepare('UPDATE qna_posts SET reply_count = GREATEST(0, reply_count - 1) WHERE id = :id')
-    ->execute([':id' => $pid]);
+
+$afterStmt = db()->prepare('SELECT COUNT(*) FROM qna_replies WHERE post_id = :pid');
+$afterStmt->execute([':pid' => $pid]);
+$after = (int)$afterStmt->fetchColumn();
+
+$removed = $before - $after;
+if ($removed > 0) {
+    db()->prepare('UPDATE qna_posts SET reply_count = GREATEST(0, reply_count - :n) WHERE id = :id')
+        ->execute([':n' => $removed, ':id' => $pid]);
+}
 
 $cnt = db()->prepare('SELECT reply_count FROM qna_posts WHERE id = :id');
 $cnt->execute([':id' => $pid]);

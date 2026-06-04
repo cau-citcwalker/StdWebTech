@@ -30,7 +30,7 @@ if (!password_verify($cur, $user['password_hash'])) {
     json_error('현재 비밀번호가 맞지 않아요.', 401);
 }
 if ($user['username'] === $next) {
-    json_error('이미 사용 중인 아이디예요.', 422);
+    json_error('현재 사용 중인 아이디와 같아요.', 422);
 }
 
 try {

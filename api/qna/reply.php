@@ -80,17 +80,26 @@ if ($mentioned) {
 $snippet = mb_substr($text, 0, 80) . (mb_strlen($text) > 80 ? '…' : '');
 $me = load_user_by_id($uid);
 $meName = $me['display_name'] ?? '누군가';
-$postTitleStmt = db()->prepare('SELECT title FROM qna_posts WHERE id = :id');
-$postTitleStmt->execute([':id' => $pid]);
-$postTitle = (string)$postTitleStmt->fetchColumn();
+
+// mention 된 사용자 id 셋 (제목 분기에서 username→int 비교 가능하게 변환)
+$mentionedIds = [];
+if ($mentioned) {
+    $place = implode(',', array_fill(0, count($mentioned), '?'));
+    $mIds = db()->prepare("SELECT id FROM users WHERE username IN ($place)");
+    $mIds->execute($mentioned);
+    foreach ($mIds->fetchAll(PDO::FETCH_COLUMN) as $mid) $mentionedIds[] = (int)$mid;
+}
 
 foreach (array_unique($notifyIds) as $nUid) {
-    $title = $parentOwner === $nUid
-        ? "{$meName} 님이 내 답글에 답했어요"
-        : (in_array($nUid, $mentioned, true) || ($postOwner !== $nUid && $parentOwner === null)
-            ? "{$meName} 님이 답글을 남겼어요"
-            : "{$meName} 님이 답글을 남겼어요");
-    notify((int)$nUid, 'system', $title, $snippet, "/qna_post.html?id={$pid}#reply-{$id}");
+    $nUid = (int)$nUid;
+    if ($parentOwner === $nUid) {
+        $title = "{$meName} 님이 내 답글에 답했어요";
+    } elseif (in_array($nUid, $mentionedIds, true)) {
+        $title = "{$meName} 님이 답글에서 회원님을 언급했어요";
+    } else {
+        $title = "{$meName} 님이 답글을 남겼어요";
+    }
+    notify($nUid, 'system', $title, $snippet, "/qna_post.html?id={$pid}#reply-{$id}");
 }
 
 json_ok(['id' => $id, 'reply_count' => $replyCount]);

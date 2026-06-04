@@ -73,11 +73,17 @@ try {
     // users 테이블이 아직 없으면 정상 — 그대로 진행
 }
 
-// force 모드: 기존 테이블 모두 DROP
+// force 모드: 기존 테이블 모두 DROP — child → parent 순서로 (FK_CHECKS=0 으로 어차피 무관)
 if ($force) {
-    $tables = ['notifications','user_equipment','user_items','items',
-               'user_lesson_progress','questions','lessons','units',
-               'friendships','coin_ledger','users'];
+    $tables = [
+        // 신규 (PR #62~#69) — child 들 먼저
+        'review_likes', 'qna_replies', 'qna_posts',
+        'user_scraps', 'site_reviews', 'study_events',
+        // 기존
+        'notifications','user_equipment','user_items','items',
+        'user_lesson_progress','questions','lessons','units',
+        'friendships','coin_ledger','users',
+    ];
     $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
     foreach ($tables as $t) {
         try { $pdo->exec("DROP TABLE IF EXISTS $t"); } catch (Throwable $e) {}
