@@ -270,3 +270,21 @@ CREATE TABLE IF NOT EXISTS qna_replies (
     CONSTRAINT fk_qna_reply_user FOREIGN KEY (user_id)
         REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- 학습 캘린더 — 사용자 이벤트 (계획/메모)
+--   완료한 레슨 날짜는 user_lesson_progress.completed_at 에서 자동 집계.
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS study_events (
+    id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+    user_id      INT UNSIGNED       NOT NULL,
+    event_date   DATE               NOT NULL,
+    title        VARCHAR(120)       NOT NULL,
+    note         VARCHAR(500)       NULL,
+    created_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   DATETIME           NULL,
+    PRIMARY KEY (id),
+    KEY idx_events_user_date (user_id, event_date),
+    CONSTRAINT fk_events_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

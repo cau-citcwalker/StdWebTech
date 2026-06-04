@@ -1,0 +1,211 @@
+/* =============================================================
+ * FinEdu — 학습 캘린더 (/calendar.html)
+ * ============================================================= */
+
+body { background: var(--color-bg-soft); }
+
+.cal-shell {
+  padding: var(--space-8) 0 var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* 헤더 */
+.cal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.cal-head__title { font-size: var(--fs-30); font-weight: var(--fw-black); margin: 0; }
+.cal-head__sub { color: var(--color-text-soft); font-size: var(--fs-14); margin: 4px 0 0; }
+
+.cal-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.cal-nav__label {
+  font-size: var(--fs-18);
+  font-weight: var(--fw-extrabold);
+  margin: 0 var(--space-2);
+  min-width: 140px;
+  text-align: center;
+}
+
+/* Legend */
+.cal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  font-size: var(--fs-13);
+  color: var(--color-text-soft);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.cal-legend__item { display: inline-flex; align-items: center; gap: 6px; }
+.cal-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.cal-dot--done  { background: var(--color-accent-yellow); }
+.cal-dot--event { background: var(--color-brand); }
+.cal-dot--today { background: var(--color-accent-red); }
+
+/* Grid */
+.cal-grid-wrap {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+.cal-dow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--color-bg-soft);
+  border-bottom: 1px solid var(--color-divider);
+}
+.cal-dow > div {
+  text-align: center;
+  padding: 8px;
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-13);
+  letter-spacing: 0.05em;
+  color: var(--color-text-soft);
+}
+.cal-dow > div:first-child { color: var(--color-accent-red); }     /* 일 */
+.cal-dow > div:last-child  { color: var(--color-accent-blue-dark); } /* 토 */
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+}
+.cal-cell {
+  position: relative;
+  min-height: 84px;
+  border-right: 1px solid var(--color-divider);
+  border-bottom: 1px solid var(--color-divider);
+  background: var(--color-bg-card);
+  color: var(--color-text);
+  text-align: left;
+  padding: 6px 8px;
+  font-family: inherit;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out-soft);
+}
+.cal-cell:nth-child(7n)      { border-right: 0; }    /* 토요일 (마지막 컬럼) */
+.cal-cell:hover              { background: var(--color-bg-soft); }
+.cal-cell.is-selected        { background: var(--color-brand-bg); outline: 2px solid var(--color-brand); outline-offset: -2px; z-index: 1; }
+.cal-cell.is-today .cal-cell__num {
+  display: inline-grid; place-items: center;
+  width: 28px; height: 28px;
+  background: var(--color-accent-red);
+  color: white;
+  border-radius: 50%;
+}
+.cal-cell--out { color: var(--color-text-muted); background: var(--color-bg-soft); cursor: default; }
+.cal-cell--out:hover { background: var(--color-bg-soft); }
+
+.cal-cell__num { display: inline-block; }
+.cal-cell__dot {
+  position: absolute;
+  bottom: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.cal-cell__dot--done  { left: 8px;  background: var(--color-accent-yellow); }
+.cal-cell__dot--event { left: 22px; background: var(--color-brand); }
+
+/* 일/토 색상 — 셀에도 살짝 강조 */
+.cal-cell:nth-child(7n+1):not(.cal-cell--out) .cal-cell__num { color: var(--color-accent-red); }
+.cal-cell:nth-child(7n):not(.cal-cell--out) .cal-cell__num { color: var(--color-accent-blue-dark); }
+
+/* 선택된 날짜 패널 */
+.cal-detail {
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+}
+.cal-detail__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  gap: var(--space-2);
+}
+.cal-detail__head h2 { margin: 0; font-size: var(--fs-18); }
+.cal-detail__close {
+  background: transparent;
+  border: 0;
+  font-size: var(--fs-18);
+  cursor: pointer;
+  color: var(--color-text-soft);
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+}
+.cal-detail__close:hover { background: var(--color-bg-muted); color: var(--color-text); }
+
+.cal-detail__body { display: flex; flex-direction: column; gap: var(--space-4); }
+.cal-detail__empty { color: var(--color-text-soft); margin: 0; }
+
+.cal-flag {
+  padding: var(--space-2) var(--space-3);
+  background: #fff8d1;
+  color: #6e4a00;
+  border-radius: var(--radius-md);
+  font-weight: var(--fw-bold);
+}
+[data-theme="dark"] .cal-flag { background: #3a2d10; color: #f0c060; }
+
+.cal-flag--done { /* 색상 그대로 */ }
+
+.cal-event-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.cal-event {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+}
+.cal-event__main { flex: 1; min-width: 0; }
+.cal-event__title { font-weight: var(--fw-extrabold); font-size: var(--fs-15); }
+.cal-event__note  { color: var(--color-text-soft); font-size: var(--fs-13); margin-top: 4px; line-height: 1.5; word-break: keep-all; }
+.cal-event__actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+.cal-event-form {
+  padding: var(--space-4);
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.cal-event-form h3 { margin: 0; font-size: var(--fs-15); font-weight: var(--fw-extrabold); }
+.cal-event-form__actions { display: flex; justify-content: flex-end; }
+
+.cal-event-edit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+@media (max-width: 720px) {
+  .cal-shell { padding: var(--space-5) 0 var(--space-12); gap: var(--space-3); }
+  .cal-cell  { min-height: 60px; padding: 4px 6px; font-size: var(--fs-13); }
+  .cal-nav__label { min-width: 110px; font-size: var(--fs-15); }
+}

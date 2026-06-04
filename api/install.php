@@ -281,6 +281,26 @@ try {
     step('마이그레이션 — qna_posts + qna_replies', true, 'Q&A 게시판 준비 완료');
 } catch (Throwable $e) {}
 
+// 2.95) 마이그레이션 — 학습 캘린더 이벤트
+try {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS study_events (
+            id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+            user_id      INT UNSIGNED       NOT NULL,
+            event_date   DATE               NOT NULL,
+            title        VARCHAR(120)       NOT NULL,
+            note         VARCHAR(500)       NULL,
+            created_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at   DATETIME           NULL,
+            PRIMARY KEY (id),
+            KEY idx_events_user_date (user_id, event_date),
+            CONSTRAINT fk_events_user FOREIGN KEY (user_id)
+                REFERENCES users(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    ");
+    step('마이그레이션 — study_events 테이블', true, '학습 캘린더 준비 완료');
+} catch (Throwable $e) {}
+
 // 3) seed_avatar.sql
 $res = run_sql_file($pdo, __DIR__ . '/_init/seed_avatar.sql');
 step('seed_avatar.sql — 아바타 아이템 시드', $res['ok'], $res['detail']);
