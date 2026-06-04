@@ -37,8 +37,9 @@
         <a class="site-nav__link is-active" href="/">홈</a>
         <a class="site-nav__link" href="/learn.html">학습</a>
         <a class="site-nav__link" href="/terms.html">용어사전</a>
-        <a class="site-nav__link" href="#features">소개</a>
-        <a class="site-nav__link" href="#how">진행 방식</a>
+        <a class="site-nav__link" href="/about.html">소개</a>
+        <a class="site-nav__link" href="/how-it-works.html">진행 방식</a>
+        <a class="site-nav__link" href="/faq.html">FAQ</a>
         <div class="site-nav__actions">
           <a class="btn btn--secondary btn--sm" href="/login.html">로그인</a>
           <a class="btn btn--sm" href="/signup.html">무료 시작</a>
@@ -67,7 +68,7 @@
         </p>
         <div class="hero__cta">
           <a class="btn btn--lg" href="/signup.html">무료로 시작하기 →</a>
-          <a class="btn btn--secondary btn--lg" href="#features">서비스 둘러보기</a>
+          <a class="btn btn--secondary btn--lg" href="/about.html">서비스 둘러보기</a>
         </div>
         <div class="hero__trust">
           <span class="hero__trust__dots" aria-hidden="true">
@@ -199,115 +200,29 @@
     </div>
   </section>
 
-  <!-- ===================== FEATURES ===================== -->
-  <section class="section section--soft" id="features">
+  <!-- ===================== 둘러보기 ===================== -->
+  <section class="section section--soft">
     <div class="container">
       <header class="section__head" data-anim>
-        <span class="section__eyebrow">왜 FinEdu</span>
-        <h2 class="section__title">금융이 어렵다는 편견은 잊어버려요.</h2>
-        <p class="section__sub">
-          FinEdu 는 경제와 금융을 한 입에 쏙 들어가는 작은 레슨으로 만들어 드려요.
-        </p>
+        <span class="section__eyebrow">둘러보기</span>
+        <h2 class="section__title">어디부터 시작해볼까요?</h2>
       </header>
 
       <div class="features">
-        <article class="card card--interactive feature" data-anim data-anim-delay="1">
-          <div class="feature__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="9"/>
-              <circle cx="12" cy="12" r="5"/>
-              <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
-            </svg>
-          </div>
-          <h3 class="feature__title">짧고 굵게, 5 분</h3>
-          <p class="feature__desc">
-            한 레슨은 5 분이면 끝. 출근길, 점심시간, 잠들기 전 — 일상 어디에든 끼워 넣을 수 있어요.
-          </p>
-        </article>
+        <a class="card card--interactive feature" href="/about.html" data-anim data-anim-delay="1" style="text-decoration: none; color: inherit;">
+          <h3 class="feature__title">🌱 소개</h3>
+          <p class="feature__desc">FinEdu 가 왜 만들어졌고, 어떤 학습 경험을 주는지 한눈에.</p>
+        </a>
 
-        <article class="card card--interactive feature feature--yellow" data-anim data-anim-delay="2">
-          <div class="feature__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3 c0 4 -5 5 -5 10 a5 5 0 0 0 10 0 c0 -2 -2 -3 -3 -5 c0 3 -2 4 -2 4 z"/>
-            </svg>
-          </div>
-          <h3 class="feature__title">매일 습관, 스트릭</h3>
-          <p class="feature__desc">
-            연속 학습 일수가 쌓이는 재미.<br />
-            작은 보상이 자연스럽게 매일 들어오게 만들어요.
-          </p>
-        </article>
+        <a class="card card--interactive feature feature--yellow" href="/how-it-works.html" data-anim data-anim-delay="2" style="text-decoration: none; color: inherit;">
+          <h3 class="feature__title">🎯 진행 방식</h3>
+          <p class="feature__desc">가입 → 첫 레슨 → 매일 5분. 보상 시스템과 학습 흐름.</p>
+        </a>
 
-        <article class="card card--interactive feature feature--blue" data-anim data-anim-delay="3">
-          <div class="feature__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M8 4 h8 v3 a5 5 0 0 1 -10 0 z" />
-              <path d="M5 6 H3 v2 a4 4 0 0 0 4 4" />
-              <path d="M19 6 h2 v2 a4 4 0 0 1 -4 4" />
-              <path d="M9 14 h6 l-1 5 h-4 z"/>
-              <rect x="8" y="19" width="8" height="2" rx="1"/>
-            </svg>
-          </div>
-          <h3 class="feature__title">진짜 게임처럼</h3>
-          <p class="feature__desc">
-            XP, 레벨, 리그.<br />
-            성장이 눈에 보여요.<br />
-            친구와 경쟁하고 함께 올라가는 재미까지.
-          </p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== HOW IT WORKS ===================== -->
-  <section class="section" id="how">
-    <div class="container">
-      <header class="section__head" data-anim>
-        <span class="section__eyebrow">어떻게 진행되나요</span>
-        <h2 class="section__title">3 단계면 충분해요.</h2>
-        <p class="section__sub">복잡한 설정 없이, 가입한 그 순간부터 학습을 시작할 수 있어요.</p>
-      </header>
-
-      <div class="steps">
-        <div class="step" data-anim data-anim-delay="1">
-          <div class="step__num">1</div>
-          <h3 class="step__title">회원가입</h3>
-          <p class="step__desc">이메일이면 충분해요.<br />30 초면 끝.</p>
-        </div>
-        <div class="step" data-anim data-anim-delay="2">
-          <div class="step__num">2</div>
-          <h3 class="step__title">첫 레슨 풀기</h3>
-          <p class="step__desc">가장 쉬운 단원부터. 정답을 몰라도 괜찮아요.</p>
-        </div>
-        <div class="step" data-anim data-anim-delay="3">
-          <div class="step__num">3</div>
-          <h3 class="step__title">매일 5 분</h3>
-          <p class="step__desc">알림 받고 꾸준히. 무리 없이 금융 감각이 쌓여요.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== STATS ===================== -->
-  <section class="section section--soft">
-    <div class="container">
-      <div class="stats" data-anim>
-        <div class="stat">
-          <div class="stat__num"><span data-count="5231">0</span><small> 명</small></div>
-          <div class="stat__label">함께 배우는 학습자</div>
-        </div>
-        <div class="stat">
-          <div class="stat__num"><span data-count="18420">0</span><small> 시간</small></div>
-          <div class="stat__label">누적 레슨 시간</div>
-        </div>
-        <div class="stat">
-          <div class="stat__num"><span data-count="87">0</span><small> %</small></div>
-          <div class="stat__label">평균 출석률</div>
-        </div>
-        <div class="stat">
-          <div class="stat__num"><span data-count="96">0</span><small> 점</small></div>
-          <div class="stat__label">학습 만족도</div>
-        </div>
+        <a class="card card--interactive feature feature--blue" href="/faq.html" data-anim data-anim-delay="3" style="text-decoration: none; color: inherit;">
+          <h3 class="feature__title">❓ FAQ</h3>
+          <p class="feature__desc">가입·결제·학습 진행 등 자주 묻는 질문 모음.</p>
+        </a>
       </div>
     </div>
   </section>
@@ -338,6 +253,12 @@
                 <span>FinEdu</span>
       </a>
       <p>경제와 금융을 게임처럼 배우는 곳.</p>
+      <nav class="site-footer__links" aria-label="페이지 메뉴">
+        <a href="/about.html">소개</a>
+        <a href="/how-it-works.html">진행 방식</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/terms.html">용어사전</a>
+      </nav>
       <p class="site-footer__credit">© 2026 FinEdu</p>
     </div>
   </footer>
