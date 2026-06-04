@@ -18,6 +18,38 @@
   window.addEventListener("scroll", update, { passive: true });
 })();
 
+(function initMoreDropdown() {
+  /** 헤더의 "더보기 ▾" 드롭다운 — 데스크탑에서만 의미 있음 (모바일은 CSS 로 펼침). */
+  const btn  = document.querySelector(".site-nav__more-btn");
+  const menu = document.querySelector(".site-nav__more-menu");
+  if (!btn || !menu) return;
+  const close = () => { btn.setAttribute("aria-expanded", "false"); menu.hidden = true; };
+  const open  = () => { btn.setAttribute("aria-expanded", "true");  menu.hidden = false; };
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    btn.getAttribute("aria-expanded") === "true" ? close() : open();
+  });
+  document.addEventListener("click", (e) => {
+    if (!btn.parentElement.contains(e.target)) close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+})();
+
+(function initNavActive() {
+  /**
+   * 헤더 nav 의 link 중 현재 경로와 일치하는 항목에 .is-active 자동 부여.
+   * (HTML 에서 미리 박는 대신 JS 로 통일 — 페이지마다 따로 표시할 필요 없음.)
+   */
+  const path = location.pathname.replace(/\/$/, "") || "/";
+  const norm = (p) => (p || "").replace(/\/$/, "") || "/";
+  document.querySelectorAll(".site-nav a[href]").forEach((a) => {
+    const href = norm(new URL(a.getAttribute("href"), location.origin).pathname);
+    a.classList.toggle("is-active", href === path);
+  });
+})();
+
 (function initNavToggle() {
   const toggle = document.querySelector(".site-nav__toggle");
   const nav = document.querySelector(".site-nav");
