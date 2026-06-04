@@ -234,6 +234,15 @@
 [data-theme="dark"] .stat-chip--xp   { background: var(--color-brand-bg); color: #a3b1ff; }
 
 /* -------------------------------------------------------------
+ * 로그인 필요 nav — 로그아웃 상태에서 숨김
+ *
+ * <html data-auth="no"> 일 때 [data-auth-required] 요소를 모두 숨긴다.
+ * data-auth 값은 head 의 inline script 가 localStorage 'finedu-auth' 를
+ * 읽어 즉시 셋팅 (FOUC 방지). me.php 응답 후 site.js 가 캐시 갱신.
+ * ------------------------------------------------------------- */
+:root[data-auth="no"] [data-auth-required] { display: none !important; }
+
+/* -------------------------------------------------------------
  * 리셋 / 기본
  * ------------------------------------------------------------- */
 *,

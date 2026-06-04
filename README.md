@@ -227,7 +227,7 @@ https://<도메인>/api/install.php
   - 유료: 학사모 · 산타모 · 왕관 · 선글라스 · 하트 안경 · 줄무늬 머플러 · 별빛 배경 · 무지개 배경 등
 - 백엔드
   - `_lib/character.php` — `list_items` · `user_owned_items` · `user_equipment`
-    · `ensure_starter_items` (멱등) · `equip_item` (보유/슬롯 일치 검증)
+    · `equip_item` (보유/슬롯 일치 검증)
   - `api/character/state.php` — 옷장 한 번에 (catalog + owned + equipped + coins)
   - `api/character/equip.php` — 슬롯에 장착 또는 해제
 - 마스코트 컴포저 (`assets/js/mascot.js`)

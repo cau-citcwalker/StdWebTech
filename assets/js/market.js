@@ -68,15 +68,8 @@ function renderGrid() {
     return `
       <article class="market-card ${owned ? "is-owned" : ""}" data-id="${it.id}">
         <div class="market-card__preview">
-          <span class="market-card__rarity market-card__rarity--${it.rarity}">${rarityLabel(it.rarity)}</span>
           ${previewFor(it)}
         </div>
-        <h3 class="market-card__title">${it.name}</h3>
-        ${isFree ? "" : `
-          <div class="market-card__price">
-            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9" fill="#ffd14d"/><text x="12" y="16" font-size="11" font-weight="800" text-anchor="middle" fill="#7a5300">₩</text></svg>
-            ${it.price.toLocaleString("ko-KR")}
-          </div>`}
         <button class="${ctaClass}" type="button" ${owned ? "disabled" : ""}>${ctaLabel}</button>
       </article>
     `;
@@ -88,10 +81,6 @@ function renderGrid() {
     if (!item || state.owned.has(id)) return;
     card.querySelector("button").addEventListener("click", () => openBuyModal(item));
   });
-}
-
-function rarityLabel(r) {
-  return ({ starter: "스타터", common: "보통", rare: "레어", epic: "에픽" })[r] ?? r;
 }
 
 function setCoins(n) {
@@ -107,14 +96,13 @@ function openBuyModal(item) {
   host.className = "modal-host";
   host.innerHTML = `
     <div class="modal" role="dialog" aria-modal="true">
-      <h2 class="modal__title">${item.name}</h2>
+      <div class="modal__preview">${previewFor(item)}</div>
       <p class="modal__sub">
         ${item.price === 0
           ? "무료 아이템을 받을게요."
           : `${item.price.toLocaleString("ko-KR")} 코인을 사용해서 이 아이템을 구매할게요.`}
         <br><small>현재 코인: ${state.coins.toLocaleString("ko-KR")}</small>
       </p>
-      <div class="modal__preview">${previewFor(item)}</div>
       <div class="modal__actions">
         <button class="btn btn--secondary" type="button" data-action="cancel">취소</button>
         <button class="btn" type="button" data-action="confirm">${item.price === 0 ? "받기" : "구매"}</button>
@@ -144,7 +132,7 @@ function openBuyModal(item) {
     renderGrid();
     close();
     sfx.correct();
-    if (window.toast) window.toast(`${item.name} 획득!`, { variant: "success" });
+    if (window.toast) window.toast(`아이템 획득!`, { variant: "success" });
   });
 }
 

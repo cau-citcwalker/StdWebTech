@@ -88,6 +88,8 @@ async function handleSubmit(form, endpoint, successMsg, redirect = "/learn.html"
   }
 
   if (window.toast) window.toast(successMsg, { variant: "success" });
+  // 로그인/회원가입 성공 직후 — 다음 페이지에서 nav 가 즉시 보이도록 캐시 갱신.
+  try { localStorage.setItem("finedu-auth", "yes"); } catch (_) {}
   window.location.assign(redirect);
 }
 

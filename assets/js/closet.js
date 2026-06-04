@@ -83,16 +83,6 @@ function renderGrid() {
           ${!owned ? '<span class="item-card__badge">잠김</span>' : ""}
           ${previewSvgFor(it)}
         </div>
-        <div class="item-card__name">${it.name}</div>
-        <div class="item-card__meta">
-          <span class="item-card__rarity item-card__rarity--${it.rarity}">${rarityLabel(it.rarity)}</span>
-          ${owned
-            ? "<span>보유중</span>"
-            : `<span class="item-card__price">
-                 <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9" fill="#ffd14d"/><text x="12" y="16" font-size="11" font-weight="800" text-anchor="middle" fill="#7a5300">₩</text></svg>
-                 ${it.price.toLocaleString("ko-KR")}
-               </span>`}
-        </div>
       </div>
     `;
   }).join("");
@@ -102,10 +92,6 @@ function renderGrid() {
   gridEl.querySelectorAll(".item-card").forEach((el) => {
     el.addEventListener("click", () => handleCardClick(el));
   });
-}
-
-function rarityLabel(r) {
-  return ({ starter: "스타터", common: "보통", rare: "레어", epic: "에픽" })[r] ?? r;
 }
 
 async function handleCardClick(el) {

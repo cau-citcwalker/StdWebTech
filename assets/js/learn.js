@@ -153,7 +153,6 @@ async function init() {
   if (!units.length || units.every((u) => u.lessons.length === 0)) {
     root.innerHTML = `
       <div class="learn-empty">
-        <img src="assets/img/character-base.png" alt="" />
         <h2>아직 준비 중인 단원이에요</h2>
         <p>곧 새로운 단원이 도착해요. 잠시만 기다려 주세요.</p>
       </div>

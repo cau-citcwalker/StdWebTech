@@ -53,21 +53,13 @@ function renderTabs() {
   });
 }
 
-function avatarFor(_user) {
-  // 슬롯이 hair/top/bottom 으로 분리된 이후로 친구 카드에는 합성을 안 하고
-  // 모두 기본 캐릭터 그림으로 통일. (필요해지면 list.php 에서 3개 슬러그를
-  // 같이 내려보내고 buildMascotSvg 로 합성하면 됨.)
-  return `<img src="/assets/img/character-base.png" alt="">`;
-}
-
 function friendCard(user, actionsHtml, opts = {}) {
+  // 친구 카드에서 캐릭터 아바타는 정보가 없을 때 기본 캐릭터로 떨어지므로
+  // 노출하지 않음. 이름/핸들/스탯만 표시.
   return `
-    <article class="friend-card">
-      <a class="friend-card__avatar" href="/friend?id=${user.id}" aria-label="${user.display_name}의 프로필">
-        ${avatarFor(user)}
-      </a>
+    <article class="friend-card friend-card--no-avatar">
       <div class="friend-card__body">
-        <div class="friend-card__name">${user.display_name}</div>
+        <a class="friend-card__name" href="/friend?id=${user.id}">${user.display_name}</a>
         <div class="friend-card__handle">@${user.username}</div>
         <div class="friend-card__stats">
           <span>${user.xp.toLocaleString("ko-KR")} XP</span>
@@ -84,7 +76,6 @@ function renderList() {
     if (state.data.friends.length === 0) {
       listEl.innerHTML = `
         <div class="friends-empty">
-          <img src="assets/img/character-base.png" alt=""/>
           <h3>아직 친구가 없어요</h3>
           <p>위 검색창에 친구의 아이디나 이메일을 입력해서 신청해 보세요.</p>
         </div>`;

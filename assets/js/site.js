@@ -69,6 +69,42 @@
   });
 })();
 
+(function initThemeSync() {
+  /**
+   * 다른 탭/페이지에서 localStorage 'finedu-theme' (또는 'finedu-auth') 가
+   * 바뀌면 즉시 반영. 페이지 전환만으로 새로고침 없이도 동기화되도록.
+   * 같은 탭에서는 'storage' 가 안 발생하므로 toggle 핸들러가 직접 처리.
+   * bfcache 복원 시에도 inline init 이 재실행되지 않으니 pageshow 로 보강.
+   */
+  const applyFromStorage = () => {
+    try {
+      const t = localStorage.getItem("finedu-theme");
+      if (t === "dark" || t === "light") {
+        document.documentElement.setAttribute("data-theme", t);
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+        if (matchMedia("(prefers-color-scheme: dark)").matches) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      }
+      const a = localStorage.getItem("finedu-auth");
+      if (a === "yes" || a === "no") {
+        document.documentElement.setAttribute("data-auth", a);
+      } else {
+        document.documentElement.removeAttribute("data-auth");
+      }
+    } catch (_) {}
+  };
+  window.addEventListener("storage", (e) => {
+    if (e.key === "finedu-theme" || e.key === "finedu-auth" || e.key === null) {
+      applyFromStorage();
+    }
+  });
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) applyFromStorage();
+  });
+})();
+
 (function initThemeToggle() {
   /**
    * 헤더의 .site-nav__actions 에 다크/라이트 토글 버튼 주입.
@@ -128,24 +164,25 @@
 
 (async function syncHeaderAuth() {
   /**
-   * 헤더의 .site-nav__actions 를 로그인 상태에 맞춰 동기화.
-   *   - 로그인 상태:  "학습 계속 / 로그아웃" 으로 무조건 교체
-   *                  (메인엔 로그인/회원가입 링크가 있고, 옷장·마켓·프로필
-   *                   같은 보호 페이지엔 빈 div 만 있어서 그동안 로그아웃
-   *                   버튼이 거기엔 안 떴음.)
-   *   - 로그아웃 상태: 손대지 않음 (메인에 있던 로그인/회원가입 그대로)
+   * me.php 호출 → 로그인 상태에 따라:
+   *   1) <html data-auth="yes|no"> 셋팅 + localStorage 캐시 갱신
+   *      (data-auth="no" 면 base.css 가 [data-auth-required] 를 숨김)
+   *   2) 헤더 actions 영역 ("학습 계속 / 로그아웃" 또는 그대로)
    */
   const actions = document.querySelector(".site-header__inner .site-nav__actions");
-  if (!actions) return;
 
   let me;
   try {
     const res = await fetch("/api/auth/me.php", { credentials: "same-origin" });
-    if (!res.ok) return;
-    me = await res.json();
-  } catch (_) { return; }
+    if (res.ok) me = await res.json();
+  } catch (_) {}
 
-  if (!me?.data?.user) return; // 로그아웃 상태 → 그대로
+  const loggedIn = !!(me?.data?.user);
+  document.documentElement.setAttribute("data-auth", loggedIn ? "yes" : "no");
+  try { localStorage.setItem("finedu-auth", loggedIn ? "yes" : "no"); } catch (_) {}
+
+  if (!actions) return;
+  if (!loggedIn) return;
 
   actions.innerHTML = `
     <a class="btn btn--secondary btn--sm" href="/learn.html">학습 계속</a>
@@ -153,6 +190,7 @@
   `;
   actions.querySelector("#header-logout").addEventListener("click", async () => {
     await fetch("/api/auth/logout.php", { method: "POST", credentials: "same-origin" });
+    try { localStorage.setItem("finedu-auth", "no"); } catch (_) {}
     location.href = "/";
   });
 })();

@@ -5,7 +5,6 @@
  *   list_items()                       : 카탈로그 (전체 아이템)
  *   user_owned_items($uid)             : [item_id => true]
  *   user_equipment($uid)               : [slot => item_id]
- *   ensure_starter_items($uid)         : starter 아이템 자동 지급 (멱등)
  *   equip_item($uid, $slot, $itemId|null)
  */
 
@@ -48,17 +47,6 @@ function user_equipment(int $userId): array
     $eq = [];
     foreach ($stmt->fetchAll() as $r) $eq[$r['slot']] = (int)$r['item_id'];
     return $eq;
-}
-
-function ensure_starter_items(int $userId): void
-{
-    // starter 아이템을 인벤토리에 추가만 함 — 자동 장착은 안 함.
-    // 사용자가 처음 옷장에 들어오면 "기본 캐릭터(대머리 + 맨몸)" 상태로 시작.
-    // 옷차림은 본인이 옷장에서 직접 선택.
-    db()->prepare(
-        "INSERT IGNORE INTO user_items (user_id, item_id)
-         SELECT :u, id FROM items WHERE rarity = 'starter'"
-    )->execute([':u' => $userId]);
 }
 
 function equip_item(int $userId, string $slot, ?int $itemId): void
