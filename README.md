@@ -35,7 +35,7 @@
 ├── assets/
 │   ├── css/                  base · components + 페이지별
 │   ├── js/                   api · site · 페이지별 모듈
-│   └── img/                  파비콘 · character-base.png · items/combos/
+│   └── img/                  파비콘 · items/start_avatar.png · items/combos/
 ├── .htaccess                 URL rewrite + 정적 캐싱 + config.php 차단
 └── README.md
 ```
@@ -52,9 +52,19 @@
 ## 캐릭터
 
 `hair`, `top`, `bottom` 세 슬롯, 각 3 종. 마켓에서 코인으로 구매.
-렌더는 미리 합성된 PNG 1 장: `assets/img/items/combos/hair{H}+top{T}+pants{P}.png`.
-부분 장착은 페어 PNG (`hair1+top1.png` / `hair1+pants1.png`) 로 폴백,
-hair 만 또는 미장착이면 `character-base.png`.
+렌더는 미리 합성된 풀세트 PNG 한 장을 가져온다.
+
+```
+assets/img/items/
+├── start_avatar.png                            (모두 미장착)
+└── combos/
+    ├── hair{N}.png · top{N}.png · pants{N}.png  (1슬롯)
+    ├── hair{H}+top{T}.png · hair{H}+pants{P}.png (2슬롯)
+    └── hair{H}+top{T}+pants{P}.png              (3슬롯)
+```
+
+1·2·3 슬롯 어떤 조합이든 정확히 한 PNG 가 매칭되도록 풀세트로 제공
+(9 + 18 + 27 = **54 PNG**). 미장착 상태만 `start_avatar.png`.
 
 ## 게임 메커닉
 
