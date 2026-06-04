@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#4154f1" />
+  <title>계정 설정 · FinEdu</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="alternate icon" href="assets/img/favicon.ico" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+
+  <script>(function(){try{var t=localStorage.getItem("finedu-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);else if(matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.setAttribute("data-theme","dark");}catch(_){}})();</script>
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/settings.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-logo" href="/"><span>FinEdu</span></a>
+      <button class="site-nav__toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primary-nav">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <line x1="3" y1="7"  x2="21" y2="7"  />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="17" x2="21" y2="17" />
+        </svg>
+      </button>
+      <nav id="primary-nav" class="site-nav" aria-label="주요 메뉴">
+        <a class="site-nav__link" href="/">홈</a>
+        <a class="site-nav__link" href="/learn.html">학습</a>
+        <a class="site-nav__link" href="/closet.html">옷장</a>
+        <a class="site-nav__link" href="/market.html">마켓</a>
+        <a class="site-nav__link" href="/friends.html">친구</a>
+        <a class="site-nav__link is-active" href="/profile.html">프로필</a>
+        <a class="site-nav__link" href="/league.html">리그</a>
+        <a class="site-nav__link" href="/terms.html">용어사전</a>
+        <div class="site-nav__actions"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container settings-shell">
+    <header class="settings-head">
+      <a class="settings-back" href="/profile.html">← 프로필로 돌아가기</a>
+      <h1>계정 설정</h1>
+      <p id="settings-current" class="settings-sub"></p>
+    </header>
+
+    <section class="settings-card" data-anim>
+      <h2 class="settings-card__title">아이디 변경</h2>
+      <p class="settings-card__hint">로그인에 사용하는 아이디예요. 3~40자 영문/숫자/밑줄.</p>
+      <form id="form-username" class="settings-form">
+        <div class="field">
+          <label class="field__label" for="u-current-password">현재 비밀번호</label>
+          <input class="input" id="u-current-password" type="password" name="current_password" autocomplete="current-password" required />
+        </div>
+        <div class="field">
+          <label class="field__label" for="u-new-username">새 아이디</label>
+          <input class="input" id="u-new-username" type="text" name="new_username" pattern="[A-Za-z0-9_]{3,40}" required />
+        </div>
+        <button class="btn btn--sm" type="submit">아이디 변경</button>
+      </form>
+    </section>
+
+    <section class="settings-card" data-anim>
+      <h2 class="settings-card__title">이메일 변경</h2>
+      <p class="settings-card__hint">로그인 ID 로도 쓸 수 있어요.</p>
+      <form id="form-email" class="settings-form">
+        <div class="field">
+          <label class="field__label" for="e-current-password">현재 비밀번호</label>
+          <input class="input" id="e-current-password" type="password" name="current_password" autocomplete="current-password" required />
+        </div>
+        <div class="field">
+          <label class="field__label" for="e-new-email">새 이메일</label>
+          <input class="input" id="e-new-email" type="email" name="new_email" required />
+        </div>
+        <button class="btn btn--sm" type="submit">이메일 변경</button>
+      </form>
+    </section>
+
+    <section class="settings-card" data-anim>
+      <h2 class="settings-card__title">비밀번호 변경</h2>
+      <p class="settings-card__hint">변경 후 다른 디바이스의 세션은 자동 로그아웃됩니다.</p>
+      <form id="form-password" class="settings-form">
+        <div class="field">
+          <label class="field__label" for="p-current-password">현재 비밀번호</label>
+          <input class="input" id="p-current-password" type="password" name="current_password" autocomplete="current-password" required />
+        </div>
+        <div class="field">
+          <label class="field__label" for="p-new-password">새 비밀번호</label>
+          <input class="input" id="p-new-password" type="password" name="new_password" minlength="8" autocomplete="new-password" required />
+          <span class="field__hint">8자 이상</span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="p-new-password-confirm">새 비밀번호 확인</label>
+          <input class="input" id="p-new-password-confirm" type="password" autocomplete="new-password" required />
+        </div>
+        <button class="btn btn--sm" type="submit">비밀번호 변경</button>
+      </form>
+    </section>
+
+    <section class="settings-card settings-card--danger" data-anim>
+      <h2 class="settings-card__title">회원 탈퇴</h2>
+      <p class="settings-card__hint">
+        ⚠️ 모든 학습 기록·아이템·친구 관계가 즉시 삭제되며 복구할 수 없어요.
+      </p>
+      <form id="form-delete" class="settings-form">
+        <div class="field">
+          <label class="field__label" for="d-current-password">현재 비밀번호</label>
+          <input class="input" id="d-current-password" type="password" name="current_password" autocomplete="current-password" required />
+        </div>
+        <div class="field">
+          <label class="field__label" for="d-confirm">확인 문구</label>
+          <input class="input" id="d-confirm" type="text" name="confirm" placeholder="DELETE 라고 입력" required />
+          <span class="field__hint"><code>DELETE</code> 라고 정확히 입력해야 활성화돼요.</span>
+        </div>
+        <button class="btn btn--red btn--sm" type="submit">계정 영구 삭제</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <a class="site-logo" href="/"><span>FinEdu</span></a>
+      <p>경제와 금융을 게임처럼 배우는 곳.</p>
+      <nav class="site-footer__links" aria-label="페이지 메뉴">
+        <a href="/about.html">소개</a>
+        <a href="/how-it-works.html">진행 방식</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/terms.html">용어사전</a>
+      </nav>
+      <p class="site-footer__credit">© 2026 FinEdu</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/settings.js"></script>
+</body>
+</html>
