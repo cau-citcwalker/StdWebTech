@@ -214,3 +214,22 @@ CREATE TABLE IF NOT EXISTS user_scraps (
     CONSTRAINT fk_scraps_user FOREIGN KEY (user_id)
         REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------------
+-- 사이트 리뷰
+--   한 유저당 1개 리뷰 (수정/삭제 가능)
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS site_reviews (
+    id           INT UNSIGNED       NOT NULL AUTO_INCREMENT,
+    user_id      INT UNSIGNED       NOT NULL,
+    rating       TINYINT UNSIGNED   NOT NULL,
+    body         TEXT               NOT NULL,
+    created_at   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   DATETIME           NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uniq_user_review (user_id),
+    KEY idx_review_recent (created_at),
+    KEY idx_review_rating (rating, created_at),
+    CONSTRAINT fk_review_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
