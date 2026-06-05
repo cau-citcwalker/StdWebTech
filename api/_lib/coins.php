@@ -20,14 +20,18 @@ function award_coins(int $userId, int $delta, string $reason, ?string $refType =
         return (int)$row->fetchColumn();
     }
 
-    db()->beginTransaction();
+    // 호출자가 이미 트랜잭션을 열어둔 경우엔 중첩 begin/commit 안 함
+    // (PDO 는 중첩 beginTransaction 에서 예외를 던지므로 buy.php 같은
+    // 호출 경로에서 구매가 실패하던 문제 수정.)
+    $owns = !db()->inTransaction();
+    if ($owns) db()->beginTransaction();
     try {
         $stmt = db()->prepare('SELECT coins FROM users WHERE id = :id FOR UPDATE');
         $stmt->execute([':id' => $userId]);
         $current = (int)$stmt->fetchColumn();
         $next = $current + $delta;
         if ($next < 0) {
-            db()->rollBack();
+            if ($owns) db()->rollBack();
             throw new RuntimeException('coins_insufficient');
         }
 
@@ -46,10 +50,10 @@ function award_coins(int $userId, int $delta, string $reason, ?string $refType =
             ':b' => $next,
         ]);
 
-        db()->commit();
+        if ($owns) db()->commit();
         return $next;
     } catch (Throwable $e) {
-        if (db()->inTransaction()) db()->rollBack();
+        if ($owns && db()->inTransaction()) db()->rollBack();
         throw $e;
     }
 }
