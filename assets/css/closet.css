@@ -65,8 +65,12 @@ body { background: var(--color-bg-soft); }
 }
 .closet-stage__mascot svg { width: 100%; height: 100%; animation: bob-soft 5s ease-in-out infinite; }
 
+.closet-stage__reset {
+  margin-top: var(--space-4);
+}
+
 .closet-stage__coins {
-  margin-top: var(--space-5);
+  margin-top: var(--space-3);
   display: inline-flex;
   align-items: center;
   gap: 6px;

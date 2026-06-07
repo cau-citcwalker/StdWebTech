@@ -1,5 +1,5 @@
 /* =============================================================
- * FinEdu — 아바타 컴포저 (combo-lookup v10)
+ * FinEdu — 아바타 컴포저 (combo-lookup v11)
  *
  *   buildMascotSvg({ equipped, items, size = 360 })
  *   renderMascotInto(el, opts)
@@ -7,22 +7,20 @@
  *   슬롯 (각 3종): hair · top · bottom
  *     슬러그 규약: hair-N / top-N / bottom-N  (N = 1..3)
  *
- *   장착 조합을 조회해서 미리 만들어둔 풀바디 합성 PNG 1장을 렌더.
- *     /assets/img/items/combos/hair{H}+top{T}+pants{P}.png   (3슬롯 다 장착)
- *     /assets/img/items/combos/hair{H}+top{T}.png            (하의 미장착)
- *     /assets/img/items/combos/hair{H}+pants{P}.png          (상의 미장착)
+ *   장착 조합을 조회해서 미리 만들어둔 합성 PNG 1장을 렌더.
+ *     3슬롯 :  /assets/img/items/combos/hair{H}+top{T}+pants{P}.png
+ *     2슬롯 :  /assets/img/items/combos/hair{H}+top{T}.png
+ *              /assets/img/items/combos/hair{H}+pants{P}.png
+ *     1슬롯 :  /assets/img/items/combos/hair{H}.png
+ *              /assets/img/items/combos/top{T}.png
+ *              /assets/img/items/combos/pants{P}.png
+ *     아무것도 미장착 : /assets/img/items/start_avatar.png
  *
- *   (현재 시점) hair1 만 모든 조합 존재. hair2/hair3 는 +top 또는 +pants 페어만 존재.
- *   누락 조합은 가장 가까운 페어로 fallback. 모두 실패하면 character-base.png.
- *
- *   ViewBox 0 0 400 600. 합성 PNG 는 600x900 (1.5x retina) 으로 미리 압축됨.
+ *   ViewBox 0 0 400 600.
  * ============================================================= */
 
-const BASE_IMAGE_HREF = "/assets/img/character-base.png";
+const START_AVATAR_HREF = "/assets/img/items/start_avatar.png";
 const COMBOS_DIR = "/assets/img/items/combos";
-
-// 파일명은 "pants" 사용 (bottom 슬롯의 별칭).
-const FILE_KEY_BY_SLOT = { hair: "hair", top: "top", bottom: "pants" };
 
 function indexFromSlug(slug) {
   if (!slug) return null;
@@ -31,27 +29,16 @@ function indexFromSlug(slug) {
 }
 
 /**
- * 장착된 슬롯의 인덱스 셋으로부터 PNG 경로를 조회. fallback 체인 포함.
+ * 장착된 슬롯의 인덱스 셋으로부터 PNG 경로를 조회.
+ * 모든 1·2·3 슬롯 조합이 존재한다고 가정 (54 PNG 풀세트).
  */
-function comboHref(idx) {
-  const { hair, top, bottom } = idx;
-  // hair 없으면 합성 PNG 도 없음 — 기본 캐릭터.
-  if (!hair) return BASE_IMAGE_HREF;
-
-  const join = (parts) => `${COMBOS_DIR}/${parts.join("+")}.png`;
-
-  if (top && bottom) {
-    // 1순위: 풀 트리플
-    return join([`hair${hair}`, `top${top}`, `pants${bottom}`]);
-  }
-  if (top) {
-    return join([`hair${hair}`, `top${top}`]);
-  }
-  if (bottom) {
-    return join([`hair${hair}`, `pants${bottom}`]);
-  }
-  // hair 만 — 사용 가능 PNG 없음. base 로 fallback.
-  return BASE_IMAGE_HREF;
+function comboHref({ hair, top, bottom }) {
+  const parts = [];
+  if (hair)   parts.push(`hair${hair}`);
+  if (top)    parts.push(`top${top}`);
+  if (bottom) parts.push(`pants${bottom}`);
+  if (parts.length === 0) return START_AVATAR_HREF;
+  return `${COMBOS_DIR}/${parts.join("+")}.png`;
 }
 
 function imageEl(href) {
@@ -74,16 +61,10 @@ export function buildMascotSvg({ equipped = {}, items = [], size = 360, withWrap
     return it?.slug ?? null;
   };
 
-  // bottom 슬롯의 슬러그가 "hair-bald" 같이 sentinel 이면 미장착 취급.
-  // (실제 sentinel 은 hair-bald 만 — bottom/top 에는 없음.)
-  const hairSlug   = slugFor("hair");
-  const topSlug    = slugFor("top");
-  const bottomSlug = slugFor("bottom");
-
   const idx = {
-    hair:   hairSlug === "hair-bald" ? null : indexFromSlug(hairSlug),
-    top:    indexFromSlug(topSlug),
-    bottom: indexFromSlug(bottomSlug),
+    hair:   indexFromSlug(slugFor("hair")),
+    top:    indexFromSlug(slugFor("top")),
+    bottom: indexFromSlug(slugFor("bottom")),
   };
 
   const body = imageEl(comboHref(idx));

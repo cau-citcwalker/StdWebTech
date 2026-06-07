@@ -184,10 +184,14 @@
   if (!actions) return;
   if (!loggedIn) return;
 
+  // 테마 토글 버튼은 initThemeToggle 이 이미 prepend 해뒀음.
+  // innerHTML 통째 교체하면 그게 같이 날아가므로 보존 후 복원한다.
+  const themeBtn = actions.querySelector(".theme-toggle");
   actions.innerHTML = `
     <a class="btn btn--secondary btn--sm" href="/learn.html">학습 계속</a>
     <button class="btn btn--ghost btn--sm" id="header-logout" type="button">로그아웃</button>
   `;
+  if (themeBtn) actions.insertBefore(themeBtn, actions.firstChild);
   actions.querySelector("#header-logout").addEventListener("click", async () => {
     await fetch("/api/auth/logout.php", { method: "POST", credentials: "same-origin" });
     try { localStorage.setItem("finedu-auth", "no"); } catch (_) {}

@@ -147,7 +147,7 @@ function renderDetail(iso) {
       </div>
       <ul class="cal-friends-list">
         ${friendsHere.map((f) => `<li>
-          <a href="/friend?id=${f.user_id}">${esc(f.display_name)}</a>
+          <a href="/friend.html?id=${f.user_id}">${esc(f.display_name)}</a>
           <span style="color: var(--color-text-muted);">@${esc(f.username)}</span>
         </li>`).join("")}
       </ul>

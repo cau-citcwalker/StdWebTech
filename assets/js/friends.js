@@ -59,7 +59,7 @@ function friendCard(user, actionsHtml, opts = {}) {
   return `
     <article class="friend-card">
       <div class="friend-card__body">
-        <a class="friend-card__name" href="/friend?id=${user.id}">${user.display_name}</a>
+        <a class="friend-card__name" href="/friend.html?id=${user.id}">${user.display_name}</a>
         <div class="friend-card__handle">@${user.username}</div>
         <div class="friend-card__stats">
           <span>${user.xp.toLocaleString("ko-KR")} XP</span>
@@ -83,7 +83,7 @@ function renderList() {
     }
     listEl.innerHTML = `<div class="friends-grid">${
       state.data.friends.map((u) => friendCard(u, `
-        <a class="btn btn--secondary btn--sm" href="/friend?id=${u.id}">방문</a>
+        <a class="btn btn--secondary btn--sm" href="/friend.html?id=${u.id}">방문</a>
         <button class="btn btn--ghost btn--sm" data-action="remove" data-id="${u.id}">친구 끊기</button>
       `)).join("")
     }</div>`;
