@@ -1,0 +1,59 @@
+# =============================================================
+# FinEdu — InfinityFree FTP 자동 배포
+#
+#   - main 브랜치에 push (PR 머지 포함) → 자동 배포
+#   - 수동 실행도 가능 (workflow_dispatch)
+#   - SamKirkland/FTP-Deploy-Action 는 diff 만 업로드 (전체 풀업로드 X)
+#   - api/config.php 는 .gitignored → 워크스페이스에 없음 → 서버 파일 유지
+#
+# 필요한 Secrets (Repo Settings → Secrets and variables → Actions):
+#   FTP_SERVER    ftpupload.net
+#   FTP_USERNAME  if0_xxxxxxxx
+#   FTP_PASSWORD  ********
+# =============================================================
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ftp-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /finedu.rf.gd/htdocs/
+          local-dir: ./
+          protocol: ftp
+          port: 21
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/.vscode/**
+            **/.idea/**
+            **/.claude/**
+            **/node_modules/**
+            **/.DS_Store
+            **/Thumbs.db
+            **/*.log
+            **/*.zip
+            **/*.pptx
+            **/*.pdf
+            **/ppt.md
+            **/README.md
+            api/config.php
+            api/config.local.php
