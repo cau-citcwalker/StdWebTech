@@ -319,3 +319,17 @@ body { background: var(--color-bg-soft); }
 .lesson-top__scrap:hover  { background: var(--color-bg-soft); color: var(--color-accent-yellow-dark); }
 .lesson-top__scrap.is-on  { color: var(--color-accent-yellow); }
 .lesson-top__scrap:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* -------------------------------------------------------------
+ * 다크모드 — 피드백 패널 가독성 보정
+ *   라이트 톤 배경 (#f1ffd9 / #fff0f0) 에 라이트 텍스트가 얹혀 안 보이는 이슈 수정
+ * ------------------------------------------------------------- */
+[data-theme="dark"] .feedback--ok  { background: #1a2810; }
+[data-theme="dark"] .feedback--bad { background: #2a1414; }
+[data-theme="dark"] .feedback--ok  .feedback__title { color: #c7eb78; }
+[data-theme="dark"] .feedback--bad .feedback__title { color: #ff8b8b; }
+[data-theme="dark"] .feedback__explain { color: var(--color-text); }
+[data-theme="dark"] .feedback__answer code {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+}
