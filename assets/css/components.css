@@ -553,6 +553,42 @@
 }
 
 /* -------------------------------------------------------------
+ * 모달 (페이지 공용) — fixed overlay + 중앙 카드
+ *   사용처: market 구매 컨펌 / calendar 일정 추가 / 기타
+ *   페이지별 모달 내부 위젯 (예: .modal__preview) 은 각 페이지 CSS 에.
+ * ------------------------------------------------------------- */
+.modal-host {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: grid; place-items: center;
+  z-index: var(--z-modal);
+  opacity: 0;
+  animation: fade-in 200ms var(--ease-out-soft) forwards;
+  padding: var(--space-4);
+}
+@keyframes fade-in { to { opacity: 1; } }
+.modal {
+  width: min(440px, 92vw);
+  max-height: calc(100vh - var(--space-8));
+  overflow-y: auto;
+  background: var(--color-bg);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-lg);
+  animation: pop-in 280ms var(--ease-out-bounce) both;
+}
+.modal__title { font-size: var(--fs-20); margin: 0; }
+.modal__sub   { color: var(--color-text-soft); margin-top: 6px; }
+.modal__actions {
+  margin-top: var(--space-6);
+  display: flex; gap: var(--space-3);
+}
+.modal__actions .btn { flex: 1; }
+@media (max-width: 720px) {
+  .modal { padding: var(--space-6); }
+}
+
+/* -------------------------------------------------------------
  * 마스코트 깜빡임 — 인라인 SVG 의 [data-eye] 그룹에 적용
  * ------------------------------------------------------------- */
 [data-eye="left"]  { transform-origin: 142px 116px; transform-box: fill-box; }
