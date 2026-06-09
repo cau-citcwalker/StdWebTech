@@ -81,6 +81,8 @@ body { background: var(--color-bg-soft); }
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0;
+  /* JS 가 채우기 전에 footer 가 위로 올라오는 것 방지 (6주 × 84px) */
+  min-height: 504px;
 }
 .cal-cell {
   position: relative;
@@ -196,6 +198,7 @@ body { background: var(--color-bg-soft); }
 @media (max-width: 720px) {
   .cal-shell { padding: var(--space-5) 0 var(--space-12); gap: var(--space-3); }
   .cal-cell  { min-height: 60px; padding: 4px 6px; font-size: var(--fs-13); }
+  .cal-grid  { min-height: 360px; } /* 모바일은 셀 60px × 6주 */
   .cal-nav__label { min-width: 110px; font-size: var(--fs-15); }
 }
 
